@@ -1,10 +1,8 @@
 [{
-  "relation": ["delegate_permission/common.handle_all_urls"],
-  "target": {
-    "namespace": "android_app",
-    "package_name": "io.github.miguelsousa116.twa",
-    "sha256_cert_fingerprints": [
-      "2E:98:88:E2:49:10:49:5D:8B:E3:64:6D:E0:16:35:E4:9E:09:A6:49:BF:CD:7A:B3:36:EB:5F:C2:59:7A:4A:8C"
-    ]
-  }
-}]
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "io.github.miguelsousa116.twa",
+        "sha256_cert_fingerprints": ["41:FC:89:8D:77:8C:F1:57:53:93:85:35:D9:B9:09:F0:7D:5B:AA:75:1A:B5:7F:6A:60:3D:5D:1E:B6:4D:79:98"]
+      }
+    }]
