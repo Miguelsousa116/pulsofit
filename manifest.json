@@ -10,8 +10,9 @@
   "description": "App de treino e nutricao pulsofit",
   "icons": [
     {
-      "src": "./photo-1623804454517-3a08bed6df95cf4e85bb4c19e7a9b.png",
+      "src": "https://miguelsousa116.github.io/pulsofit/photo-1623804454517-3a08bed6df95cf4e85bb4c19e7a9b.png",
       "sizes": "512x512",
       "type": "image/png"
     }
   ]
+}
