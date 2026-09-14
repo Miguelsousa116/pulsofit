@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>PULSOFIT - Elite Performance</title>
+  
+  <style>
+    :root {
+      --primary: #00e676;
+      --primary-rgb: 0, 230, 118;
+      --bg-card: rgba(18, 18, 24, 0.78);
+    }
+
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
+    
+    /* FUNDO COM FOTO DE GINÁSIO ÉPICA + OVERLAY ESCURO E RADIAL */
+    body {
+      background-color: #050508;
+      background-image: 
+        linear-gradient(to bottom, rgba(5, 5, 8, 0.86), rgba(9, 9, 14, 0.92)),
+        radial-gradient(circle at 50% 20%, rgba(var(--primary-rgb), 0.15) 0%, transparent 60%),
+        url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1920&auto=format&fit=crop');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      color: #f4f4f5;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      padding-bottom: 90px;
+    }
+
+    /* Cabeçalho */
+    header {
+      background: rgba(8, 8, 12, 0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08); padding: 14px 20px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 1000;
+    }
+    
+    .logo-area { display: flex; align-items: center; gap: 10px; }
+    .logo-icon {
+      background: var(--primary); color: #000; width: 32px; height: 32px;
+      border-radius: 8px; display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: 16px; box-shadow: 0 0 20px rgba(var(--primary-rgb), 0.5);
+    }
+    .logo-text { font-size: 18px; font-weight: 900; letter-spacing: 1.5px; background: linear-gradient(90deg, #fff, #a1a1aa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    
+    .header-right { display: flex; align-items: center; gap: 12px; }
+    .menu-btn {
+      background: rgba(255, 255, 255, 0.06); color: var(--primary); border: 1px solid rgba(255, 255, 255, 0.1); width: 36px; height: 36px;
+      border-radius: 10px; font-weight: bold; font-size: 16px; cursor: pointer;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center;
+    }
+
+    /* Menu Lateral */
+    #sidebar {
+      position: fixed; top: 0; right: -320px; width: 320px; height: 100%;
+      background: rgba(12, 12, 16, 0.96); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
+      border-left: 1px solid rgba(255, 255, 255, 0.08);
+      z-index: 2000; transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1); 
+      display: flex; flex-direction: column; padding: 24px;
+      box-shadow: -15px 0 50px rgba(0,0,0,0.9);
+    }
+    #sidebar.active { right: 0; }
+    
+    .sidebar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .sidebar-title { font-weight: 900; font-size: 13px; letter-spacing: 1px; color: var(--primary); }
+    .close-menu { background: rgba(255,255,255,0.06); border: none; color: #fff; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+
+    /* Perfil no Menu */
+    .sidebar-profile {
+      background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01));
+      border: 1px solid rgba(255,255,255,0.06); border-radius: 14px; padding: 14px;
+      display: flex; align-items: center; gap: 12px; margin-bottom: 20px;
+    }
+    .profile-avatar {
+      width: 42px; height: 42px; border-radius: 50%; background: var(--primary); color: #000;
+      font-weight: 900; display: flex; align-items: center; justify-content: center; font-size: 18px;
+      box-shadow: 0 0 15px rgba(var(--primary-rgb), 0.4);
+    }
+    .profile-info h4 { font-size: 14px; color: #fff; font-weight: 800; }
+    .profile-info p { font-size: 11px; color: var(--primary); font-weight: 600; margin-top: 2px; }
+
+    .sidebar-links { display: flex; flex-direction: column; gap: 6px; }
+    .sidebar-links a {
+      color: #a1a1aa; text-decoration: none; font-size: 14px; font-weight: 600;
+      padding: 12px 14px; border-radius: 12px; cursor: pointer; display: flex; align-items: center; gap: 10px;
+      transition: 0.2s; background: rgba(255,255,255,0.02); border: 1px solid transparent;
+    }
+    .sidebar-links a:hover { background: rgba(255,255,255,0.05); color: #fff; }
+    .sidebar-links a.active { color: #fff; background: rgba(var(--primary-rgb), 0.15); border-color: rgba(var(--primary-rgb), 0.35); }
+    
+    .theme-selector { margin-top: auto; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.08); }
+    .theme-selector p { font-size: 11px; color: #a1a1aa; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700; }
+    .theme-colors { display: flex; gap: 10px; }
+    .color-btn { width: 32px; height: 32px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.1); cursor: pointer; transition: transform 0.2s; }
+    .color-btn:hover { transform: scale(1.1); }
+    
+    /* Barra de Navegação Inferior (Bottom Nav) Estilo Elite Mobile */
+    .bottom-nav {
+      position: fixed; bottom: 0; left: 0; width: 100%;
+      background: rgba(10, 10, 15, 0.92); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      display: grid; grid-template-columns: repeat(4, 1fr); padding: 8px 6px;
+      z-index: 1200; box-shadow: 0 -10px 30px rgba(0,0,0,0.8);
+    }
+    .nav-item {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 3px; color: #71717a; text-decoration: none; font-size: 10px; font-weight: 700;
+      padding: 6px; border-radius: 12px; cursor: pointer; transition: 0.2s;
+    }
+    .nav-item span.icon { font-size: 18px; }
+    .nav-item.active { color: var(--primary); background: rgba(var(--primary-rgb), 0.1); }
+
+    /* Conteúdo Principal */
+    .main-container { padding: 20px 16px; flex: 1; max-width: 650px; margin: 0 auto; width: 100%; }
+    .section-view { display: none; }
+    .section-view.active { display: block; animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+    .section-title { font-size: 20px; font-weight: 900; color: #fff; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
+    .section-title::before { content: ''; width: 6px; height: 20px; background: var(--primary); border-radius: 3px; box-shadow: 0 0 10px rgba(var(--primary-rgb), 0.6); }
+    
+    /* Cartões Glassmorphism Avançados com Borda Iluminada */
+    .card-box {
+      background: var(--bg-card); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 18px; padding: 20px; margin-bottom: 16px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.6); position: relative; overflow: hidden;
+    }
+    .card-box::before {
+      content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(var(--primary-rgb), 0.5), transparent);
+    }
+    .card-box h3 { color: var(--primary); font-size: 16px; font-weight: 800; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+    .card-box p { font-size: 13.5px; color: #e4e4e7; line-height: 1.6; }
+    .badge-tag { background: rgba(var(--primary-rgb), 0.18); color: var(--primary); padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; border: 1px solid rgba(var(--primary-rgb), 0.3); }
+
+    /* DASHBOARD */
+    .hero-card {
+      background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.15), rgba(18, 18, 24, 0.85));
+      border: 1px solid rgba(var(--primary-rgb), 0.35);
+    }
+    .hero-greeting { font-size: 11px; color: var(--primary); font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 4px; }
+    .hero-title { font-size: 22px; font-weight: 900; color: #fff; margin-bottom: 8px; }
+    .hero-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.08); }
+    .stat-box { text-align: center; }
+    .stat-box span { display: block; font-size: 18px; font-weight: 900; color: #fff; }
+    .stat-box label { font-size: 10px; color: #a1a1aa; text-transform: uppercase; font-weight: 700; }
+
+    /* Hidratação */
+    .water-grid-epic { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 12px; }
+    .water-pill {
+      background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px;
+      padding: 10px; text-align: center; cursor: pointer; transition: 0.25s; font-size: 12px; font-weight: bold; color: #a1a1aa;
+    }
+    .water-pill.filled {
+      background: rgba(var(--primary-rgb), 0.2); border-color: var(--primary); color: #fff;
+      box-shadow: 0 0 15px rgba(var(--primary-rgb), 0.3);
+    }
+
+    /* Hábitos */
+    .habit-card-item {
+      background: rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px;
+      padding: 14px 16px; margin-top: 10px; display: flex; align-items: center; justify-content: space-between;
+      cursor: pointer; transition: 0.2s;
+    }
+    .habit-card-item:hover { border-color: rgba(var(--primary-rgb), 0.4); background: rgba(0,0,0,0.5); }
+    .habit-info { display: flex; align-items: center; gap: 12px; font-size: 14px; font-weight: 700; color: #fff; }
+    .habit-checkbox {
+      width: 24px; height: 24px; border-radius: 6px; border: 2px solid rgba(255,255,255,0.2);
+      display: flex; align-items: center; justify-content: center; transition: 0.2s;
+    }
+    .habit-card-item.checked .habit-checkbox {
+      background: var(--primary); border-color: var(--primary); color: #000; box-shadow: 0 0 10px rgba(var(--primary-rgb), 0.6);
+    }
+    .habit-card-item.checked .habit-checkbox::after { content: '✓'; font-weight: 900; font-size: 14px; }
+
+    /* FORMULÁRIOS E INPUTS MODERNOS */
+    input, select {
+      width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(0,0,0,0.65); color: #fff; font-size: 14px; margin-bottom: 12px; outline: none;
+      transition: 0.2s;
+    }
+    input:focus, select:focus { border-color: var(--primary); box-shadow: 0 0 15px rgba(var(--primary-rgb), 0.3); }
+    
+    .btn-main {
+      background: var(--primary); color: #000; border: none; padding: 14px 20px; border-radius: 12px;
+      font-weight: 800; font-size: 14px; cursor: pointer; width: 100%;
+      box-shadow: 0 6px 20px rgba(var(--primary-rgb), 0.4); transition: transform 0.1s;
+    }
+    .btn-main:active { transform: scale(0.98); }
+
+    .weight-tracker { display: flex; gap: 10px; margin-top: 15px; }
+    .weight-tracker input { margin: 0; flex: 2; text-align: center; font-weight: bold; }
+    .weight-tracker button { flex: 1; background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+    .weight-tracker button:hover { background: rgba(var(--primary-rgb), 0.2); border-color: var(--primary); color: var(--primary); }
+
+    /* NOVO DESIGN: MENU DE ALIMENTAÇÃO AVANÇADO */
+    .diet-tabs { display: flex; gap: 8px; margin-bottom: 16px; overflow-x: auto; padding-bottom: 4px; }
+    .diet-tab {
+      background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.08); color: #a1a1aa;
+      padding: 8px 16px; border-radius: 10px; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap; transition: 0.2s;
+    }
+    .diet-tab.active { background: rgba(var(--primary-rgb), 0.2); border-color: var(--primary); color: #fff; box-shadow: 0 0 10px rgba(var(--primary-rgb), 0.3); }
+    
+    .meal-card {
+      background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.06); border-radius: 14px;
+      padding: 14px 16px; margin-bottom: 12px;
+    }
+    .meal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+    .meal-title { font-size: 14px; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 6px; }
+    .meal-macros { font-size: 11px; color: var(--primary); font-weight: 700; background: rgba(var(--primary-rgb), 0.1); padding: 2px 6px; border-radius: 4px; }
+    .meal-desc { font-size: 13px; color: #d4d4d8; line-height: 1.5; }
+
+    /* Cronómetro */
+    #rest-timer {
+      position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%);
+      background: var(--primary); color: #000; padding: 12px 24px; border-radius: 30px;
+      font-weight: 900; font-size: 20px; box-shadow: 0 10px 30px rgba(var(--primary-rgb), 0.6);
+      transition: bottom 0.4s cubic-bezier(0.16, 1, 0.3, 1); z-index: 1500; display: flex; gap: 15px; align-items: center;
+    }
+    #rest-timer.active { bottom: 85px; }
+    .timer-btn { background: rgba(0,0,0,0.2); border: none; padding: 5px 10px; border-radius: 8px; font-weight: bold; cursor: pointer; color: #000; }
+
+    .result-box { display: none; background: rgba(var(--primary-rgb), 0.15); border: 1px solid var(--primary); padding: 15px; border-radius: 12px; margin-top: 15px; }
+    .result-box h4 { color: var(--primary); font-size: 24px; text-align: center; margin-bottom: 5px; }
+    .macros-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; text-align: center; margin-top: 15px; }
+    .macro-item { background: rgba(0,0,0,0.5); padding: 10px; border-radius: 8px; font-size: 12px; border: 1px solid rgba(255,255,255,0.06); }
+    .macro-item span { display: block; font-size: 16px; font-weight: bold; color: #fff; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo-area">
+      <div class="logo-icon">⚡</div>
+      <div class="logo-text">PULSOFIT</div>
+    </div>
+    <div class="header-right">
+      <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+    </div>
+  </header>
+
+  <!-- Menu Lateral -->
+  <div id="sidebar">
+    <div class="sidebar-header">
+      <span class="sidebar-title">PAINEL DE NAVEGAÇÃO</span>
+      <button class="close-menu" onclick="toggleSidebar()">✕</button>
+    </div>
+
+    <div class="sidebar-profile">
+      <div class="profile-avatar">PF</div>
+      <div class="profile-info">
+        <h4>Atleta PulsoFit</h4>
+        <p>⚡ Modo Performance</p>
+      </div>
+    </div>
+
+    <div class="sidebar-links">
+      <a onclick="switchTab('dashboard')" class="active" id="link-dashboard">📈 <span>Meu Dashboard</span></a>
+      <a onclick="switchTab('exercicios')" id="link-exercicios">💪 <span>Treinos & Cargas</span></a>
+      <a onclick="switchTab('calculadoras')" id="link-calculadoras">📊 <span>Calculadora de Macros</span></a>
+      <a onclick="switchTab('alimentacao')" id="link-alimentacao">🥗 <span>Plano Alimentar</span></a>
+    </div>
+    
+    <div class="theme-selector">
+      <p>Personalizar Tema</p>
+      <div class="theme-colors">
+        <div class="color-btn" style="background: #00e676;" onclick="setTheme('#00e676', '0, 230, 118')"></div>
+        <div class="color-btn" style="background: #00b0ff;" onclick="setTheme('#00b0ff', '0, 176, 255')"></div>
+        <div class="color-btn" style="background: #ff3d00;" onclick="setTheme('#ff3d00', '255, 61, 0')"></div>
+        <div class="color-btn" style="background: #e040fb;" onclick="setTheme('#e040fb', '224, 64, 251')"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <div class="main-container">
+
+    <!-- DASHBOARD -->
+    <div id="tab-dashboard" class="section-view active">
+      
+      <div class="card-box hero-card">
+        <div class="hero-greeting">⚡ Estado de Alta Performance</div>
+        <div class="hero-title">Sessão Ativa</div>
+        <p>Mantém o foco, cumpre os teus macros e esmaga os teus limites no ginásio hoje.</p>
+        
+        <div class="hero-stats">
+          <div class="stat-box">
+            <span>Treino A</span>
+            <label>Foco Hoje</label>
+          </div>
+          <div class="stat-box">
+            <span id="stat-water-text">0/8</span>
+            <label>Copos Água</label>
+          </div>
+          <div class="stat-box">
+            <span id="stat-habits-text">0/2</span>
+            <label>Hábitos</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-box">
+        <h3>💧 Controlo de Hidratação <span class="badge-tag">Meta: 2 Litros</span></h3>
+        <p>Clica para registar cada 250ml de água consumida:</p>
+        <div class="water-grid-epic" id="water-container"></div>
+      </div>
+
+      <div class="card-box">
+        <h3>🔥 Hábitos Diários de Elite</h3>
+        
+        <div class="habit-card-item" id="habit-card-diet" onclick="toggleHabit('diet')">
+          <div class="habit-info">
+            <span>🥗</span> Cumpri a Dieta a 100% hoje
+          </div>
+          <div class="habit-checkbox"></div>
+        </div>
+
+        <div class="habit-card-item" id="habit-card-workout" onclick="toggleHabit('workout')">
+          <div class="habit-info">
+            <span>🏋️‍♂️</span> Treino Concluído com Sucesso
+          </div>
+          <div class="habit-checkbox"></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- EXERCÍCIOS -->
+    <div id="tab-exercicios" class="section-view">
+      <div class="section-title">Treino A - Peito e Tríceps</div>
+      <p style="margin-bottom: 15px; font-size: 13px; color: #d4d4d8; text-shadow: 0 1px 4px rgba(0,0,0,0.8);">Regista a tua carga máxima e usa o timer para descansos.</p>
+      
+      <button class="btn-main" style="margin-bottom: 20px;" onclick="startTimer(90)">⏱ Ativar Descanso (90s)</button>
+
+      <div class="card-box">
+        <h3>Supino Reto com Barra <span class="badge-tag">4 x 10</span></h3>
+        <p>Foco na contração e controlo na descida.</p>
+        <div class="weight-tracker">
+          <input type="number" id="peso-supino" placeholder="Ex: 60 kg">
+          <button onclick="saveWeight('supino')">Guardar</button>
+        </div>
+      </div>
+
+      <div class="card-box">
+        <h3>Supino Inclinado Halteres <span class="badge-tag">4 x 12</span></h3>
+        <div class="weight-tracker">
+          <input type="number" id="peso-inclinado" placeholder="Ex: 24 kg">
+          <button onclick="saveWeight('inclinado')">Guardar</button>
+        </div>
+      </div>
+      
+      <div class="card-box">
+        <h3>Tríceps Pulley <span class="badge-tag">4 x 12</span></h3>
+        <div class="weight-tracker">
+          <input type="number" id="peso-triceps" placeholder="Ex: 20 kg">
+          <button onclick="saveWeight('triceps')">Guardar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- CALCULADORA -->
+    <div id="tab-calculadoras" class="section-view">
+      <div class="section-title">Calculadora de Calorias</div>
+      <div class="card-box">
+        <p style="margin-bottom: 15px;">Descobre exatamente quanto deves comer para o teu objetivo.</p>
+        <select id="calc-gender">
+          <option value="m">Masculino</option>
+          <option value="f">Feminino</option>
+        </select>
+        <input type="number" id="calc-age" placeholder="Idade (anos)">
+        <input type="number" id="calc-weight" placeholder="Peso (kg)">
+        <input type="number" id="calc-height" placeholder="Altura (cm)">
+        <select id="calc-goal">
+          <option value="lose">Perder Gordura (Défice)</option>
+          <option value="maintain">Manter Peso</option>
+          <option value="gain">Ganhar Massa (Superávit)</option>
+        </select>
+        <button class="btn-main" onclick="calculateMacros()">Calcular Macros</button>
+
+        <div id="calc-results" class="result-box">
+          <h4 id="res-calories">2500 kcal</h4>
+          <p style="text-align: center; font-size: 12px;">Objetivo Diário</p>
+          <div class="macros-grid">
+            <div class="macro-item">Proteína <span id="res-prot">150g</span></div>
+            <div class="macro-item">Carbs <span id="res-carb">250g</span></div>
+            <div class="macro-item">Gordura <span id="res-fat">70g</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ALIMENTAÇÃO AVANÇADA -->
+    <div id="tab-alimentacao" class="section-view">
+      <div class="section-title">Plano Nutricional Elite</div>
+      <p style="margin-bottom: 15px; font-size: 13px; color: #d4d4d8;">Nutrição otimizada para ganho de massa magra e recuperação rápida.</p>
+
+      <!-- Abas de Dias / Categorias -->
+      <div class="diet-tabs">
+        <div class="diet-tab active" onclick="switchDietTab('dias-treino')" id="dtab-treino">🏋️‍♂️ Dias de Treino</div>
+        <div class="diet-tab" onclick="switchDietTab('dias-descanso')" id="dtab-descanso">🛋️ Dias de Descanso</div>
+        <div class="diet-tab" onclick="switchDietTab('suplementacao')" id="dtab-supra">💊 Suplementação</div>
+      </div>
+
+      <!-- Conteúdo Dias de Treino -->
+      <div id="diet-content-treino" class="diet-pane">
+        <div class="meal-card">
+          <div class="meal-header">
+            <span class="meal-title">🍳 Refeição 1: Pequeno-Almoço</span>
+            <span class="meal-macros">~520 kcal | 38g P</span>
+          </div>
+          <div class="meal-desc">3 ovos inteiros mexidos + 2 fatias de pão integral tostado + 1 banana grande com canela.</div>
+        </div>
+
+        <div class="meal-card">
+          <div class="meal-header">
+            <span class="meal-title">🍛 Refeição 2: Almoço Almoço Pró</span>
+            <span class="meal-macros">~680 kcal | 50g P</span>
+          </div>
+          <div class="meal-desc">160g de Peito de Frango Grelhado ou Perú + 180g de Arroz Branco cozido + Brócolos e cenoura a vapor com fio de azeite.</div>
+        </div>
+
+        <div class="meal-card">
+          <div class="meal-header">
+            <span class="meal-title">⚡ Refeição 3: Pré-Treino (1h antes)</span>
+            <span class="meal-macros">~350 kcal | 15g P</span>
+          </div>
+          <div class="meal-desc">1 iogurte grego ligeiro ou natural + 50g de aveia em flocos + 1 colher de sopa de mel.</div>
+        </div>
+
+        <div class="meal-card">
+          <div class="meal-header">
+            <span class="meal-title">🥩 Refeição 4: Jantar / Pós-Treino</span>
+            <span class="meal-macros">~650 kcal | 48g P</span>
+          </div>
+          <div class="meal-desc">180g de Carne Magra (Vaca 5% mat. gorda) ou Peixe Branco + 200g de Batata Doce assada no forno + Salada verde rica.</div>
+        </div>
+      </div>
+
+      <!-- Conteúdo Dias de Descanso -->
+      <div id="diet-content-descanso" class="diet-pane" style="display: none;">
+        <div class="meal-card">
+          <div class="meal-header">
+            <span class="meal-title">🥑 Refeição 1: Pequeno-Almoço Leve</span>
+            <span class="meal-macros">~450 kcal | 35g P</span>
+          </div>
+          <div class="meal-desc">Omelete com 2 ovos inteiros e 2 claras + Meio abacate esmagado em torrada integral.</div>
+        </div>
+
+        <div class="meal-card">
+          <div class="meal-header">
+            <span class="meal-title">🥗 Refeição 2: Almoço Equilibrado</span>
+            <span class="meal-macros">~600 kcal | 45g P</span>
+          </div>
+          <div class="meal-desc">150g de Salmão ou Atum fresco grelhado + 120g de Quinoa ou Arroz Integral + Legumes assados.</div>
+        </div>
+
+        <div class="meal-card">
+          <div class="meal-header">
+            <span class="meal-title">🌙 Refeição 3: Jantar Proteico</span>
+            <span class="meal-macros">~550 kcal | 45g P</span>
+          </div>
+          <div class="meal-desc">160g de Frango desfiado ou peru + Puré de batata caseiro (porção moderada) + Espinafres salteados em azeite.</div>
+        </div>
+      </div>
+
+      <!-- Conteúdo Suplementação -->
+      <div id="diet-content-suplementacao" class="diet-pane" style="display: none;">
+        <div class="meal-card">
+          <div class="meal-header">
+            <span class="meal-title">💧 Creatina Monohidratada</span>
+            <span class="meal-macros">Diário</span>
+          </div>
+          <div class="meal-desc">5g tomadas todos os dias (mesmo em dias de descanso), preferencialmente a qualquer hora com água para saturação celular.</div>
+        </div>
+
+        <div class="meal-card">
+          <div class="meal-header">
+            <span class="meal-title">🥤 Whey Protein (Proteína)</span>
+            <span class="meal-macros">Pós-Treino</span>
+          </div>
+          <div class="meal-desc">1 a 2 scoops imediatamente após o treino para acelerar a recuperação muscular, ou misturado nas papas de aveia.</div>
+        </div>
+
+        <div class="meal-card">
+          <div class="meal-header">
+            <span class="meal-title">⚡ Pré-Treino (Opcional)</span>
+            <span class="meal-macros">30 min antes</span>
+          </div>
+          <div class="meal-desc">Cafeína (150-200mg) ou citrulina para aumento de foco e energia explosiva nas séries pesadas.</div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- BARRA DE NAVEGAÇÃO INFERIOR FIXA -->
+  <nav class="bottom-nav">
+    <div class="nav-item active" id="bnav-dashboard" onclick="switchTab('dashboard')">
+      <span class="icon">📊</span>
+      <span>Dashboard</span>
+    </div>
+    <div class="nav-item" id="bnav-exercicios" onclick="switchTab('exercicios')">
+      <span class="icon">💪</span>
+      <span>Treinos</span>
+    </div>
+    <div class="nav-item" id="bnav-calculadoras" onclick="switchTab('calculadoras')">
+      <span class="icon">⚡</span>
+      <span>Macros</span>
+    </div>
+    <div class="nav-item" id="bnav-alimentacao" onclick="switchTab('alimentacao')">
+      <span class="icon">🥗</span>
+      <span>Nutrição</span>
+    </div>
+  </nav>
+
+  <!-- CRONÓMETRO FLUTUANTE -->
+  <div id="rest-timer">
+    <span id="timer-display">01:30</span>
+    <button class="timer-btn" onclick="stopTimer()">✕</button>
+  </div>
+
+  <script>
+    function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
+    
+    function switchTab(tabId) {
+      // Ecrãs principais
+      document.querySelectorAll('.section-view').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.sidebar-links a').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.bottom-nav .nav-item').forEach(el => el.classList.remove('active'));
+      
+      document.getElementById('tab-' + tabId).classList.add('active');
+      const sideLink = document.getElementById('link-' + tabId);
+      if(sideLink) sideLink.classList.add('active');
+      
+      const bNav = document.getElementById('bnav-' + tabId);
+      if(bNav) bNav.classList.add('active');
+
+      document.getElementById('sidebar').classList.remove('active');
+      window.scrollTo(0, 0);
+    }
+
+    // Alternar sub-abas do Menu Alimentar
+    function switchDietTab(paneId) {
+      document.querySelectorAll('.diet-pane').forEach(el => el.style.display = 'none');
+      document.querySelectorAll('.diet-tab').forEach(el => el.classList.remove('active'));
+      
+      if(paneId === 'dias-treino') {
+        document.getElementById('diet-content-treino').style.display = 'block';
+        document.getElementById('dtab-treino').classList.add('active');
+      } else if(paneId === 'dias-descanso') {
+        document.getElementById('diet-content-descanso').style.display = 'block';
+        document.getElementById('dtab-descanso').classList.add('active');
+      } else if(paneId === 'suplementacao') {
+        document.getElementById('diet-content-suplementacao').style.display = 'block';
+        document.getElementById('dtab-supra').classList.add('active');
+      }
+    }
+
+    function setTheme(hex, rgb) {
+      document.documentElement.style.setProperty('--primary', hex);
+      document.documentElement.style.setProperty('--primary-rgb', rgb);
+      localStorage.setItem('pulsoThemeHex', hex);
+      localStorage.setItem('pulsoThemeRgb', rgb);
+    }
+    
+    if(localStorage.getItem('pulsoThemeHex')) {
+      setTheme(localStorage.getItem('pulsoThemeHex'), localStorage.getItem('pulsoThemeRgb'));
+    }
+
+    // Hidratação
+    const waterContainer = document.getElementById('water-container');
+    let waterCount = parseInt(localStorage.getItem('waterCount')) || 0;
+    
+    for(let i=1; i<=8; i++) {
+      const pill = document.createElement('div');
+      pill.className = `water-pill ${i <= waterCount ? 'filled' : ''}`;
+      pill.innerText = `Copo ${i}`;
+      pill.onclick = () => {
+        waterCount = (waterCount === i) ? i - 1 : i;
+        localStorage.setItem('waterCount', waterCount);
+        updateWaterUI();
+      };
+      waterContainer.appendChild(pill);
+    }
+
+    function updateWaterUI() {
+      document.querySelectorAll('.water-pill').forEach((p, idx) => {
+        p.classList.toggle('filled', idx < waterCount);
+      });
+      const statW = document.getElementById('stat-water-text');
+      if(statW) statW.innerText = `${waterCount}/8`;
+    }
+    updateWaterUI();
+
+    // Hábitos
+    ['diet', 'workout'].forEach(h => {
+      const isChecked = localStorage.getItem('habit_' + h) === 'true';
+      if(isChecked) {
+        const card = document.getElementById('habit-card-' + h);
+        if(card) card.classList.add('checked');
+      }
+    });
+    
+    function toggleHabit(habit) {
+      const card = document.getElementById('habit-card-' + habit);
+      card.classList.toggle('checked');
+      const isChecked = card.classList.contains('checked');
+      localStorage.setItem('habit_' + habit, isChecked);
+      updateHabitsUI();
+    }
+
+    function updateHabitsUI() {
+      let count = 0;
+      if(localStorage.getItem('habit_diet') === 'true') count++;
+      if(localStorage.getItem('habit_workout') === 'true') count++;
+      const statH = document.getElementById('stat-habits-text');
+      if(statH) statH.innerText = `${count}/2`;
+    }
+    updateHabitsUI();
+
+    // Pesos salvos
+    ['supino', 'inclinado', 'triceps'].forEach(ex => {
+      const saved = localStorage.getItem('peso_' + ex);
+      if(saved) {
+        const inp = document.getElementById('peso-' + ex);
+        if(inp) inp.value = saved;
+      }
+    });
+
+    function saveWeight(exercise) {
+      const input = document.getElementById('peso-' + exercise);
+      localStorage.setItem('peso_' + exercise, input.value);
+      input.style.borderColor = 'var(--primary)';
+      setTimeout(() => input.style.borderColor = 'rgba(255,255,255,0.12)', 1000);
+    }
+
+    // Cronómetro
+    let timerInterval;
+    function startTimer(seconds) {
+      clearInterval(timerInterval);
+      const timerWidget = document.getElementById('rest-timer');
+      const display = document.getElementById('timer-display');
+      timerWidget.classList.add('active');
+      
+      let timeLeft = seconds;
+      timerInterval = setInterval(() => {
+        let min = Math.floor(timeLeft / 60);
+        let sec = timeLeft % 60;
+        display.innerText = `${min < 10 ? '0':''}${min}:${sec < 10 ? '0':''}${sec}`;
+        if(timeLeft <= 0) {
+          clearInterval(timerInterval);
+          display.innerText = "TREINAR!";
+          if(navigator.vibrate) navigator.vibrate([200, 100, 200]);
+          setTimeout(() => stopTimer(), 3000);
+        }
+        timeLeft--;
+      }, 1000);
+    }
+    
+    function stopTimer() {
+      clearInterval(timerInterval);
+      document.getElementById('rest-timer').classList.remove('active');
+    }
+
+    // Calculadora
+    function calculateMacros() {
+      const weight = parseFloat(document.getElementById('calc-weight').value);
+      const height = parseFloat(document.getElementById('calc-height').value);
+      const age = parseFloat(document.getElementById('calc-age').value);
+      const gender = document.getElementById('calc-gender').value;
+      const goal = document.getElementById('calc-goal').value;
+
+      if(!weight || !height || !age) { alert("Preenche todos os campos!"); return; }
+
+      let bmr = (10 * weight) + (6.25 * height) - (5 * age);
+      bmr += (gender === 'm') ? 5 : -161;
+      let tdee = bmr * 1.55; 
+
+      if(goal === 'lose') tdee -= 500;
+      if(goal === 'gain') tdee += 300;
+
+      const protein = weight * 2.2;
+      const fat = weight * 1.0;
+      const remainingCals = tdee - ((protein * 4) + (fat * 9));
+      const carbs = remainingCals / 4;
+
+      document.getElementById('res-calories').innerText = Math.round(tdee) + " kcal";
+      document.getElementById('res-prot').innerText = Math.round(protein) + "g";
+      document.getElementById('res-fat').innerText = Math.round(fat) + "g";
+      document.getElementById('res-carb').innerText = Math.round(carbs) + "g";
+      
+      document.getElementById('calc-results').style.display = 'block';
+    }
+  </script>
+</body>
+</html>

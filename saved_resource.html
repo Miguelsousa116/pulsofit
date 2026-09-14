@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pulsofit Core Engine</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #000000;
+      color: #ffffff;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Content / App Container -->
+  <div id="root"></div>
+
+  <!-- JavaScript Principal da App -->
+  <script>
+    (()=> {
+      var qv=Object.create;
+      var Hi=Object.defineProperty;
+      var $v=Object.getOwnPropertyDescriptor;
+      var Lv=Object.getOwnPropertyNames;
+      var Fs=x=>({
+        cache: new Map(),
+        moveToRecent(e,t){ this.cache.delete(e); this.cache.set(e,t); },
+        clear(){ this.cache.clear(); }
+      });
+      
+      console.log("PulsoFit Engine Loaded Successfully.");
+    })();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,13 @@
+{
+  "background_color": "#ffffff",
+  "dir": "ltr",
+  "display": "standalone",
+  "name": "pulsofit",
+  "orientation": "any",
+  "scope": "/",
+  "short_name": "pulsofit",
+  "start_url": "/",
+  "theme_color": "#ffffff",
+  "id": "https://azzy-babka-97c185.netlify.app",
+  "description": "app de treino e nutricacao pulsofit"
+}

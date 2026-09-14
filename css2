@@ -1,0 +1,27 @@
+/* 1. Ocultar totalmente o badge do Netlify */
+[class*="netlify"], #netlify-badge, .netlify-badge {
+  display: none !important;
+}
+
+/* 2. Corrigir modais/menus cortados no fundo do ecrã */
+div[class*="modal"], div[class*="drawer"], div[class*="sheet"], .modal-content {
+  max-height: 85vh !important;
+  padding-bottom: 90px !important; /* Espaço para não ficar atrás dos botões do Android */
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* 3. Garantir scroll suave na lista de exercícios */
+.modal-body, [class*="exercise-list"] {
+  max-height: 50vh;
+  overflow-y: auto;
+  padding-right: 5px;
+}
+
+/* 4. Destacar botão de ação no fundo */
+button[class*="concluir"], .btn-primary {
+  margin-top: 15px;
+  position: sticky;
+  bottom: 10px;
+  z-index: 99;
+}
