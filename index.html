@@ -3,119 +3,216 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PULSOFIT - Elite Performance</title>
+    <title>PULSOFIT ELITE</title>
     <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#00e676">
     <style>
         :root {
             --primary: #00e676;
-            --primary-rgb: 0, 230, 118;
-            --bg-card: rgba(18, 18, 24, 0.85);
-            --bg-dark: #050505;
-            --text-main: #f4f4f4;
-            --text-muted: #a0a0a5;
+            --primary-glow: rgba(0, 230, 118, 0.25);
+            --bg-dark: #070b09;
+            --bg-card: rgba(16, 24, 20, 0.85);
+            --border-color: rgba(0, 230, 118, 0.2);
+            --text-main: #ffffff;
+            --text-muted: #9ca3af;
         }
 
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
 
         body {
             background-color: var(--bg-dark);
             background-image: 
-                linear-gradient(to bottom, rgba(5, 5, 5, 0.85), rgba(5, 5, 5, 0.95)),
-                radial-gradient(circle at 50% 20%, rgba(0, 230, 118, 0.08), transparent 40%),
-                url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1920&auto=format&fit=crop');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
+                radial-gradient(circle at 50% 10%, rgba(0, 230, 118, 0.12), transparent 50%),
+                radial-gradient(circle at 10% 90%, rgba(0, 230, 118, 0.05), transparent 40%);
             color: var(--text-main);
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            margin: 0;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            align-items: center;
+            padding: 15px;
             padding-bottom: 90px;
         }
 
         header {
-            padding: 20px;
-            text-align: center;
-            background: rgba(10, 10, 15, 0.85);
-            border-bottom: 1px solid rgba(0, 230, 118, 0.2);
-            backdrop-filter: blur(10px);
+            width: 100%;
+            max-width: 480px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            margin-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         }
 
-        header h1 {
-            margin: 0;
-            font-size: 1.4rem;
-            letter-spacing: 2px;
+        .logo-area h1 {
+            font-size: 1.25rem;
             color: var(--primary);
+            font-weight: 900;
+            letter-spacing: 2px;
             text-transform: uppercase;
         }
 
-        .container {
-            flex: 1;
-            width: 100%;
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        .section {
-            display: none;
-        }
-
-        .section.active {
+        .logo-area span {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            letter-spacing: 1px;
             display: block;
         }
 
+        .badge-elite {
+            background: var(--primary-glow);
+            color: var(--primary);
+            font-size: 0.7rem;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-weight: bold;
+            border: 1px solid var(--border-color);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 480px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .section { display: none; }
+        .section.active { display: flex; flex-direction: column; gap: 15px; }
+
         .card {
             background: var(--bg-card);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 20px;
-            backdrop-filter: blur(12px);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            padding: 18px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
         }
 
         .card h2 {
-            margin-top: 0;
-            font-size: 1.1rem;
+            font-size: 1rem;
             color: var(--primary);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            padding-bottom: 8px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .card p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 14px;
+        }
+
+        /* Seletor de Dias Exclusivo */
+        .days-scroll {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 6px;
+            margin-bottom: 15px;
+            scrollbar-width: none;
+        }
+        .days-scroll::-webkit-scrollbar { display: none; }
+
+        .day-tab {
+            background: rgba(25, 35, 30, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: var(--text-muted);
+            padding: 8px 14px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+        }
+
+        .day-tab.active {
+            background: var(--primary);
+            color: #000;
+            border-color: var(--primary);
+            box-shadow: 0 0 15px var(--primary-glow);
+        }
+
+        /* Lista de Exercícios Customizada */
+        .exercise-card {
+            background: rgba(12, 18, 15, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-left: 4px solid var(--primary);
+            border-radius: 12px;
+            padding: 12px 15px;
+            margin-bottom: 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .btn {
+        .ex-info h4 { font-size: 0.9rem; color: #fff; margin-bottom: 3px; }
+        .ex-info span { font-size: 0.75rem; color: var(--text-muted); }
+
+        .btn-check {
+            background: transparent;
+            border: 1.5px solid var(--primary);
+            color: var(--primary);
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-check.done {
+            background: var(--primary);
+            color: #000;
+        }
+
+        /* Estatísticas e Grelhas */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .stat-box {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            padding: 14px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .stat-box span { display: block; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 4px; }
+        .stat-box strong { font-size: 1.3rem; color: var(--primary); font-weight: 800; }
+
+        .btn-action {
             background: var(--primary);
             color: #000;
             border: none;
-            padding: 12px 20px;
-            border-radius: 10px;
-            font-weight: bold;
             width: 100%;
-            cursor: pointer;
+            padding: 12px;
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: 0.85rem;
             text-transform: uppercase;
             letter-spacing: 1px;
+            cursor: pointer;
             margin-top: 10px;
-            transition: opacity 0.2s;
+            box-shadow: 0 4px 20px var(--primary-glow);
         }
 
-        .btn:active {
-            opacity: 0.8;
-        }
-
-        /* Barra de Navegação Estilo App Nativa */
+        /* Navegação Inferior Exclusiva */
         nav {
             position: fixed;
             bottom: 0;
             left: 0;
             width: 100%;
-            height: 75px;
-            background: rgba(10, 10, 15, 0.95);
-            border-top: 1px solid rgba(0, 230, 118, 0.2);
+            height: 70px;
+            background: rgba(10, 15, 12, 0.95);
+            border-top: 1px solid rgba(0, 230, 118, 0.15);
             display: flex;
             justify-content: space-around;
             align-items: center;
@@ -124,10 +221,11 @@
         }
 
         .nav-item {
-            color: var(--text-muted);
             background: none;
             border: none;
-            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-size: 0.7rem;
+            font-weight: 600;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -136,120 +234,205 @@
             transition: color 0.3s;
         }
 
-        .nav-item.active, .nav-item:hover {
-            color: var(--primary);
-        }
-
-        .nav-item svg {
-            width: 24px;
-            height: 24px;
-            fill: currentColor;
-        }
-
-        .stat-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-top: 15px;
-        }
-
-        .stat-box {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 15px;
-            border-radius: 10px;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.04);
-        }
-
-        .stat-box span {
-            display: block;
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--primary);
-            margin-top: 5px;
-        }
+        .nav-item.active { color: var(--primary); }
+        .nav-item svg { width: 22px; height: 22px; fill: currentColor; }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>Pulsofit Elite</h1>
+        <div class="logo-area">
+            <h1>Pulsofit Elite</h1>
+            <span>Sistema Único de Performance</span>
+        </div>
+        <div class="badge-elite">PRO v3.0</div>
     </header>
 
     <div class="container">
-        <!-- Secção Início / Dashboard -->
-        <div id="home" class="section active">
+        <!-- ABAS: INÍCIO -->
+        <div id="tab-home" class="section active">
             <div class="card">
-                <h2>Estado Diário <span>🔥</span></h2>
-                <p>Bem-vindo de volta ao teu quartel-general de performance.</p>
-                <div class="stat-grid">
+                <h2><span>Painel de Alta Performance</span> 🔥</h2>
+                <p>Controlo central de rendimento diário e metas ativas.</p>
+                <div class="stats-grid">
                     <div class="stat-box">
-                        Água Bebida
-                        <span>1.5 L</span>
+                        <span>Água Hidratação</span>
+                        <strong>2.0 L</strong>
                     </div>
                     <div class="stat-box">
-                        Treinos Feitos
-                        <span>4 / 5</span>
+                        <span>Desafio Semanal</span>
+                        <strong>Fase 1</strong>
                     </div>
                 </div>
-                <button class="btn" onclick="alert('Registo guardado com sucesso!')">Atualizar Dados</button>
+                <button class="btn-action" onclick="alert('Dados sincronizados com sucesso!')">Atualizar Dados</button>
+            </div>
+
+            <div class="card">
+                <h2>Áreas de Foco Exclusivas</h2>
+                <p>Selecione o seu foco corporativo atual:</p>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                    <button class="day-tab active" style="text-align:center;" onclick="setActiveFocus(this)">⚡ Hipertrofia Pura</button>
+                    <button class="day-tab" style="text-align:center;" onclick="setActiveFunction(this)">🔥 Definição & HIIT</button>
+                </div>
             </div>
         </div>
 
-        <!-- Secção Treino -->
-        <div id="workout" class="section">
+        <!-- ABAS: TREINOS (DIAS DA SEMANA) -->
+        <div id="tab-workout" class="section">
             <div class="card">
-                <h2>Plano de Treino <span>💪</span></h2>
-                <p>Foco de hoje: <strong>Hipertrofia & Força</strong></p>
-                <ul style="padding-left: 20px; color: var(--text-muted);">
-                    <li>Supino Reto - 4 x 10</li>
-                    <li>Pulos na Barra - 4 x Falha</li>
-                    <li>Agachamento Livre - 4 x 12</li>
-                </ul>
-                <button class="btn" onclick="alert('Treino concluído com sucesso!')">Registar Treino</button>
+                <h2 id="workout-title">Plano: Segunda-feira</h2>
+                <p>Selecione o dia para carregar o protocolo de treino:</p>
+                
+                <div class="days-scroll">
+                    <button class="day-tab active" onclick="loadWorkout('Seg', 'Segunda-feira', this)">Seg</button>
+                    <button class="day-tab" onclick="loadWorkout('Ter', 'Terça-feira', this)">Ter</button>
+                    <button class="day-tab" onclick="loadWorkout('Qua', 'Quarta-feira', this)">Qua</button>
+                    <button class="day-tab" onclick="loadWorkout('Qui', 'Quinta-feira', this)">Qui</button>
+                    <button class="day-tab" onclick="loadWorkout('Sex', 'Sexta-feira', this)">Sex</button>
+                    <button class="day-tab" onclick="loadWorkout('Sáb', 'Sábado', this)">Sáb</button>
+                    <button class="day-tab" onclick="loadWorkout('Dom', 'Domingo', this)">Dom</button>
+                </div>
+
+                <div id="exercise-container">
+                    <div class="exercise-card">
+                        <div class="ex-info">
+                            <h4>Supino Reto com Barra</h4>
+                            <span>4 Séries x 10 Repetições</span>
+                        </div>
+                        <button class="btn-check" onclick="toggleDone(this)">Feito</button>
+                    </div>
+                    <div class="exercise-card">
+                        <div class="ex-info">
+                            <h4>Supino Inclinado com Halteres</h4>
+                            <span>4 Séries x 12 Repetições</span>
+                        </div>
+                        <button class="btn-check" onclick="toggleDone(this)">Feito</button>
+                    </div>
+                    <div class="exercise-card">
+                        <div class="ex-info">
+                            <h4>Tríceps Corda Polia</h4>
+                            <span>4 Séries x 15 Repetições</span>
+                        </div>
+                        <button class="btn-check" onclick="toggleDone(this)">Feito</button>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- Secção Nutrição -->
-        <div id="nutrition" class="section">
+        <!-- ABAS: NUTRIÇÃO -->
+        <div id="tab-nutrition" class="section">
             <div class="card">
-                <h2>Plano Nutricional <span>🥗</span></h2>
-                <p>Meta diária: <strong>2800 kcal</strong></p>
-                <div class="stat-box" style="margin-bottom: 15px;">
-                    Proteína Consumida
-                    <span>140g / 180g</span>
+                <h2><span>Plano Nutricional Elite</span> 🥗</h2>
+                <p>Controlo inteligente de macronutrientes e calorias.</p>
+                <div class="stats-grid" style="margin-bottom: 15px;">
+                    <div class="stat-box">
+                        <span>Meta Diária</span>
+                        <strong>2800 kcal</strong>
+                    </div>
+                    <div class="stat-box">
+                        <span>Proteína Alvo</span>
+                        <strong>180g</strong>
+                    </div>
                 </div>
-                <button class="btn" onclick="alert('Refeição registada!')">Adicionar Refeição</button>
+                <button class="btn-action" onclick="alert('Registo alimentar guardado!')">Registar Refeição</button>
             </div>
         </div>
     </div>
 
-    <!-- Barra de Navegação -->
+    <!-- BARRA DE NAVEGAÇÃO INFERIOR -->
     <nav>
-        <button class="nav-item active" onclick="switchTab('home', this)">
+        <button class="nav-item active" onclick="switchTab('tab-home', this)">
             <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
             Início
         </button>
-        <button class="nav-item" onclick="switchTab('workout', this)">
+        <button class="nav-item" onclick="switchTab('tab-workout', this)">
             <svg viewBox="0 0 24 24"><path d="M20.57 14.86L22 13.43 20.57 12 17 15.57 13.43 12 12 13.43 14.34 15.77 12 18.11 13.43 19.54 17 15.97l3.57 3.57 1.43-1.43-2.34-2.34z"/></svg>
             Treino
         </button>
-        <button class="nav-item" onclick="switchTab('nutrition', this)">
+        <button class="nav-item" onclick="switchTab('tab-nutrition', this)">
             <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.03-.42 1.98-1.07 2.75z"/></svg>
             Nutrição
         </button>
     </nav>
 
     <script>
+        const workoutData = {
+            'Seg': [
+                { name: 'Supino Reto com Barra', desc: '4 Séries x 10 Repetições' },
+                { name: 'Supino Inclinado com Halteres', desc: '4 Séries x 12 Repetições' },
+                { name: 'Tríceps Corda na Polia', desc: '4 Séries x 15 Repetições' }
+            ],
+            'Ter': [
+                { name: 'Puxada na Barra Fixa', desc: '4 Séries x Falha' },
+                { name: 'Remada Curvada com Barra', desc: '4 Séries x 10 Repetições' },
+                { name: 'Rosca Direta com Halteres', desc: '4 Séries x 12 Repetições' }
+            ],
+            'Qua': [
+                { name: 'Agachamento Livre', desc: '4 Séries x 12 Repetições' },
+                { name: 'Leg Press 45º', desc: '4 Séries x 10 Repetições' },
+                { name: 'Cadeira Extensora', desc: '3 Séries x 15 Repetições' }
+            ],
+            'Qui': [
+                { name: 'Desenvolvimento de Ombros', desc: '4 Séries x 10 Repetições' },
+                { name: 'Elevações Laterais', desc: '4 Séries x 15 Repetições' },
+                { name: 'Prancha Abdominal', desc: '3 Séries x 1 Minuto' }
+            ],
+            'Sex': [
+                { name: 'Circuito HIIT Fullbody', desc: '20 Minutos Intensidade Máxima' },
+                { name: 'Burpees Explosivos', desc: '4 Séries x 15 Repetições' },
+                { name: 'Flexões no Solo', desc: '4 Séries x 20 Repetições' }
+            ],
+            'Sáb': [
+                { name: 'Caminhada Inclinada', desc: '45 Minutos Cardio Moderado' },
+                { name: 'Sessão de Mobilidade', desc: '15 Minutos Alongamentos' }
+            ],
+            'Dom': [
+                { name: 'Recuperação Muscular', desc: 'Descanso Total & Hidratação' }
+            ]
+        };
+
         function switchTab(tabId, element) {
-            // Esconder todas as secções
             document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
-            // Mostrar a secção selecionada
             document.getElementById(tabId).classList.add('active');
-            
-            // Atualizar estados dos botões da barra inferior
+
             document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
             element.classList.add('active');
+        }
+
+        function loadWorkout(dayKey, dayName, btn) {
+            document.querySelectorAll('.days-scroll .day-tab').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            document.getElementById('workout-title').innerText = `Plano: ${dayName}`;
+            
+            const container = document.getElementById('exercise-container');
+            container.innerHTML = '';
+
+            workoutData[dayKey].forEach(ex => {
+                container.innerHTML += `
+                    <div class="exercise-card">
+                        <div class="ex-info">
+                            <h4>${ex.name}</h4>
+                            <span>${ex.desc}</span>
+                        </div>
+                        <button class="btn-check" onclick="toggleDone(this)">Feito</button>
+                    </div>
+                `;
+            });
+        }
+
+        function toggleDone(button) {
+            button.classList.toggle('done');
+            button.innerText = button.classList.contains('done') ? 'OK!' : 'Feito';
+        }
+
+        function setActiveFocus(btn) {
+            document.querySelectorAll('.card button').forEach(b => {
+                if(b.textContent.includes('Hipertrofia') || b.textContent.includes('Definição')) {
+                    b.classList.remove('active');
+                }
+            });
+            btn.classList.add('active');
         }
     </script>
 </body>
