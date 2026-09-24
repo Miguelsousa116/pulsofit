@@ -1,411 +1,52 @@
-<!DOCTYPE html>
-<html lang="pt">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pulsofit - Performance & Saúde</title>
-    <meta name="theme-color" content="#09090b">
-    <style>
-        :root {
-            --bg-main: #09090b;
-            --surface: #18181b;
-            --surface-card: #27272a;
-            --primary: #8b5cf6;
-            --primary-light: #a78bfa;
-            --primary-glow: rgba(139, 92, 246, 0.25);
-            --accent: #10b981;
-            --text-main: #f4f4f5;
-            --text-muted: #a1a1aa;
-            --border-color: #3f3f46;
-        }
+// Estado inicial limpo ou carregado do localStorage do utilizador
+const defaultState = {
+    user: {
+        name: "",
+        currentWeight: "",
+        targetWeight: "",
+        hydrationGoal: 3.0,
+        currentHydration: 0,
+        streak: 0
+    },
+    nutrition: {
+        proteinConsumed: 0,
+        proteinGoal: 0,
+        carbsConsumed: 0,
+        carbsGoal: 0,
+        fatsConsumed: 0,
+        fatsGoal: 0
+    },
+    // Plano de 4 Dias Surpresa (Estrutura Dinâmica)
+    workoutPlan: {
+        "Dia 1: Superior A (Peito e Costas)": [
+            { name: "Supino Reto com Halteres", sets: 4, reps: "8-10", weight: "0kg", done: false },
+            { name: "Puxada Alta na Polia", sets: 4, reps: "10-12", weight: "0kg", done: false },
+            { name: "Desenvolvimento Militar", sets: 3, reps: "10-12", weight: "0kg", done: false },
+            { name: "Remo Curvado", sets: 3, reps: "8-10", weight: "0kg", done: false }
+        ],
+        "Dia 2: Inferior A (Foco Quadríceps)": [
+            { name: "Agachamento Livre", sets: 4, reps: "6-8", weight: "0kg", done: false },
+            { name: "Prensa Inclinada", sets: 3, reps: "10-12", weight: "0kg", done: false },
+            { name: "Extensão de Pernas", sets: 3, reps: "12-15", weight: "0kg", done: false },
+            { name: "Elevação de Panturrilhas", sets: 4, reps: "15-20", weight: "0kg", done: false }
+        ],
+        "Dia 3: Superior B (Ombros e Braços)": [
+            { name: "Supino Inclinado", sets: 4, reps: "8-10", weight: "0kg", done: false },
+            { name: "Elevação Lateral", sets: 4, reps: "12-15", weight: "0kg", done: false },
+            { name: "Rosca Direta com Barra", sets: 3, reps: "10-12", weight: "0kg", done: false },
+            { name: "Tríceps Testa", sets: 3, reps: "10-12", weight: "0kg", done: false }
+        ],
+        "Dia 4: Inferior B (Foco Posterior e Glúteos)": [
+            { name: "Peso Muerto / Stiff", sets: 4, reps: "8-10", weight: "0kg", done: false },
+            { name: "Flexão de Pernas (Mesa)", sets: 3, reps: "12-15", weight: "0kg", done: false },
+            { name: "Elevação Pélvica", sets: 4, reps: "10-12", weight: "0kg", done: false },
+            { name: "Abdominal na Polia", sets: 3, reps: "15-20", weight: "0kg", done: false }
+        ]
+    }
+};
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
+let appData = JSON.parse(localStorage.getItem('pulsofit_user_data')) || defaultState;
 
-        body {
-            background-color: var(--bg-main);
-            color: var(--text-main);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding-bottom: 95px;
-        }
-
-        /* HEADER */
-        header {
-            width: 100%;
-            max-width: 480px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 18px 20px;
-            background: rgba(24, 24, 27, 0.85);
-            backdrop-filter: blur(12px);
-            position: sticky;
-            top: 0;
-            z-index: 900;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .brand-box { display: flex; align-items: center; gap: 12px; }
-        .brand-logo {
-            width: 40px; height: 40px;
-            border-radius: 12px;
-            background: linear-gradient(135deg, #8b5cf6, #6d28d9);
-            display: flex; align-items: center; justify-content: center;
-            color: #fff; font-weight: 900; font-size: 1.1rem;
-            box-shadow: 0 0 20px var(--primary-glow);
-        }
-        .brand-info h1 { font-size: 0.95rem; font-weight: 800; letter-spacing: 0.5px; }
-        .brand-info span { font-size: 0.7rem; color: var(--accent); font-weight: 600; display: flex; align-items: center; gap: 4px; }
-        .brand-info span::before { content: ''; display: inline-block; width: 6px; height: 6px; background: var(--accent); border-radius: 50%; }
-
-        .header-actions { display: flex; gap: 10px; }
-        .icon-btn {
-            background: var(--surface-card); border: 1px solid var(--border-color);
-            width: 38px; height: 38px; border-radius: 10px;
-            display: flex; align-items: center; justify-content: center;
-            color: var(--text-main); cursor: pointer; transition: 0.2s;
-        }
-        .icon-btn svg { width: 18px; height: 18px; fill: currentColor; }
-        .icon-btn:active { transform: scale(0.92); }
-
-        /* CONTAINER */
-        .container {
-            width: 100%;
-            max-width: 480px;
-            padding: 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .section { display: none; }
-        .section.active { display: flex; flex-direction: column; gap: 16px; animation: fadeIn 0.3s ease; }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(6px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* CARDS */
-        .card {
-            background: var(--surface);
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
-            padding: 20px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
-        }
-
-        /* HERO CARD DO UTILIZADOR */
-        .hero-card {
-            background: linear-gradient(145deg, #18181b, #201a30);
-            border: 1px solid rgba(139, 92, 246, 0.3);
-            position: relative;
-            overflow: hidden;
-        }
-        .hero-card::after {
-            content: ''; position: absolute; right: -30px; bottom: -30px;
-            width: 120px; height: 120px; background: var(--primary-glow);
-            border-radius: 50%; filter: blur(30px); pointer-events: none;
-        }
-        .hero-greeting { font-size: 1.35rem; font-weight: 900; margin-bottom: 6px; }
-        .hero-subtitle { font-size: 0.8rem; color: var(--text-muted); line-height: 1.4; }
-
-        /* GRID DE ESTATÍSTICAS */
-        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-        .stat-box {
-            background: var(--surface-card);
-            border: 1px solid var(--border-color);
-            border-radius: 14px;
-            padding: 12px;
-            text-align: center;
-        }
-        .stat-box span { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; display: block; margin-bottom: 4px; }
-        .stat-box strong { font-size: 1.05rem; font-weight: 900; color: var(--primary-light); }
-
-        /* WIDGET DE OBJETIVO / ÁGUA */
-        .progress-widget {
-            display: flex; align-items: center; justify-content: space-between;
-            background: var(--surface-card); border-radius: 16px; padding: 14px 18px;
-            border: 1px solid var(--border-color);
-        }
-        .progress-info h4 { font-size: 0.85rem; font-weight: 800; margin-bottom: 2px; }
-        .progress-info p { font-size: 0.72rem; color: var(--text-muted); }
-        .progress-action {
-            background: var(--primary); color: #fff; border: none;
-            padding: 8px 14px; border-radius: 10px; font-weight: 800; font-size: 0.75rem;
-            cursor: pointer; box-shadow: 0 4px 12px var(--primary-glow);
-        }
-
-        /* LISTA DE TREINOS / EXERCÍCIOS */
-        .workout-banner {
-            background: linear-gradient(135deg, #3b82f615, #8b5cf615);
-            border: 1px solid rgba(59, 130, 246, 0.3);
-            border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 12px;
-        }
-        .exercise-item {
-            background: var(--surface-card);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 12px 14px;
-            display: flex; justify-content: space-between; align-items: center;
-            transition: 0.2s;
-        }
-        .exercise-item.completed { border-color: var(--accent); background: rgba(16, 185, 129, 0.05); }
-        .exercise-details h5 { font-size: 0.85rem; font-weight: 800; margin-bottom: 2px; }
-        .exercise-details span { font-size: 0.7rem; color: var(--text-muted); }
-        
-        .check-btn {
-            background: transparent; border: 2px solid var(--border-color);
-            width: 26px; height: 26px; border-radius: 50%; cursor: pointer;
-            display: flex; align-items: center; justify-content: center; color: transparent;
-            transition: 0.2s;
-        }
-        .exercise-item.completed .check-btn { background: var(--accent); border-color: var(--accent); color: #fff; }
-
-        /* BOTÕES GERAIS */
-        .btn-main {
-            background: var(--primary); color: #fff; border: none;
-            width: 100%; padding: 14px; border-radius: 14px;
-            font-weight: 800; font-size: 0.85rem; text-transform: uppercase;
-            letter-spacing: 0.5px; cursor: pointer; box-shadow: 0 6px 20px var(--primary-glow);
-            transition: 0.2s;
-        }
-        .btn-main:active { transform: scale(0.98); }
-
-        /* NAVEGAÇÃO INFERIOR */
-        nav {
-            position: fixed; bottom: 0; left: 0; width: 100%; height: 70px;
-            background: rgba(24, 24, 27, 0.9); backdrop-filter: blur(15px);
-            border-top: 1px solid var(--border-color);
-            display: flex; justify-content: space-around; align-items: center;
-            z-index: 1000;
-        }
-        .nav-tab {
-            background: none; border: none; color: var(--text-muted);
-            font-size: 0.62rem; font-weight: 700; display: flex; flex-direction: column;
-            align-items: center; gap: 4px; cursor: pointer; text-transform: uppercase; flex: 1;
-            transition: 0.2s;
-        }
-        .nav-tab.active { color: var(--primary-light); }
-        .nav-tab svg { width: 22px; height: 22px; fill: currentColor; }
-
-        /* TOAST NOTIFICATION */
-        #toast {
-            position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-100px);
-            background: var(--primary); color: #fff; padding: 12px 24px; border-radius: 30px;
-            font-weight: 800; font-size: 0.8rem; box-shadow: 0 10px 25px var(--primary-glow);
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 2000; pointer-events: none;
-        }
-        #toast.show { transform: translateX(-50%) translateY(0); }
-    </style>
-</head>
-<body>
-
-    <div id="toast">Ação concluída com sucesso!</div>
-
-    <!-- HEADER -->
-    <header>
-        <div class="brand-box">
-            <div class="brand-logo">P</div>
-            <div class="brand-info">
-                <h1>Pulsofit</h1>
-                <span>Ativo agora</span>
-            </div>
-        </div>
-        <div class="header-actions">
-            <button class="icon-btn" onclick="showToast('Modo de Alta Performance Ativo')">
-                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-            </button>
-        </div>
-    </header>
-
-    <!-- CONTAINER DE ABAS -->
-    <div class="container">
-
-        <!-- ABA 1: INÍCIO (DASHBOARD) -->
-        <div id="tab-home" class="section active">
-            <div class="card hero-card">
-                <div class="hero-greeting">Pronto para dominar o dia, Paulo? 🔥</div>
-                <div class="hero-subtitle">O teu foco de hoje está na hipertrofia e consistência nutricional. Faltam 2 treinos para atingir a meta semanal.</div>
-            </div>
-
-            <div class="stats-grid">
-                <div class="stat-box">
-                    <span>Peso Atual</span>
-                    <strong>68.4 kg</strong>
-                </div>
-                <div class="stat-box">
-                    <span>Água Diária</span>
-                    <strong>2.4 L</strong>
-                </div>
-                <div class="stat-box">
-                    <span>Sequência</span>
-                    <strong>5 Dias</strong>
-                </div>
-            </div>
-
-            <div class="progress-widget">
-                <div class="progress-info">
-                    <h4>Hidratação</h4>
-                    <p>Faltam 600ml para a meta</p>
-                </div>
-                <button class="progress-action" onclick="showToast('+300ml registados com sucesso!')">+ Beber</button>
-            </div>
-
-            <div class="workout-banner">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <h3 style="font-size: 0.9rem; font-weight: 800; color: var(--primary-light);">Treino A: Membros Inferiores</h3>
-                    <span style="font-size: 0.68rem; background: rgba(139,92,246,0.2); color: var(--primary-light); padding: 3px 8px; border-radius: 6px; font-weight: 700;">Hoje</span>
-                </div>
-                <p style="font-size: 0.75rem; color: var(--text-muted);">4 exercícios planeados para hoje com foco em máxima intensidade.</p>
-                <button class="btn-main" onclick="switchTab('workouts', document.querySelector('.nav-tab:nth-child(2)'))">Iniciar Sessão de Treino</button>
-            </div>
-        </div>
-
-        <!-- ABA 2: TREINOS -->
-        <div id="tab-workouts" class="section">
-            <div class="card">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-                    <h2 style="font-size: 1rem; font-weight: 800;">Plano de Treino Ativo</h2>
-                    <span style="font-size: 0.7rem; color: var(--accent); font-weight: 700;">Semana 3</span>
-                </div>
-                <div style="display: flex; flex-direction: column; gap: 10px;">
-                    <div class="exercise-item" onclick="toggleExercise(this)">
-                        <div class="exercise-details">
-                            <h5>1. Agachamento Livre</h5>
-                            <span>4 Séries • 8-10 Reps • 90kg</span>
-                        </div>
-                        <div class="check-btn">✓</div>
-                    </div>
-                    <div class="exercise-item" onclick="toggleExercise(this)">
-                        <div class="exercise-details">
-                            <h5>2. Prensa Inclinada</h5>
-                            <span>3 Séries • 12 Reps • 160kg</span>
-                        </div>
-                        <div class="check-btn">✓</div>
-                    </div>
-                    <div class="exercise-item" onclick="toggleExercise(this)">
-                        <div class="exercise-details">
-                            <h5>3. Extensão de Pernas</h5>
-                            <span>3 Séries • 15 Reps • 65kg</span>
-                        </div>
-                        <div class="check-btn">✓</div>
-                    </div>
-                </div>
-            </div>
-            <button class="btn-main" onclick="showToast('Novo exercício adicionado ao plano!')">+ Adicionar Exercício</button>
-        </div>
-
-        <!-- ABA 3: NUTRIÇÃO -->
-        <div id="tab-nutrition" class="section">
-            <div class="card">
-                <h2 style="font-size: 1rem; font-weight: 800; margin-bottom: 14px;">Controlo de Macronutrientes</h2>
-                <div style="display: flex; flex-direction: column; gap: 12px;">
-                    <div class="exercise-item" style="background: var(--surface-card);">
-                        <div class="exercise-details">
-                            <h5>Proteína</h5>
-                            <span>130g consumidos / Meta: 160g</span>
-                        </div>
-                        <strong style="color: var(--accent); font-size: 0.85rem;">81%</strong>
-                    </div>
-                    <div class="exercise-item" style="background: var(--surface-card);">
-                        <div class="exercise-details">
-                            <h5>Hidratos de Carbono</h5>
-                            <span>210g consumidos / Meta: 280g</span>
-                        </div>
-                        <strong style="color: #3b82f6; font-size: 0.85rem;">75%</strong>
-                    </div>
-                    <div class="exercise-item" style="background: var(--surface-card);">
-                        <div class="exercise-details">
-                            <h5>Gorduras</h5>
-                            <span>50g consumidos / Meta: 65g</span>
-                        </div>
-                        <strong style="color: #f59e0b; font-size: 0.85rem;">76%</strong>
-                    </div>
-                </div>
-            </div>
-            <button class="btn-main" onclick="showToast('Refeição registada com sucesso!')">Registar Nova Refeição</button>
-        </div>
-
-        <!-- ABA 4: EVOLUÇÃO -->
-        <div id="tab-evolution" class="section">
-            <div class="card" style="text-align: center; padding: 30px 20px;">
-                <span style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Evolução de Peso</span>
-                <strong style="font-size: 2.2rem; font-weight: 900; color: var(--primary-light); margin: 6px 0; display: block;">68.4 <span style="font-size: 1.2rem;">kg</span></strong>
-                <span style="font-size: 0.75rem; color: var(--accent); background: rgba(16,185,129,0.1); padding: 4px 12px; border-radius: 20px; display: inline-block; font-weight: 700;">-1.2 kg este mês</span>
-            </div>
-            <div class="card">
-                <h3 style="font-size: 0.9rem; font-weight: 800; margin-bottom: 8px;">Próximo Marco</h3>
-                <p style="font-size: 0.78rem; color: var(--text-muted);">Estás a apenas 800g de atingir o teu peso ideal planeado para este ciclo.</p>
-            </div>
-        </div>
-
-        <!-- ABA 5: CHAT / COMUNICAÇÃO -->
-        <div id="tab-chat" class="section">
-            <div class="card" style="display: flex; flex-direction: column; height: 380px; justify-content: space-between;">
-                <h2 style="font-size: 1rem; font-weight: 800;">Assistente Pulsofit</h2>
-                <div style="background: var(--surface-card); padding: 14px; border-radius: 14px; font-size: 0.8rem; line-height: 1.4; border: 1px solid var(--border-color);">
-                    <strong style="color: var(--primary-light);">Pulsofit IA:</strong> Olá Paulo! Notei que aumentaste a carga no agachamento esta semana. Excelente progresso! Queres ajustar o plano de nutrição para compensar o esforço extra?
-                </div>
-                <div style="display: flex; gap: 8px;">
-                    <input type="text" placeholder="Escreve uma mensagem..." style="flex:1; padding: 12px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--surface-card); color: var(--text-main); font-size: 0.8rem; outline: none;">
-                    <button class="btn-main" style="width: auto; padding: 12px 18px;" onclick="showToast('Mensagem enviada com sucesso!')">Enviar</button>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-    <!-- NAVEGAÇÃO INFERIOR -->
-    <nav>
-        <button class="nav-tab active" onclick="switchTab('home', this)">
-            <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-            Início
-        </button>
-        <button class="nav-tab" onclick="switchTab('workouts', this)">
-            <svg viewBox="0 0 24 24"><path d="M20.57 14.86L22 13.43 20.57 12 17 15.57 13.43 12 12 13.43 14.34 15.77 12 18.11 13.43 19.54 17 15.97l3.57 3.57 1.43-1.43-2.34-2.34z"/></svg>
-            Treinos
-        </button>
-        <button class="nav-tab" onclick="switchTab('nutrition', this)">
-            <svg viewBox="0 0 24 24"><path d="M11 9H9V2H7v7H5V2H3v7c0 2.12 1.66 3.84 3.75 3.97V22h2.5v-9.03C11.34 12.84 13 11.12 13 9V2h-2v7zm5-3v8h2.5v8H21V2c-2.76 0-5 2.24-5 4z"/></svg>
-            Nutrição
-        </button>
-        <button class="nav-tab" onclick="switchTab('evolution', this)">
-            <svg viewBox="0 0 24 24"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/></svg>
-            Evolução
-        </button>
-        <button class="nav-tab" onclick="switchTab('chat', this)">
-            <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/></svg>
-            Chat
-        </button>
-    </nav>
-
-    <script>
-        function switchTab(tabId, element) {
-            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            document.getElementById('tab-' + tabId).classList.add('active');
-
-            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-            if (element) element.classList.add('active');
-            
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function toggleExercise(element) {
-            element.classList.toggle('completed');
-            if (element.classList.contains('completed')) {
-                showToast('Exercício concluído! 💪');
-            }
-        }
-
-        function showToast(msg) {
-            const t = document.getElementById('toast');
-            t.innerText = msg;
-            t.classList.add('show');
-            setTimeout(() => t.classList.remove('show'), 2500);
-        }
-    </script>
-</body>
-</html>
+function saveAppData() {
+    localStorage.setItem('pulsofit_user_data', JSON.stringify(appData));
+}
