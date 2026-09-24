@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PULSOFIT ELITE</title>
+    <title>PULSOFIT ELITE PRO</title>
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#050806">
+    <meta name="theme-color" content="#030504">
     <style>
         :root {
             --primary: #00e676;
-            --primary-glow: rgba(0, 230, 118, 0.35);
-            --bg-dark: #050806;
-            --card-bg: rgba(12, 20, 16, 0.82);
-            --border-neon: rgba(0, 230, 118, 0.3);
+            --primary-glow: rgba(0, 230, 118, 0.4);
+            --bg-deep: #030504;
+            --card-surface: rgba(10, 17, 13, 0.9);
+            --border-neon: rgba(0, 230, 118, 0.35);
             --text-main: #ffffff;
             --text-muted: #94a3b8;
         }
@@ -20,16 +20,16 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
 
         body {
-            background: linear-gradient(180deg, rgba(5, 8, 6, 0.92) 0%, rgba(5, 8, 6, 0.98) 100%), 
-                        url('https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=1000&auto=format&fit=crop') no-repeat center center fixed;
+            background: linear-gradient(180deg, rgba(3, 5, 4, 0.95) 0%, rgba(3, 5, 4, 0.99) 100%), 
+                        url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1000&auto=format&fit=crop') no-repeat center center fixed;
             background-size: cover;
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 16px;
-            padding-bottom: 100px;
+            padding: 14px;
+            padding-bottom: 105px;
         }
 
         header {
@@ -38,13 +38,13 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 14px 4px;
-            margin-bottom: 15px;
+            padding: 12px 4px;
+            margin-bottom: 12px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         }
 
         .logo-area h1 {
-            font-size: 1.35rem;
+            font-size: 1.3rem;
             color: var(--primary);
             font-weight: 900;
             letter-spacing: 2px;
@@ -53,22 +53,22 @@
         }
 
         .logo-area span {
-            font-size: 0.65rem;
+            font-size: 0.62rem;
             color: var(--text-muted);
             letter-spacing: 1.5px;
             display: block;
             text-transform: uppercase;
         }
 
-        .badge-elite {
-            background: linear-gradient(135deg, rgba(0,230,118,0.2), rgba(0,230,118,0.05));
+        .badge-pro-max {
+            background: rgba(0, 230, 118, 0.15);
             color: var(--primary);
-            font-size: 0.7rem;
-            padding: 6px 12px;
+            font-size: 0.68rem;
+            padding: 5px 12px;
             border-radius: 20px;
             font-weight: 800;
             border: 1px solid var(--border-neon);
-            box-shadow: 0 0 12px rgba(0, 230, 118, 0.15);
+            box-shadow: 0 0 12px var(--primary-glow);
             letter-spacing: 1px;
         }
 
@@ -77,66 +77,23 @@
             max-width: 480px;
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 15px;
         }
 
         .section { display: none; }
-        .section.active { display: flex; flex-direction: column; gap: 16px; }
+        .section.active { display: flex; flex-direction: column; gap: 15px; }
 
-        /* Cartões Imersivos com Fundo Fotográfico */
-        .hero-card {
-            position: relative;
-            border-radius: 20px;
-            overflow: hidden;
+        .card-pro {
+            background: var(--card-surface);
             border: 1px solid var(--border-neon);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8);
-            background-size: cover;
-            background-position: center;
-            padding: 22px;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            min-height: 180px;
-        }
-
-        .hero-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(180deg, rgba(5,8,6,0.2) 0%, rgba(5,8,6,0.92) 85%);
-            z-index: 1;
-        }
-
-        .hero-content { position: relative; z-index: 2; }
-
-        .hero-card h3 {
-            font-size: 1.2rem;
-            color: var(--primary);
-            margin-bottom: 6px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: 800;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
-        }
-
-        .hero-card p {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            margin-bottom: 14px;
-            line-height: 1.4;
-        }
-
-        .standard-card {
-            background: var(--card-bg);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 20px;
-            padding: 20px;
+            border-radius: 18px;
+            padding: 18px;
             backdrop-filter: blur(20px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.7);
         }
 
-        .standard-card h2 {
-            font-size: 1.05rem;
+        .card-pro h2 {
+            font-size: 1rem;
             color: var(--primary);
             margin-bottom: 12px;
             text-transform: uppercase;
@@ -146,388 +103,357 @@
             align-items: center;
         }
 
-        /* Seletores de Categoria Estilo App Comercial */
-        .muscle-selector {
+        /* Seletor de Músculos Avançado */
+        .muscle-scroll {
             display: flex;
             gap: 8px;
             overflow-x: auto;
-            padding-bottom: 8px;
-            margin-bottom: 16px;
+            padding-bottom: 6px;
+            margin-bottom: 14px;
             scrollbar-width: none;
         }
-        .muscle-selector::-webkit-scrollbar { display: none; }
+        .muscle-scroll::-webkit-scrollbar { display: none; }
 
-        .muscle-chip {
-            background: rgba(18, 28, 22, 0.9);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        .m-chip {
+            background: rgba(14, 22, 18, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             color: var(--text-muted);
-            padding: 9px 16px;
-            border-radius: 12px;
-            font-size: 0.8rem;
+            padding: 8px 14px;
+            border-radius: 10px;
+            font-size: 0.78rem;
             font-weight: 700;
             cursor: pointer;
             white-space: nowrap;
-            transition: all 0.25s ease;
-        }
-
-        .muscle-chip.active {
-            background: var(--primary);
-            color: #050806;
-            border-color: var(--primary);
-            box-shadow: 0 0 18px var(--primary-glow);
-        }
-
-        /* Cartões de Exercício Detalhados */
-        .exercise-item {
-            background: rgba(8, 14, 11, 0.95);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-left: 4px solid var(--primary);
-            border-radius: 14px;
-            padding: 14px 16px;
-            margin-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: transform 0.2s;
-        }
-        
-        .exercise-item:active { transform: scale(0.98); }
-
-        .ex-details h4 { font-size: 0.95rem; color: #fff; margin-bottom: 4px; font-weight: 700; }
-        .ex-details span { font-size: 0.75rem; color: var(--text-muted); font-weight: 500; }
-
-        .btn-status {
-            background: transparent;
-            border: 1.5px solid var(--primary);
-            color: var(--primary);
-            padding: 7px 14px;
-            border-radius: 9px;
-            font-size: 0.75rem;
-            font-weight: 800;
-            cursor: pointer;
             transition: all 0.2s;
         }
 
-        .btn-status.completed {
+        .m-chip.active {
             background: var(--primary);
-            color: #050806;
+            color: #030504;
+            border-color: var(--primary);
+            box-shadow: 0 0 15px var(--primary-glow);
+        }
+
+        /* Lista de Exercícios com Guia de Execução */
+        .exercise-box {
+            background: rgba(6, 11, 8, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-left: 4px solid var(--primary);
+            border-radius: 14px;
+            padding: 14px;
+            margin-bottom: 12px;
+        }
+
+        .ex-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+
+        .ex-title h4 { font-size: 0.92rem; color: #fff; font-weight: 800; margin-bottom: 2px; }
+        .ex-title span { font-size: 0.73rem; color: var(--primary); font-weight: 600; }
+
+        .btn-check-pro {
+            background: transparent;
+            border: 1.5px solid var(--primary);
+            color: var(--primary);
+            padding: 5px 12px;
+            border-radius: 8px;
+            font-size: 0.72rem;
+            font-weight: 800;
+            cursor: pointer;
+        }
+        .btn-check-pro.done {
+            background: var(--primary);
+            color: #030504;
             box-shadow: 0 0 10px var(--primary-glow);
         }
 
-        /* Grelha de Métricas Estilo Dashboard Pro */
-        .metrics-grid {
+        /* Caixa de Instruções Técnicas (Como Fazer) */
+        .tech-guide {
+            background: rgba(0, 0, 0, 0.45);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 10px;
+            padding: 10px;
+            margin-top: 8px;
+        }
+
+        .tech-guide p {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+            margin-bottom: 4px;
+        }
+        .tech-guide p strong { color: #fff; }
+
+        /* Grelha Estatística */
+        .stats-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 14px;
+            gap: 10px;
+            margin-bottom: 12px;
         }
 
-        .metric-box {
-            background: rgba(0, 0, 0, 0.45);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            padding: 16px;
-            border-radius: 14px;
+        .stat-card {
+            background: rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 12px;
+            border-radius: 12px;
             text-align: center;
         }
+        .stat-card span { font-size: 0.7rem; color: var(--text-muted); display: block; margin-bottom: 3px; text-transform: uppercase; }
+        .stat-card strong { font-size: 1.25rem; color: var(--primary); font-weight: 900; }
 
-        .metric-box span { display: block; font-size: 0.72rem; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
-        .metric-box strong { font-size: 1.4rem; color: var(--primary); font-weight: 900; }
-
-        /* Barras de Progresso */
-        .progress-container {
-            background: rgba(255,255,255,0.06);
-            border-radius: 10px;
-            height: 8px;
-            width: 100%;
-            margin: 10px 0 14px 0;
-            overflow: hidden;
-        }
-        .progress-bar {
+        /* Botão Principal */
+        .btn-main {
             background: var(--primary);
-            height: 100%;
-            border-radius: 10px;
-            box-shadow: 0 0 10px var(--primary);
-            width: 75%;
-        }
-
-        /* Botão de Ação Principal */
-        .btn-cta {
-            background: var(--primary);
-            color: #050806;
+            color: #030504;
             border: none;
             width: 100%;
-            padding: 15px;
-            border-radius: 14px;
+            padding: 14px;
+            border-radius: 12px;
             font-weight: 900;
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
+            letter-spacing: 1px;
             cursor: pointer;
-            box-shadow: 0 6px 25px var(--primary-glow);
-            transition: transform 0.1s ease;
+            box-shadow: 0 5px 20px var(--primary-glow);
         }
-        .btn-cta:active { transform: scale(0.98); }
+        .btn-main:active { transform: scale(0.98); }
 
-        /* Notificação Toast Moderna (Sem Alertas do Browser) */
-        #toast-notification {
+        /* Toast de Notificação */
+        #toast-alert {
             position: fixed;
-            top: 25px;
+            top: 20px;
             left: 50%;
             transform: translateX(-50%) translateY(-120px);
             background: var(--primary);
-            color: #050806;
-            padding: 12px 26px;
+            color: #030504;
+            padding: 11px 24px;
             border-radius: 30px;
             font-weight: 900;
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             box-shadow: 0 10px 30px var(--primary-glow);
-            transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: transform 0.3s ease;
             z-index: 9999;
             pointer-events: none;
-            letter-spacing: 0.5px;
             text-transform: uppercase;
         }
-        #toast-notification.active { transform: translateX(-50%) translateY(0); }
+        #toast-alert.show { transform: translateX(-50%) translateY(0); }
 
-        /* Navegação Inferior Estilo App Nativa de Alta Gama */
+        /* Barra de Navegação Inferior */
         nav {
             position: fixed;
             bottom: 0;
             left: 0;
             width: 100%;
-            height: 76px;
-            background: rgba(5, 8, 6, 0.96);
+            height: 72px;
+            background: rgba(3, 5, 4, 0.98);
             border-top: 1px solid rgba(0, 230, 118, 0.2);
             display: flex;
             justify-content: space-around;
             align-items: center;
-            backdrop-filter: blur(20px);
+            backdrop-filter: blur(15px);
             z-index: 1000;
         }
 
-        .nav-button {
+        .nav-tab {
             background: none;
             border: none;
             color: var(--text-muted);
-            font-size: 0.7rem;
+            font-size: 0.68rem;
             font-weight: 700;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 5px;
+            gap: 4px;
             cursor: pointer;
-            transition: color 0.3s;
-            width: 33%;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            width: 33%;
         }
-
-        .nav-button.active { color: var(--primary); text-shadow: 0 0 10px var(--primary-glow); }
-        .nav-button svg { width: 24px; height: 24px; fill: currentColor; }
+        .nav-tab.active { color: var(--primary); text-shadow: 0 0 10px var(--primary-glow); }
+        .nav-tab svg { width: 22px; height: 22px; fill: currentColor; }
     </style>
 </head>
 <body>
 
-    <div id="toast-notification">Ação Concluída</div>
+    <div id="toast-alert">Ação Registada</div>
 
     <header>
         <div class="logo-area">
             <h1>Pulsofit Elite</h1>
-            <span>Performance & Hipertrofia</span>
+            <span>Advanced Training Engine</span>
         </div>
-        <div class="badge-elite">ELITE PRO</div>
+        <div class="badge-pro-max">PRO+</div>
     </header>
 
     <div class="container">
-        <!-- ABA 1: INÍCIO (PAINEL IMERSIVO) -->
+        <!-- ABA 1: INÍCIO -->
         <div id="tab-home" class="section">
-            <div class="hero-card" style="background-image: url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1000&auto=format&fit=crop');">
-                <div class="hero-content">
-                    <h3>Desafio 4 Semanas ⚡</h3>
-                    <p>Foco total em hipertrofia máxima e definição avançada.</p>
-                    <button class="btn-cta" onclick="triggerToast('Desafio Ativo Iniciado!')">Continuar Programa</button>
-                </div>
-            </div>
-
-            <div class="standard-card">
-                <h2>Painel de Rendimento 📊</h2>
-                <div class="metrics-grid">
-                    <div class="metric-box">
-                        <span>Hidratação</span>
-                        <strong>3.2 L</strong>
+            <div class="card-pro">
+                <h2>Dashboard de Atividade 🔥</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <span>Carga Acumulada</span>
+                        <strong>14.2 Ton</strong>
                     </div>
-                    <div class="metric-box">
-                        <span>Volume Semanal</span>
-                        <strong>18.4 Ton</strong>
+                    <div class="stat-card">
+                        <span>Eficiência</span>
+                        <strong>96%</strong>
                     </div>
                 </div>
-                <span style="font-size: 0.75rem; color: var(--text-muted);">Meta de Consistência Diária</span>
-                <div class="progress-container">
-                    <div class="progress-bar"></div>
-                </div>
-                <button class="btn-cta" onclick="triggerToast('Dados Sincronizados com a Cloud!')">Sincronizar Cloud</button>
+                <button class="btn-main" onclick="showAlert('Sessão sincronizada com o servidor central!')">Sincronizar Cloud</button>
             </div>
         </div>
 
-        <!-- ABA 2: TREINO (SELETOR MUSCULAR PROFISSIONAL) -->
+        <!-- ABA 2: TREINO COM GUIA TÉCNICO COMPLETO -->
         <div id="tab-workout" class="section active">
-            <div class="hero-card" style="background-image: url('https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=1000&auto=format&fit=crop');">
-                <div class="hero-content">
-                    <h3 id="workout-main-title">Área de Foco: Peito & Tríceps</h3>
-                    <p>Seleciona o grupo muscular para carregar o protocolo técnico:</p>
-                </div>
-            </div>
-
-            <div class="standard-card">
-                <div class="muscle-selector">
-                    <button class="muscle-chip active" onclick="loadWorkoutCategory('peito', 'Peito & Tríceps', this)">Peito</button>
-                    <button class="muscle-chip" onclick="loadWorkoutCategory('costas', 'Costas & Bíceps', this)">Costas</button>
-                    <button class="muscle-chip" onclick="loadWorkoutCategory('pernas', 'Membros Inferiores', this)">Pernas</button>
-                    <button class="muscle-chip" onclick="loadWorkoutCategory('ombros', 'Ombros & Core', this)">Ombros</button>
-                    <button class="muscle-chip" onclick="loadWorkoutCategory('hiit', 'Cardio & HIIT Pro', this)">Cardio</button>
+            <div class="card-pro">
+                <h2 id="category-title">Foco: Peito & Hipertrofia</h2>
+                <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 12px;">Seleciona o grupo muscular e estuda a execução técnica de cada exercício:</p>
+                
+                <div class="muscle-scroll">
+                    <button class="m-chip active" onclick="loadAdvancedWorkout('peito', 'Peito & Hipertrofia', this)">Peito</button>
+                    <button class="m-chip" onclick="loadAdvancedWorkout('costas', 'Costas & Espessura', this)">Costas</button>
+                    <button class="m-chip" onclick="loadAdvancedWorkout('pernas', 'Membros Inferiores', this)">Pernas</button>
+                    <button class="m-chip" onclick="loadAdvancedWorkout('ombros', 'Ombros & Trapézio', this)">Ombros</button>
                 </div>
 
-                <div id="exercise-list-container">
-                    <div class="exercise-item">
-                        <div class="ex-details">
-                            <h4>Supino Reto com Barra</h4>
-                            <span>4 Séries x 10 Repetições • Carga Alta</span>
+                <div id="advanced-exercises">
+                    <div class="exercise-box">
+                        <div class="ex-header">
+                            <div class="ex-title">
+                               <h4>Supino Reto com Barra</h4>
+                               <span>4 Séries • 10 Reps • 90s Descanso</span>
+                            </div>
+                            <button class="btn-check-pro" onclick="toggleExec(this)">Feito</button>
                         </div>
-                        <button class="btn-status" onclick="toggleExercise(this)">Feito</button>
+                        <div class="tech-guide">
+                            <p><strong>Como Executar:</strong> Deita-te no banco, retrai as escápulas e mantém os pés firmes no chão.</p>
+                            <p><strong>Postura:</strong> Desce a barra controladamente até tocar levemente no peito médio e empurra explosivamente para cima.</p>
+                        </div>
                     </div>
-                    <div class="exercise-item">
-                        <div class="ex-details">
-                            <h4>Supino Inclinado com Halteres</h4>
-                            <span>4 Séries x 12 Repetições</span>
+
+                    <div class="exercise-box">
+                        <div class="ex-header">
+                            <div class="ex-title">
+                               <h4>Supino Inclinado com Halteres</h4>
+                               <span>4 Séries • 12 Reps • 75s Descanso</span>
+                            </div>
+                            <button class="btn-check-pro" onclick="toggleExec(this)">Feito</button>
                         </div>
-                        <button class="btn-status" onclick="toggleExercise(this)">Feito</button>
-                    </div>
-                    <div class="exercise-item">
-                        <div class="ex-details">
-                            <h4>Tríceps Corda na Polia</h4>
-                            <span>4 Séries x 15 Repetições</span>
+                        <div class="tech-guide">
+                            <p><strong>Como Executar:</strong> Ajusta o banco a 30-45 graus. Mantém os cotovelos ligeiramente fechados para proteger os ombros.</p>
+                            <p><strong>Postura:</strong> Sente o trabalho máximo na porção clavicular (superior) do peitoral durante a subida.</p>
                         </div>
-                        <button class="btn-status" onclick="toggleExercise(this)">Feito</button>
                     </div>
                 </div>
 
-                <button class="btn-cta" style="margin-top: 14px;" onclick="triggerToast('Sessão de Treino Registada com Sucesso!')">Guardar Treino do Dia</button>
+                <button class="btn-main" style="margin-top: 10px;" onclick="showAlert('Treino avançado concluído com sucesso!')">Finalizar Sessão de Treino</button>
             </div>
         </div>
 
         <!-- ABA 3: NUTRIÇÃO -->
         <div id="tab-nutrition" class="section">
-            <div class="hero-card" style="background-image: url('https://images.unsplash.com/photo-1498837167922-ddd27525d352?q=80&w=1000&auto=format&fit=crop');">
-                <div class="hero-content">
-                    <h3>Nutrição Inteligente 🥗</h3>
-                    <p>Gestão rigorosa de macronutrientes para ganho de massa seca.</p>
-                </div>
-            </div>
-
-            <div class="standard-card">
-                <h2>Balanço Energético</h2>
-                <div class="metrics-grid">
-                    <div class="metric-box">
+            <div class="card-pro">
+                <h2>Macro Gestão 🥗</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
                         <span>Calorias Alvo</span>
-                        <strong>3100 kcal</strong>
+                        <strong>3000 kcal</strong>
                     </div>
-                    <div class="metric-box">
-                        <span>Proteína Diária</span>
-                        <strong>185g / 200g</strong>
+                    <div class="stat-card">
+                        <span>Proteína</span>
+                        <strong>175g / 190g</strong>
                     </div>
                 </div>
-                <button class="btn-cta" onclick="triggerToast('Nova Refeição Adicionada ao Plano!')">Registar Refeição</button>
+                <button class="btn-main" onclick="showAlert('Refeição limpa registada!')">Registar Refeição</button>
             </div>
         </div>
     </div>
 
     <!-- NAVEGAÇÃO INFERIOR -->
     <nav>
-        <button class="nav-button" onclick="switchSection('tab-home', this)">
+        <button class="nav-tab" onclick="changeTab('tab-home', this)">
             <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
             Início
         </button>
-        <button class="nav-button active" onclick="switchSection('tab-workout', this)">
+        <button class="nav-tab active" onclick="changeTab('tab-workout', this)">
             <svg viewBox="0 0 24 24"><path d="M20.57 14.86L22 13.43 20.57 12 17 15.57 13.43 12 12 13.43 14.34 15.77 12 18.11 13.43 19.54 17 15.97l3.57 3.57 1.43-1.43-2.34-2.34z"/></svg>
             Treino
         </button>
-        <button class="nav-button" onclick="switchSection('tab-nutrition', this)">
+        <button class="nav-tab" onclick="changeTab('tab-nutrition', this)">
             <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.03-.42 1.98-1.07 2.75z"/></svg>
             Nutrição
         </button>
     </nav>
 
     <script>
-        const workoutCategories = {
+        const advancedWorkouts = {
             'peito': [
-                { name: 'Supino Reto com Barra', desc: '4 Séries x 10 Repetições • Carga Alta' },
-                { name: 'Supino Inclinado com Halteres', desc: '4 Séries x 12 Repetições' },
-                { name: 'Tríceps Corda na Polia', desc: '4 Séries x 15 Repetições' }
+                { name: 'Supino Reto com Barra', sets: '4 Séries • 10 Reps • 90s Descanso', guide: 'Deita-te no banco, retrai as escápulas e mantém os pés firmes no chão.', posture: 'Desce a barra controladamente até tocar levemente no peito médio e empurra explosivamente.' },
+                { name: 'Supino Inclinado com Halteres', sets: '4 Séries • 12 Reps • 75s Descanso', guide: 'Ajusta o banco a 30-45 graus. Mantém os cotovelos ligeiramente fechados.', posture: 'Foca a contração na porção superior do peitoral no topo do movimento.' }
             ],
             'costas': [
-                { name: 'Puxada na Barra Fixa', desc: '4 Séries x Falha Muscular' },
-                { name: 'Remada Curvada com Barra', desc: '4 Séries x 10 Repetições' },
-                { name: 'Rosca Direta com Barra', desc: '4 Séries x 12 Repetições' }
+                { name: 'Puxada Alta na Polia', sets: '4 Séries • 10 Reps • 90s Descanso', guide: 'Agarra a barra com pegada aberta, peito estufado para fora e tronco inclinado para trás.', posture: 'Puxa a barra em direção ao peito superior esmagando as escápulas.' },
+                { name: 'Remada Curvada com Barra', sets: '4 Séries • 10 Reps • 90s Descanso', guide: 'Mantém a coluna neutra a 45 graus e o core totalmente contraído.', posture: 'Puxa a barra em direção ao umbigo controlando a fase excêntrica (descida).' }
             ],
             'pernas': [
-                { name: 'Agachamento Livre', desc: '4 Séries x 10 Repetições' },
-                { name: 'Leg Press 45º', desc: '4 Séries x 12 Repetições' },
-                { name: 'Cadeira Extensora', desc: '4 Séries x 15 Repetições' }
+                { name: 'Agachamento Livre', sets: '4 Séries • 8 Reps • 120s Descanso', guide: 'Barra apoiada nos trapézios, pés à largura dos ombros.', posture: 'Desce os glúteos para trás controlando o joelho alinhado com a ponta do pé.' },
+                { name: 'Leg Press 45º', sets: '4 Séries • 12 Reps • 90s Descanso', guide: 'Posiciona os pés a meio da plataforma com largura média.', posture: 'Desce até formar um ângulo de 90 graus nos joelhos sem tirar a lombar do encosto.' }
             ],
             'ombros': [
-                { name: 'Desenvolvimento Militar', desc: '4 Séries x 10 Repetições' },
-                { name: 'Elevações Laterais', desc: '4 Séries x 15 Repetições' },
-                { name: 'Prancha Abdominal', desc: '3 Séries x 1 Minuto' }
-            ],
-            'hiit': [
-                { name: 'Sprints em Esteira', desc: '20 Minutos Intervalados' },
-                { name: 'Burpees com Salto', desc: '4 Séries x 15 Repetições' },
-                { name: 'Saltos à Corda', desc: '5 Séries x 2 Minutos' }
+                { name: 'Desenvolvimento Militar', sets: '4 Séries • 10 Reps • 90s Descanso', guide: 'Em pé ou sentado, segura a barra à altura dos clavículas.', posture: 'Empurra a barra verticalmente até estender os braços acima da cabeça.' },
+                { name: 'Elevações Laterais', sets: '4 Séries • 15 Reps • 60s Descanso', guide: 'Halteres leves ao lado do corpo, ligeira flexão nos cotovelos.', posture: 'Eleva os braços até à altura dos ombros focando o deltoide lateral.' }
             ]
         };
 
-        function switchSection(sectionId, element) {
-            document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
-            document.getElementById(sectionId).classList.add('active');
+        function changeTab(tabId, btnElement) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
 
-            document.querySelectorAll('.nav-button').forEach(btn => btn.classList.remove('active'));
-            element.classList.add('active');
+            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+            btnElement.classList.add('active');
         }
 
-        function loadWorkoutCategory(categoryKey, titleText, chipElement) {
-            document.querySelectorAll('.muscle-chip').forEach(c => c.classList.remove('active'));
-            chipElement.classList.add('active');
+        function loadAdvancedWorkout(key, title, chip) {
+            document.querySelectorAll('.m-chip').forEach(c => c.classList.remove('active'));
+            chip.classList.add('active');
 
-            document.getElementById('workout-main-title').innerText = `Área de Foco: ${titleText}`;
-
-            const container = document.getElementById('exercise-list-container');
+            document.getElementById('category-title').innerText = `Foco: ${title}`;
+            const container = document.getElementById('advanced-exercises');
             container.innerHTML = '';
 
-            workoutCategories[categoryKey].forEach(ex => {
+            advancedWorkouts[key].forEach(ex => {
                 container.innerHTML += `
-                    <div class="exercise-item">
-                        <div class="ex-details">
-                            <h4>${ex.name}</h4>
-                            <span>${ex.desc}</span>
+                    <div class="exercise-box">
+                        <div class="ex-header">
+                            <div class="ex-title">
+                               <h4>${ex.name}</h4>
+                               <span>${ex.sets}</span>
+                            </div>
+                            <button class="btn-check-pro" onclick="toggleExec(this)">Feito</button>
                         </div>
-                        <button class="btn-status" onclick="toggleExercise(this)">Feito</button>
+                        <div class="tech-guide">
+                            <p><strong>Como Executar:</strong> ${ex.guide}</p>
+                            <p><strong>Postura:</strong> ${ex.posture}</p>
+                        </div>
                     </div>
                 `;
             });
         }
 
-        function toggleExercise(btn) {
-            btn.classList.toggle('completed');
-            btn.innerText = btn.classList.contains('completed') ? 'OK!' : 'Feito';
+        function toggleExec(btn) {
+            btn.classList.toggle('done');
+            btn.innerText = btn.classList.contains('done') ? 'OK!' : 'Feito';
         }
 
-        function triggerToast(message) {
-            const toast = document.getElementById('toast-notification');
-            toast.innerText = message;
-            toast.classList.add('active');
-            setTimeout(() => {
-                toast.classList.remove('active');
-            }, 2600);
+        function showAlert(msg) {
+            const t = document.getElementById('toast-alert');
+            t.innerText = msg;
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 2500);
         }
     </script>
 </body>
