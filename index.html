@@ -10,7 +10,8 @@
         :root {
             --primary: #00e676;
             --primary-glow: rgba(0, 230, 118, 0.3);
-            --bg-card: rgba(13, 19, 16, 0.88);
+            --bg-card: rgba(13, 19, 16, 0.9);
+            --border-color: rgba(0, 230, 118, 0.25);
             --text-main: #ffffff;
             --text-muted: #9ca3af;
         }
@@ -18,8 +19,7 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
 
         body {
-            /* Fundo com a imagem real de ginásio e filtro escuro por cima para manter a legibilidade */
-            background: linear-gradient(rgba(7, 11, 9, 0.85), rgba(7, 11, 9, 0.92)), 
+            background: linear-gradient(rgba(7, 11, 9, 0.88), rgba(7, 11, 9, 0.95)), 
                         url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1000&auto=format&fit=crop') no-repeat center center fixed;
             background-size: cover;
             color: var(--text-main);
@@ -34,19 +34,39 @@
         header {
             width: 100%;
             max-width: 480px;
-            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             padding: 12px 0;
-            margin-bottom: 15px;
-            border-bottom: 1px solid rgba(0, 230, 118, 0.15);
+            margin-bottom: 12px;
+            border-bottom: 1px solid rgba(0, 230, 118, 0.2);
         }
 
-        header h1 {
-            font-size: 1.4rem;
+        .logo-area h1 {
+            font-size: 1.25rem;
             color: var(--primary);
             font-weight: 900;
-            letter-spacing: 3px;
+            letter-spacing: 2px;
             text-transform: uppercase;
-            text-shadow: 0 0 15px var(--primary-glow);
+            text-shadow: 0 0 12px var(--primary-glow);
+        }
+
+        .logo-area span {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            display: block;
+        }
+
+        .badge-pro {
+            background: var(--primary-glow);
+            color: var(--primary);
+            font-size: 0.65rem;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: bold;
+            border: 1px solid var(--border-color);
+            text-transform: uppercase;
         }
 
         .container {
@@ -62,17 +82,17 @@
 
         .card {
             background: var(--bg-card);
-            border: 1px solid rgba(0, 230, 118, 0.2);
+            border: 1px solid var(--border-color);
             border-radius: 18px;
-            padding: 20px;
-            backdrop-filter: blur(12px);
+            padding: 18px;
+            backdrop-filter: blur(15px);
             box-shadow: 0 12px 35px rgba(0, 0, 0, 0.7);
         }
 
         .card h2 {
-            font-size: 1.1rem;
+            font-size: 1rem;
             color: var(--primary);
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -81,73 +101,140 @@
         }
 
         .card p {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: var(--text-muted);
-            margin-bottom: 15px;
+            margin-bottom: 14px;
             line-height: 1.4;
         }
 
-        .card ul {
-            list-style: none;
-            margin-bottom: 18px;
+        /* Seletor de Dias Estilo Aplicação Premium */
+        .days-scroll {
             display: flex;
-            flex-direction: column;
             gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 6px;
+            margin-bottom: 15px;
+            scrollbar-width: none;
+        }
+        .days-scroll::-webkit-scrollbar { display: none; }
+
+        .day-tab {
+            background: rgba(20, 30, 25, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: var(--text-muted);
+            padding: 8px 14px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s ease;
         }
 
-        .card ul li {
-            font-size: 0.9rem;
-            color: #d1d5db;
+        .day-tab.active {
+            background: var(--primary);
+            color: #000;
+            border-color: var(--primary);
+            box-shadow: 0 0 15px var(--primary-glow);
+        }
+
+        /* Exercícios Estilo Cartão Moderno */
+        .exercise-card {
+            background: rgba(8, 14, 11, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-left: 4px solid var(--primary);
+            border-radius: 12px;
+            padding: 12px 14px;
+            margin-bottom: 10px;
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 8px;
         }
 
-        .card ul li::before {
-            content: "•";
+        .ex-info h4 { font-size: 0.9rem; color: #fff; margin-bottom: 3px; }
+        .ex-info span { font-size: 0.75rem; color: var(--text-muted); }
+
+        .btn-check {
+            background: transparent;
+            border: 1.5px solid var(--primary);
             color: var(--primary);
-            font-size: 1.2rem;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
         }
 
-        /* Caixa interna estilo as tuas fotos */
-        .sub-box {
+        .btn-check.done {
+            background: var(--primary);
+            color: #000;
+        }
+
+        /* Grelha de Estatísticas */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .stat-box {
             background: rgba(0, 0, 0, 0.5);
             border: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 15px;
+            padding: 14px;
             border-radius: 12px;
             text-align: center;
-            margin-bottom: 15px;
         }
 
-        .sub-box span { display: block; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 5px; }
-        .sub-box strong { font-size: 1.5rem; color: var(--primary); font-weight: 800; letter-spacing: 1px; }
+        .stat-box span { display: block; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 4px; }
+        .stat-box strong { font-size: 1.3rem; color: var(--primary); font-weight: 800; }
+
+        /* Notificação Toast Moderna (Substitui os alertas feios do browser) */
+        #toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background: var(--primary);
+            color: #000;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-weight: 800;
+            font-size: 0.85rem;
+            box-shadow: 0 10px 30px var(--primary-glow);
+            transition: transform 0.3s ease;
+            z-index: 9999;
+            pointer-events: none;
+            letter-spacing: 0.5px;
+        }
+        #toast.show { transform: translateX(-50%) translateY(0); }
 
         .btn-action {
             background: var(--primary);
             color: #000;
             border: none;
             width: 100%;
-            padding: 14px;
+            padding: 13px;
             border-radius: 12px;
             font-weight: 800;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
+            letter-spacing: 1px;
             cursor: pointer;
-            box-shadow: 0 5px 20px var(--primary-glow);
+            box-shadow: 0 4px 20px var(--primary-glow);
             transition: transform 0.1s;
         }
-
         .btn-action:active { transform: scale(0.98); }
 
-        /* Navegação Inferior Fixa */
+        /* Navegação Inferior Estilo App Nativa */
         nav {
             position: fixed;
             bottom: 0;
             left: 0;
             width: 100%;
-            height: 75px;
-            background: rgba(7, 11, 9, 0.95);
+            height: 72px;
+            background: rgba(7, 11, 9, 0.98);
             border-top: 1px solid rgba(0, 230, 118, 0.2);
             display: flex;
             justify-content: space-around;
@@ -160,70 +247,118 @@
             background: none;
             border: none;
             color: var(--text-muted);
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: 600;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 5px;
+            gap: 4px;
             cursor: pointer;
             transition: color 0.3s;
             width: 33%;
         }
 
         .nav-item.active { color: var(--primary); }
-        .nav-item svg { width: 24px; height: 24px; fill: currentColor; }
+        .nav-item svg { width: 22px; height: 22px; fill: currentColor; }
     </style>
 </head>
 <body>
 
+    <!-- Mensagem flutuante bonita (Substitui o alert) -->
+    <div id="toast">Ação executada com sucesso!</div>
+
     <header>
-        <h1>Pulsofit Elite</h1>
+        <div class="logo-area">
+            <h1>Pulsofit Elite</h1>
+            <span>Performance & Hipertrofia</span>
+        </div>
+        <div class="badge-pro">PRO V4</div>
     </header>
 
     <div class="container">
-        <!-- ABAS: INÍCIO -->
+        <!-- ABA 1: INÍCIO -->
         <div id="tab-home" class="section">
             <div class="card">
-                <h2>Painel Principal ⚡</h2>
-                <p>Bem-vindo ao teu centro de alta performance. Pronta para mais um dia de evolução máxima.</p>
-                <div class="sub-box">
-                    <span>Estado Atual</span>
-                    <strong>SISTEMA ATIVO</strong>
+                <h2>Painel Diário 🔥</h2>
+                <p>Controlo central de rendimento e metas ativas do dia.</p>
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <span>Água Hidratação</span>
+                        <strong>2.0 L</strong>
+                    </div>
+                    <div class="stat-box">
+                        <span>Fase Ativa</span>
+                        <strong>Nível 1</strong>
+                    </div>
                 </div>
-                <button class="btn-action" onclick="alert('Sistema sincronizado!')">Verificar Progresso</button>
+                <button class="btn-action" onclick="showToast('Dados sincronizados com sucesso!')">Sincronizar Dados</button>
             </div>
         </div>
 
-        <!-- ABAS: TREINO (EXATAMENTE COMO NA TUA FOTO 1) -->
+        <!-- ABA 2: TREINO (COM DIAS DA SEMANA COMPLETOS) -->
         <div id="tab-workout" class="section active">
             <div class="card">
-                <h2>Plano de Treino <span>💪</span></h2>
-                <p>Foco de hoje: Hipertrofia & Força</p>
-                <ul>
-                    <li>Supino Reto - 4 x 10</li>
-                    <li>Pulos na Barra - 4 x Falha</li>
-                    <li>Agachamento Livre - 4 x 12</li>
-                </ul>
-                <button class="btn-action" onclick="alert('Treino registado com sucesso!')">Registar Treino</button>
+                <h2 id="workout-title">Plano: Segunda-feira</h2>
+                <p>Seleciona o dia para carregar o protocolo de treino:</p>
+                
+                <div class="days-scroll">
+                    <button class="day-tab active" onclick="loadWorkout('Seg', 'Segunda-feira', this)">Seg</button>
+                    <button class="day-tab" onclick="loadWorkout('Ter', 'Terça-feira', this)">Ter</button>
+                    <button class="day-tab" onclick="loadWorkout('Qua', 'Quarta-feira', this)">Qua</button>
+                    <button class="day-tab" onclick="loadWorkout('Qui', 'Quinta-feira', this)">Qui</button>
+                    <button class="day-tab" onclick="loadWorkout('Sex', 'Sexta-feira', this)">Sex</button>
+                    <button class="day-tab" onclick="loadWorkout('Sáb', 'Sábado', this)">Sáb</button>
+                    <button class="day-tab" onclick="loadWorkout('Dom', 'Domingo', this)">Dom</button>
+                </div>
+
+                <div id="exercise-container">
+                    <div class="exercise-card">
+                        <div class="ex-info">
+                            <h4>Supino Reto com Barra</h4>
+                            <span>4 Séries x 10 Repetições</span>
+                        </div>
+                        <button class="btn-check" onclick="toggleDone(this)">Feito</button>
+                    </div>
+                    <div class="exercise-card">
+                        <div class="ex-info">
+                            <h4>Pulos na Barra Fixa</h4>
+                            <span>4 Séries x Falha</span>
+                        </div>
+                        <button class="btn-check" onclick="toggleDone(this)">Feito</button>
+                    </div>
+                    <div class="exercise-card">
+                        <div class="ex-info">
+                            <h4>Agachamento Livre</h4>
+                            <span>4 Séries x 12 Repetições</span>
+                        </div>
+                        <button class="btn-check" onclick="toggleDone(this)">Feito</button>
+                    </div>
+                </div>
+                <button class="btn-action" style="margin-top: 10px;" onclick="showToast('Treino de hoje concluído e guardado!')">Finalizar Treino</button>
             </div>
         </div>
 
-        <!-- ABAS: NUTRIÇÃO (EXATAMENTE COMO NA TUA FOTO 2) -->
+        <!-- ABA 3: NUTRIÇÃO -->
         <div id="tab-nutrition" class="section">
             <div class="card">
-                <h2>Plano Nutricional <span>🥗</span></h2>
-                <p>Meta diária: 2800 kcal</p>
-                <div class="sub-box">
-                    <span>Proteína Consumida</span>
-                    <strong>140g / 180g</strong>
+                <h2>Plano Nutricional 🥗</h2>
+                <p>Controlo inteligente de macronutrientes e calorias.</p>
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <span>Meta Diária</span>
+                        <strong>2800 kcal</strong>
+                    </div>
+                    <div class="stat-box">
+                        <span>Proteína</span>
+                        <strong>140g / 180g</strong>
+                    </div>
                 </div>
-                <button class="btn-action" onclick="alert('Refeição adicionada!')">Adicionar Refeição</button>
+                <button class="btn-action" onclick="showToast('Refeição registada com sucesso!')">Adicionar Refeição</button>
             </div>
         </div>
     </div>
 
-    <!-- BARRA DE NAVEGAÇÃO INFERIOR -->
+    <!-- NAVEGAÇÃO INFERIOR -->
     <nav>
         <button class="nav-item" onclick="switchTab('tab-home', this)">
             <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
@@ -240,12 +375,83 @@
     </nav>
 
     <script>
+        const workoutData = {
+            'Seg': [
+                { name: 'Supino Reto com Barra', desc: '4 Séries x 10 Repetições' },
+                { name: 'Pulos na Barra Fixa', desc: '4 Séries x Falha' },
+                { name: 'Agachamento Livre', desc: '4 Séries x 12 Repetições' }
+            ],
+            'Ter': [
+                { name: 'Puxada na Barra Fixa', desc: '4 Séries x Falha' },
+                { name: 'Remada Curvada com Barra', desc: '4 Séries x 10 Repetições' },
+                { name: 'Rosca Direta com Halteres', desc: '4 Séries x 12 Repetições' }
+            ],
+            'Qua': [
+                { name: 'Agachamento Livre', desc: '4 Séries x 12 Repetições' },
+                { name: 'Leg Press 45º', desc: '4 Séries x 10 Repetições' },
+                { name: 'Cadeira Extensora', desc: '3 Séries x 15 Repetições' }
+            ],
+            'Qui': [
+                { name: 'Desenvolvimento de Ombros', desc: '4 Séries x 10 Repetições' },
+                { name: 'Elevações Laterais', desc: '4 Séries x 15 Repetições' },
+                { name: 'Prancha Abdominal', desc: '3 Séries x 1 Minuto' }
+            ],
+            'Sex': [
+                { name: 'Circuito HIIT Fullbody', desc: '20 Minutos Intensidade Máxima' },
+                { name: 'Burpees Explosivos', desc: '4 Séries x 15 Repetições' },
+                { name: 'Flexões no Solo', desc: '4 Séries x 20 Repetições' }
+            ],
+            'Sáb': [
+                { name: 'Caminhada Inclinada', desc: '45 Minutos Cardio Moderado' },
+                { name: 'Sessão de Mobilidade', desc: '15 Minutos Alongamentos' }
+            ],
+            'Dom': [
+                { name: 'Recuperação Muscular', desc: 'Descanso Total & Hidratação' }
+            ]
+        };
+
         function switchTab(tabId, element) {
             document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
 
             document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
             element.classList.add('active');
+        }
+
+        function loadWorkout(dayKey, dayName, btn) {
+            document.querySelectorAll('.days-scroll .day-tab').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            document.getElementById('workout-title').innerText = `Plano: ${dayName}`;
+            
+            const container = document.getElementById('exercise-container');
+            container.innerHTML = '';
+
+            workoutData[dayKey].forEach(ex => {
+                container.innerHTML += `
+                    <div class="exercise-card">
+                        <div class="ex-info">
+                            <h4>${ex.name}</h4>
+                            <span>${ex.desc}</span>
+                        </div>
+                        <button class="btn-check" onclick="toggleDone(this)">Feito</button>
+                    </div>
+                `;
+            });
+        }
+
+        function toggleDone(button) {
+            button.classList.toggle('done');
+            button.innerText = button.classList.contains('done') ? 'OK!' : 'Feito';
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.innerText = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2500);
         }
     </script>
 </body>
