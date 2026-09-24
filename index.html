@@ -5,30 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PULSOFIT ELITE</title>
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#070b09">
+    <meta name="theme-color" content="#050806">
     <style>
         :root {
             --primary: #00e676;
-            --primary-glow: rgba(0, 230, 118, 0.3);
-            --bg-card: rgba(13, 19, 16, 0.9);
-            --border-color: rgba(0, 230, 118, 0.25);
+            --primary-glow: rgba(0, 230, 118, 0.35);
+            --bg-dark: #050806;
+            --card-bg: rgba(12, 20, 16, 0.82);
+            --border-neon: rgba(0, 230, 118, 0.3);
             --text-main: #ffffff;
-            --text-muted: #9ca3af;
+            --text-muted: #94a3b8;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
 
         body {
-            background: linear-gradient(rgba(7, 11, 9, 0.88), rgba(7, 11, 9, 0.95)), 
-                        url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1000&auto=format&fit=crop') no-repeat center center fixed;
+            background: linear-gradient(180deg, rgba(5, 8, 6, 0.92) 0%, rgba(5, 8, 6, 0.98) 100%), 
+                        url('https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=1000&auto=format&fit=crop') no-repeat center center fixed;
             background-size: cover;
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 15px;
-            padding-bottom: 95px;
+            padding: 16px;
+            padding-bottom: 100px;
         }
 
         header {
@@ -37,36 +38,38 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 0;
-            margin-bottom: 12px;
-            border-bottom: 1px solid rgba(0, 230, 118, 0.2);
+            padding: 14px 4px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         }
 
         .logo-area h1 {
-            font-size: 1.25rem;
+            font-size: 1.35rem;
             color: var(--primary);
             font-weight: 900;
             letter-spacing: 2px;
             text-transform: uppercase;
-            text-shadow: 0 0 12px var(--primary-glow);
+            text-shadow: 0 0 15px var(--primary-glow);
         }
 
         .logo-area span {
             font-size: 0.65rem;
             color: var(--text-muted);
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
             display: block;
+            text-transform: uppercase;
         }
 
-        .badge-pro {
-            background: var(--primary-glow);
+        .badge-elite {
+            background: linear-gradient(135deg, rgba(0,230,118,0.2), rgba(0,230,118,0.05));
             color: var(--primary);
-            font-size: 0.65rem;
-            padding: 4px 10px;
+            font-size: 0.7rem;
+            padding: 6px 12px;
             border-radius: 20px;
-            font-weight: bold;
-            border: 1px solid var(--border-color);
-            text-transform: uppercase;
+            font-weight: 800;
+            border: 1px solid var(--border-neon);
+            box-shadow: 0 0 12px rgba(0, 230, 118, 0.15);
+            letter-spacing: 1px;
         }
 
         .container {
@@ -74,384 +77,457 @@
             max-width: 480px;
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 16px;
         }
 
         .section { display: none; }
-        .section.active { display: flex; flex-direction: column; gap: 15px; }
+        .section.active { display: flex; flex-direction: column; gap: 16px; }
 
-        .card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 18px;
-            padding: 18px;
-            backdrop-filter: blur(15px);
-            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.7);
+        /* Cartões Imersivos com Fundo Fotográfico */
+        .hero-card {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid var(--border-neon);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8);
+            background-size: cover;
+            background-position: center;
+            padding: 22px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            min-height: 180px;
         }
 
-        .card h2 {
-            font-size: 1rem;
+        .hero-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(180deg, rgba(5,8,6,0.2) 0%, rgba(5,8,6,0.92) 85%);
+            z-index: 1;
+        }
+
+        .hero-content { position: relative; z-index: 2; }
+
+        .hero-card h3 {
+            font-size: 1.2rem;
             color: var(--primary);
-            margin-bottom: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            margin-bottom: 6px;
             text-transform: uppercase;
             letter-spacing: 1px;
+            font-weight: 800;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
         }
 
-        .card p {
+        .hero-card p {
             font-size: 0.85rem;
             color: var(--text-muted);
             margin-bottom: 14px;
             line-height: 1.4;
         }
 
-        /* Seletor de Dias Estilo Aplicação Premium */
-        .days-scroll {
-            display: flex;
-            gap: 8px;
-            overflow-x: auto;
-            padding-bottom: 6px;
-            margin-bottom: 15px;
-            scrollbar-width: none;
-        }
-        .days-scroll::-webkit-scrollbar { display: none; }
-
-        .day-tab {
-            background: rgba(20, 30, 25, 0.9);
+        .standard-card {
+            background: var(--card-bg);
             border: 1px solid rgba(255, 255, 255, 0.08);
-            color: var(--text-muted);
-            padding: 8px 14px;
-            border-radius: 10px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            cursor: pointer;
-            white-space: nowrap;
-            transition: all 0.2s ease;
+            border-radius: 20px;
+            padding: 20px;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
         }
 
-        .day-tab.active {
-            background: var(--primary);
-            color: #000;
-            border-color: var(--primary);
-            box-shadow: 0 0 15px var(--primary-glow);
-        }
-
-        /* Exercícios Estilo Cartão Moderno */
-        .exercise-card {
-            background: rgba(8, 14, 11, 0.95);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-left: 4px solid var(--primary);
-            border-radius: 12px;
-            padding: 12px 14px;
-            margin-bottom: 10px;
+        .standard-card h2 {
+            font-size: 1.05rem;
+            color: var(--primary);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .ex-info h4 { font-size: 0.9rem; color: #fff; margin-bottom: 3px; }
-        .ex-info span { font-size: 0.75rem; color: var(--text-muted); }
+        /* Seletores de Categoria Estilo App Comercial */
+        .muscle-selector {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            margin-bottom: 16px;
+            scrollbar-width: none;
+        }
+        .muscle-selector::-webkit-scrollbar { display: none; }
 
-        .btn-check {
+        .muscle-chip {
+            background: rgba(18, 28, 22, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-muted);
+            padding: 9px 16px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.25s ease;
+        }
+
+        .muscle-chip.active {
+            background: var(--primary);
+            color: #050806;
+            border-color: var(--primary);
+            box-shadow: 0 0 18px var(--primary-glow);
+        }
+
+        /* Cartões de Exercício Detalhados */
+        .exercise-item {
+            background: rgba(8, 14, 11, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-left: 4px solid var(--primary);
+            border-radius: 14px;
+            padding: 14px 16px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.2s;
+        }
+        
+        .exercise-item:active { transform: scale(0.98); }
+
+        .ex-details h4 { font-size: 0.95rem; color: #fff; margin-bottom: 4px; font-weight: 700; }
+        .ex-details span { font-size: 0.75rem; color: var(--text-muted); font-weight: 500; }
+
+        .btn-status {
             background: transparent;
             border: 1.5px solid var(--primary);
             color: var(--primary);
-            padding: 6px 12px;
-            border-radius: 8px;
+            padding: 7px 14px;
+            border-radius: 9px;
             font-size: 0.75rem;
-            font-weight: bold;
+            font-weight: 800;
             cursor: pointer;
             transition: all 0.2s;
         }
 
-        .btn-check.done {
+        .btn-status.completed {
             background: var(--primary);
-            color: #000;
+            color: #050806;
+            box-shadow: 0 0 10px var(--primary-glow);
         }
 
-        /* Grelha de Estatísticas */
-        .stats-grid {
+        /* Grelha de Métricas Estilo Dashboard Pro */
+        .metrics-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 12px;
-            margin-bottom: 12px;
+            margin-bottom: 14px;
         }
 
-        .stat-box {
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 14px;
-            border-radius: 12px;
+        .metric-box {
+            background: rgba(0, 0, 0, 0.45);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 16px;
+            border-radius: 14px;
             text-align: center;
         }
 
-        .stat-box span { display: block; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 4px; }
-        .stat-box strong { font-size: 1.3rem; color: var(--primary); font-weight: 800; }
+        .metric-box span { display: block; font-size: 0.72rem; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .metric-box strong { font-size: 1.4rem; color: var(--primary); font-weight: 900; }
 
-        /* Notificação Toast Moderna (Substitui os alertas feios do browser) */
-        #toast {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%) translateY(-100px);
+        /* Barras de Progresso */
+        .progress-container {
+            background: rgba(255,255,255,0.06);
+            border-radius: 10px;
+            height: 8px;
+            width: 100%;
+            margin: 10px 0 14px 0;
+            overflow: hidden;
+        }
+        .progress-bar {
             background: var(--primary);
-            color: #000;
-            padding: 12px 24px;
+            height: 100%;
+            border-radius: 10px;
+            box-shadow: 0 0 10px var(--primary);
+            width: 75%;
+        }
+
+        /* Botão de Ação Principal */
+        .btn-cta {
+            background: var(--primary);
+            color: #050806;
+            border: none;
+            width: 100%;
+            padding: 15px;
+            border-radius: 14px;
+            font-weight: 900;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            cursor: pointer;
+            box-shadow: 0 6px 25px var(--primary-glow);
+            transition: transform 0.1s ease;
+        }
+        .btn-cta:active { transform: scale(0.98); }
+
+        /* Notificação Toast Moderna (Sem Alertas do Browser) */
+        #toast-notification {
+            position: fixed;
+            top: 25px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-120px);
+            background: var(--primary);
+            color: #050806;
+            padding: 12px 26px;
             border-radius: 30px;
-            font-weight: 800;
+            font-weight: 900;
             font-size: 0.85rem;
             box-shadow: 0 10px 30px var(--primary-glow);
-            transition: transform 0.3s ease;
+            transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             z-index: 9999;
             pointer-events: none;
             letter-spacing: 0.5px;
-        }
-        #toast.show { transform: translateX(-50%) translateY(0); }
-
-        .btn-action {
-            background: var(--primary);
-            color: #000;
-            border: none;
-            width: 100%;
-            padding: 13px;
-            border-radius: 12px;
-            font-weight: 800;
-            font-size: 0.85rem;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            cursor: pointer;
-            box-shadow: 0 4px 20px var(--primary-glow);
-            transition: transform 0.1s;
         }
-        .btn-action:active { transform: scale(0.98); }
+        #toast-notification.active { transform: translateX(-50%) translateY(0); }
 
-        /* Navegação Inferior Estilo App Nativa */
+        /* Navegação Inferior Estilo App Nativa de Alta Gama */
         nav {
             position: fixed;
             bottom: 0;
             left: 0;
             width: 100%;
-            height: 72px;
-            background: rgba(7, 11, 9, 0.98);
+            height: 76px;
+            background: rgba(5, 8, 6, 0.96);
             border-top: 1px solid rgba(0, 230, 118, 0.2);
             display: flex;
             justify-content: space-around;
             align-items: center;
-            backdrop-filter: blur(15px);
+            backdrop-filter: blur(20px);
             z-index: 1000;
         }
 
-        .nav-item {
+        .nav-button {
             background: none;
             border: none;
             color: var(--text-muted);
             font-size: 0.7rem;
-            font-weight: 600;
+            font-weight: 700;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 4px;
+            gap: 5px;
             cursor: pointer;
             transition: color 0.3s;
             width: 33%;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        .nav-item.active { color: var(--primary); }
-        .nav-item svg { width: 22px; height: 22px; fill: currentColor; }
+        .nav-button.active { color: var(--primary); text-shadow: 0 0 10px var(--primary-glow); }
+        .nav-button svg { width: 24px; height: 24px; fill: currentColor; }
     </style>
 </head>
 <body>
 
-    <!-- Mensagem flutuante bonita (Substitui o alert) -->
-    <div id="toast">Ação executada com sucesso!</div>
+    <div id="toast-notification">Ação Concluída</div>
 
     <header>
         <div class="logo-area">
             <h1>Pulsofit Elite</h1>
             <span>Performance & Hipertrofia</span>
         </div>
-        <div class="badge-pro">PRO V4</div>
+        <div class="badge-elite">ELITE PRO</div>
     </header>
 
     <div class="container">
-        <!-- ABA 1: INÍCIO -->
+        <!-- ABA 1: INÍCIO (PAINEL IMERSIVO) -->
         <div id="tab-home" class="section">
-            <div class="card">
-                <h2>Painel Diário 🔥</h2>
-                <p>Controlo central de rendimento e metas ativas do dia.</p>
-                <div class="stats-grid">
-                    <div class="stat-box">
-                        <span>Água Hidratação</span>
-                        <strong>2.0 L</strong>
+            <div class="hero-card" style="background-image: url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1000&auto=format&fit=crop');">
+                <div class="hero-content">
+                    <h3>Desafio 4 Semanas ⚡</h3>
+                    <p>Foco total em hipertrofia máxima e definição avançada.</p>
+                    <button class="btn-cta" onclick="triggerToast('Desafio Ativo Iniciado!')">Continuar Programa</button>
+                </div>
+            </div>
+
+            <div class="standard-card">
+                <h2>Painel de Rendimento 📊</h2>
+                <div class="metrics-grid">
+                    <div class="metric-box">
+                        <span>Hidratação</span>
+                        <strong>3.2 L</strong>
                     </div>
-                    <div class="stat-box">
-                        <span>Fase Ativa</span>
-                        <strong>Nível 1</strong>
+                    <div class="metric-box">
+                        <span>Volume Semanal</span>
+                        <strong>18.4 Ton</strong>
                     </div>
                 </div>
-                <button class="btn-action" onclick="showToast('Dados sincronizados com sucesso!')">Sincronizar Dados</button>
+                <span style="font-size: 0.75rem; color: var(--text-muted);">Meta de Consistência Diária</span>
+                <div class="progress-container">
+                    <div class="progress-bar"></div>
+                </div>
+                <button class="btn-cta" onclick="triggerToast('Dados Sincronizados com a Cloud!')">Sincronizar Cloud</button>
             </div>
         </div>
 
-        <!-- ABA 2: TREINO (COM DIAS DA SEMANA COMPLETOS) -->
+        <!-- ABA 2: TREINO (SELETOR MUSCULAR PROFISSIONAL) -->
         <div id="tab-workout" class="section active">
-            <div class="card">
-                <h2 id="workout-title">Plano: Segunda-feira</h2>
-                <p>Seleciona o dia para carregar o protocolo de treino:</p>
-                
-                <div class="days-scroll">
-                    <button class="day-tab active" onclick="loadWorkout('Seg', 'Segunda-feira', this)">Seg</button>
-                    <button class="day-tab" onclick="loadWorkout('Ter', 'Terça-feira', this)">Ter</button>
-                    <button class="day-tab" onclick="loadWorkout('Qua', 'Quarta-feira', this)">Qua</button>
-                    <button class="day-tab" onclick="loadWorkout('Qui', 'Quinta-feira', this)">Qui</button>
-                    <button class="day-tab" onclick="loadWorkout('Sex', 'Sexta-feira', this)">Sex</button>
-                    <button class="day-tab" onclick="loadWorkout('Sáb', 'Sábado', this)">Sáb</button>
-                    <button class="day-tab" onclick="loadWorkout('Dom', 'Domingo', this)">Dom</button>
+            <div class="hero-card" style="background-image: url('https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=1000&auto=format&fit=crop');">
+                <div class="hero-content">
+                    <h3 id="workout-main-title">Área de Foco: Peito & Tríceps</h3>
+                    <p>Seleciona o grupo muscular para carregar o protocolo técnico:</p>
+                </div>
+            </div>
+
+            <div class="standard-card">
+                <div class="muscle-selector">
+                    <button class="muscle-chip active" onclick="loadWorkoutCategory('peito', 'Peito & Tríceps', this)">Peito</button>
+                    <button class="muscle-chip" onclick="loadWorkoutCategory('costas', 'Costas & Bíceps', this)">Costas</button>
+                    <button class="muscle-chip" onclick="loadWorkoutCategory('pernas', 'Membros Inferiores', this)">Pernas</button>
+                    <button class="muscle-chip" onclick="loadWorkoutCategory('ombros', 'Ombros & Core', this)">Ombros</button>
+                    <button class="muscle-chip" onclick="loadWorkoutCategory('hiit', 'Cardio & HIIT Pro', this)">Cardio</button>
                 </div>
 
-                <div id="exercise-container">
-                    <div class="exercise-card">
-                        <div class="ex-info">
+                <div id="exercise-list-container">
+                    <div class="exercise-item">
+                        <div class="ex-details">
                             <h4>Supino Reto com Barra</h4>
-                            <span>4 Séries x 10 Repetições</span>
+                            <span>4 Séries x 10 Repetições • Carga Alta</span>
                         </div>
-                        <button class="btn-check" onclick="toggleDone(this)">Feito</button>
+                        <button class="btn-status" onclick="toggleExercise(this)">Feito</button>
                     </div>
-                    <div class="exercise-card">
-                        <div class="ex-info">
-                            <h4>Pulos na Barra Fixa</h4>
-                            <span>4 Séries x Falha</span>
-                        </div>
-                        <button class="btn-check" onclick="toggleDone(this)">Feito</button>
-                    </div>
-                    <div class="exercise-card">
-                        <div class="ex-info">
-                            <h4>Agachamento Livre</h4>
+                    <div class="exercise-item">
+                        <div class="ex-details">
+                            <h4>Supino Inclinado com Halteres</h4>
                             <span>4 Séries x 12 Repetições</span>
                         </div>
-                        <button class="btn-check" onclick="toggleDone(this)">Feito</button>
+                        <button class="btn-status" onclick="toggleExercise(this)">Feito</button>
+                    </div>
+                    <div class="exercise-item">
+                        <div class="ex-details">
+                            <h4>Tríceps Corda na Polia</h4>
+                            <span>4 Séries x 15 Repetições</span>
+                        </div>
+                        <button class="btn-status" onclick="toggleExercise(this)">Feito</button>
                     </div>
                 </div>
-                <button class="btn-action" style="margin-top: 10px;" onclick="showToast('Treino de hoje concluído e guardado!')">Finalizar Treino</button>
+
+                <button class="btn-cta" style="margin-top: 14px;" onclick="triggerToast('Sessão de Treino Registada com Sucesso!')">Guardar Treino do Dia</button>
             </div>
         </div>
 
         <!-- ABA 3: NUTRIÇÃO -->
         <div id="tab-nutrition" class="section">
-            <div class="card">
-                <h2>Plano Nutricional 🥗</h2>
-                <p>Controlo inteligente de macronutrientes e calorias.</p>
-                <div class="stats-grid">
-                    <div class="stat-box">
-                        <span>Meta Diária</span>
-                        <strong>2800 kcal</strong>
+            <div class="hero-card" style="background-image: url('https://images.unsplash.com/photo-1498837167922-ddd27525d352?q=80&w=1000&auto=format&fit=crop');">
+                <div class="hero-content">
+                    <h3>Nutrição Inteligente 🥗</h3>
+                    <p>Gestão rigorosa de macronutrientes para ganho de massa seca.</p>
+                </div>
+            </div>
+
+            <div class="standard-card">
+                <h2>Balanço Energético</h2>
+                <div class="metrics-grid">
+                    <div class="metric-box">
+                        <span>Calorias Alvo</span>
+                        <strong>3100 kcal</strong>
                     </div>
-                    <div class="stat-box">
-                        <span>Proteína</span>
-                        <strong>140g / 180g</strong>
+                    <div class="metric-box">
+                        <span>Proteína Diária</span>
+                        <strong>185g / 200g</strong>
                     </div>
                 </div>
-                <button class="btn-action" onclick="showToast('Refeição registada com sucesso!')">Adicionar Refeição</button>
+                <button class="btn-cta" onclick="triggerToast('Nova Refeição Adicionada ao Plano!')">Registar Refeição</button>
             </div>
         </div>
     </div>
 
     <!-- NAVEGAÇÃO INFERIOR -->
     <nav>
-        <button class="nav-item" onclick="switchTab('tab-home', this)">
+        <button class="nav-button" onclick="switchSection('tab-home', this)">
             <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
             Início
         </button>
-        <button class="nav-item active" onclick="switchTab('tab-workout', this)">
+        <button class="nav-button active" onclick="switchSection('tab-workout', this)">
             <svg viewBox="0 0 24 24"><path d="M20.57 14.86L22 13.43 20.57 12 17 15.57 13.43 12 12 13.43 14.34 15.77 12 18.11 13.43 19.54 17 15.97l3.57 3.57 1.43-1.43-2.34-2.34z"/></svg>
             Treino
         </button>
-        <button class="nav-item" onclick="switchTab('tab-nutrition', this)">
+        <button class="nav-button" onclick="switchSection('tab-nutrition', this)">
             <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.03-.42 1.98-1.07 2.75z"/></svg>
             Nutrição
         </button>
     </nav>
 
     <script>
-        const workoutData = {
-            'Seg': [
-                { name: 'Supino Reto com Barra', desc: '4 Séries x 10 Repetições' },
-                { name: 'Pulos na Barra Fixa', desc: '4 Séries x Falha' },
-                { name: 'Agachamento Livre', desc: '4 Séries x 12 Repetições' }
+        const workoutCategories = {
+            'peito': [
+                { name: 'Supino Reto com Barra', desc: '4 Séries x 10 Repetições • Carga Alta' },
+                { name: 'Supino Inclinado com Halteres', desc: '4 Séries x 12 Repetições' },
+                { name: 'Tríceps Corda na Polia', desc: '4 Séries x 15 Repetições' }
             ],
-            'Ter': [
-                { name: 'Puxada na Barra Fixa', desc: '4 Séries x Falha' },
+            'costas': [
+                { name: 'Puxada na Barra Fixa', desc: '4 Séries x Falha Muscular' },
                 { name: 'Remada Curvada com Barra', desc: '4 Séries x 10 Repetições' },
-                { name: 'Rosca Direta com Halteres', desc: '4 Séries x 12 Repetições' }
+                { name: 'Rosca Direta com Barra', desc: '4 Séries x 12 Repetições' }
             ],
-            'Qua': [
-                { name: 'Agachamento Livre', desc: '4 Séries x 12 Repetições' },
-                { name: 'Leg Press 45º', desc: '4 Séries x 10 Repetições' },
-                { name: 'Cadeira Extensora', desc: '3 Séries x 15 Repetições' }
+            'pernas': [
+                { name: 'Agachamento Livre', desc: '4 Séries x 10 Repetições' },
+                { name: 'Leg Press 45º', desc: '4 Séries x 12 Repetições' },
+                { name: 'Cadeira Extensora', desc: '4 Séries x 15 Repetições' }
             ],
-            'Qui': [
-                { name: 'Desenvolvimento de Ombros', desc: '4 Séries x 10 Repetições' },
+            'ombros': [
+                { name: 'Desenvolvimento Militar', desc: '4 Séries x 10 Repetições' },
                 { name: 'Elevações Laterais', desc: '4 Séries x 15 Repetições' },
                 { name: 'Prancha Abdominal', desc: '3 Séries x 1 Minuto' }
             ],
-            'Sex': [
-                { name: 'Circuito HIIT Fullbody', desc: '20 Minutos Intensidade Máxima' },
-                { name: 'Burpees Explosivos', desc: '4 Séries x 15 Repetições' },
-                { name: 'Flexões no Solo', desc: '4 Séries x 20 Repetições' }
-            ],
-            'Sáb': [
-                { name: 'Caminhada Inclinada', desc: '45 Minutos Cardio Moderado' },
-                { name: 'Sessão de Mobilidade', desc: '15 Minutos Alongamentos' }
-            ],
-            'Dom': [
-                { name: 'Recuperação Muscular', desc: 'Descanso Total & Hidratação' }
+            'hiit': [
+                { name: 'Sprints em Esteira', desc: '20 Minutos Intervalados' },
+                { name: 'Burpees com Salto', desc: '4 Séries x 15 Repetições' },
+                { name: 'Saltos à Corda', desc: '5 Séries x 2 Minutos' }
             ]
         };
 
-        function switchTab(tabId, element) {
+        function switchSection(sectionId, element) {
             document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
+            document.getElementById(sectionId).classList.add('active');
 
-            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            document.querySelectorAll('.nav-button').forEach(btn => btn.classList.remove('active'));
             element.classList.add('active');
         }
 
-        function loadWorkout(dayKey, dayName, btn) {
-            document.querySelectorAll('.days-scroll .day-tab').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
+        function loadWorkoutCategory(categoryKey, titleText, chipElement) {
+            document.querySelectorAll('.muscle-chip').forEach(c => c.classList.remove('active'));
+            chipElement.classList.add('active');
 
-            document.getElementById('workout-title').innerText = `Plano: ${dayName}`;
-            
-            const container = document.getElementById('exercise-container');
+            document.getElementById('workout-main-title').innerText = `Área de Foco: ${titleText}`;
+
+            const container = document.getElementById('exercise-list-container');
             container.innerHTML = '';
 
-            workoutData[dayKey].forEach(ex => {
+            workoutCategories[categoryKey].forEach(ex => {
                 container.innerHTML += `
-                    <div class="exercise-card">
-                        <div class="ex-info">
+                    <div class="exercise-item">
+                        <div class="ex-details">
                             <h4>${ex.name}</h4>
                             <span>${ex.desc}</span>
                         </div>
-                        <button class="btn-check" onclick="toggleDone(this)">Feito</button>
+                        <button class="btn-status" onclick="toggleExercise(this)">Feito</button>
                     </div>
                 `;
             });
         }
 
-        function toggleDone(button) {
-            button.classList.toggle('done');
-            button.innerText = button.classList.contains('done') ? 'OK!' : 'Feito';
+        function toggleExercise(btn) {
+            btn.classList.toggle('completed');
+            btn.innerText = btn.classList.contains('completed') ? 'OK!' : 'Feito';
         }
 
-        function showToast(message) {
-            const toast = document.getElementById('toast');
+        function triggerToast(message) {
+            const toast = document.getElementById('toast-notification');
             toast.innerText = message;
-            toast.classList.add('show');
+            toast.classList.add('active');
             setTimeout(() => {
-                toast.classList.remove('show');
-            }, 2500);
+                toast.classList.remove('active');
+            }, 2600);
         }
     </script>
 </body>
