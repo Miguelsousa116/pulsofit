@@ -3,651 +3,455 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PULSOFIT ELITE PRO MAX</title>
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#030504">
+    <title>Pulsofit</title>
+    <meta name="theme-color" content="#f8fafc">
     <style>
         :root {
-            --primary: #00e676;
-            --primary-glow: rgba(0, 230, 118, 0.4);
-            --bg-deep: #030504;
-            --card-surface: rgba(8, 14, 10, 0.98);
-            --border-neon: rgba(0, 230, 118, 0.4);
-            --text-main: #ffffff;
-            --text-muted: #94a3b8;
+            --bg-main: #f8fafc;
+            --surface: #ffffff;
+            --surface-card: #f1f5f9;
+            --primary: #7c3aed;
+            --primary-glow: rgba(124, 58, 237, 0.15);
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
 
         body {
-            background-color: var(--bg-deep);
+            background-color: var(--bg-main);
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 12px;
-            padding-bottom: 95px;
+            padding-bottom: 90px;
         }
 
+        /* HEADER SUPERIOR */
         header {
             width: 100%;
             max-width: 480px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 4px;
-            margin-bottom: 10px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 16px 20px;
+            background: var(--surface);
+            position: sticky;
+            top: 0;
+            z-index: 900;
+            border-bottom: 1px solid var(--border-color);
         }
 
-        .logo-area h1 {
-            font-size: 1.25rem;
-            color: var(--primary);
-            font-weight: 900;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            text-shadow: 0 0 15px var(--primary-glow);
-        }
+        .header-left { display: flex; align-items: center; gap: 12px; }
+        .menu-btn { background: none; border: none; color: var(--text-main); cursor: pointer; display: flex; align-items: center; }
+        .menu-btn svg { width: 24px; height: 24px; fill: currentColor; }
 
-        .logo-area span {
-            font-size: 0.6rem;
-            color: var(--text-muted);
-            letter-spacing: 1.5px;
-            display: block;
-            text-transform: uppercase;
-        }
-
-        .badge-pro-max {
-            background: rgba(0, 230, 118, 0.15);
-            color: var(--primary);
-            font-size: 0.65rem;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-weight: 800;
-            border: 1px solid var(--border-neon);
+        .brand-profile { display: flex; align-items: center; gap: 10px; }
+        .brand-avatar {
+            width: 34px; height: 34px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #7c3aed, #4c1d95);
+            display: flex; align-items: center; justify-content: center;
+            color: #fff; font-weight: 900; font-size: 0.9rem;
             box-shadow: 0 0 10px var(--primary-glow);
         }
+        .brand-info h2 { font-size: 0.9rem; font-weight: 800; color: var(--text-main); }
+        .brand-info span { font-size: 0.65rem; color: var(--text-muted); display: block; }
 
+        .notif-btn { background: none; border: none; color: var(--text-main); cursor: pointer; position: relative; }
+        .notif-btn svg { width: 22px; height: 22px; fill: currentColor; }
+        .notif-dot { position: absolute; top: 0; right: 0; width: 8px; height: 8px; background: #ef4444; border-radius: 50%; }
+
+        /* MENU LATERAL (DRAWER) */
+        .drawer-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); backdrop-filter: blur(3px);
+            z-index: 1500; display: none; opacity: 0; transition: opacity 0.3s ease;
+        }
+        .drawer-overlay.open { display: block; opacity: 1; }
+
+        .side-drawer {
+            position: fixed; top: 0; left: -320px; width: 280px; height: 100%;
+            background: var(--surface); z-index: 1600;
+            display: flex; flex-direction: column; padding: 20px;
+            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-right: 1px solid var(--border-color);
+            box-shadow: 10px 0 30px rgba(0,0,0,0.1);
+        }
+        .side-drawer.open { left: 0; }
+        .drawer-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid var(--border-color); }
+        .drawer-section-title { font-size: 0.65rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; margin: 12px 0 6px 10px; letter-spacing: 0.5px; }
+        .drawer-links { display: flex; flex-direction: column; gap: 4px; overflow-y: auto; flex: 1; }
+        .drawer-link {
+            background: transparent; border: none; color: var(--text-muted);
+            padding: 10px 12px; border-radius: 10px; text-align: left; font-size: 0.82rem;
+            font-weight: 700; display: flex; align-items: center; gap: 12px; cursor: pointer;
+            transition: 0.2s;
+        }
+        .drawer-link:hover, .drawer-link.active { background: var(--primary-glow); color: var(--primary); }
+        .drawer-link svg { width: 18px; height: 18px; fill: currentColor; }
+
+        /* CONTAINER */
         .container {
             width: 100%;
             max-width: 480px;
+            padding: 16px;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 14px;
         }
 
         .section { display: none; }
-        .section.active { display: flex; flex-direction: column; gap: 12px; }
+        .section.active { display: flex; flex-direction: column; gap: 14px; }
 
-        .card-pro {
-            background: var(--card-surface);
-            border: 1px solid var(--border-neon);
+        /* CARDS */
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border-color);
             border-radius: 16px;
-            padding: 16px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.8);
+            padding: 18px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
         }
 
-        .card-pro h2 {
-            font-size: 0.9rem;
-            color: var(--primary);
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        .welcome-box h1 { font-size: 1.2rem; font-weight: 900; margin-bottom: 4px; color: var(--text-main); }
+        .welcome-box p { font-size: 0.78rem; color: var(--text-muted); }
+
+        .banner-checkin {
+            background: linear-gradient(135deg, rgba(124,58,237,0.08), rgba(124,58,237,0.03));
+            border: 1px solid rgba(124,58,237,0.2);
+            border-radius: 14px;
+            padding: 14px 18px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-        }
-
-        /* Seletor de Dias da Semana */
-        .day-scroll {
-            display: flex;
-            gap: 6px;
-            overflow-x: auto;
-            padding-bottom: 4px;
-            margin-bottom: 12px;
-            scrollbar-width: none;
-        }
-        .day-scroll::-webkit-scrollbar { display: none; }
-
-        .day-chip {
-            background: rgba(15, 25, 18, 0.9);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            color: var(--text-muted);
-            padding: 7px 12px;
-            border-radius: 8px;
-            font-size: 0.72rem;
-            font-weight: 700;
             cursor: pointer;
-            white-space: nowrap;
-            text-transform: uppercase;
         }
-        .day-chip.active {
-            background: var(--primary);
-            color: #030504;
-            border-color: var(--primary);
-            box-shadow: 0 0 12px var(--primary-glow);
-        }
+        .banner-checkin h3 { font-size: 0.85rem; font-weight: 800; color: var(--text-main); }
+        .banner-checkin span { font-size: 0.7rem; color: var(--primary); font-weight: 700; display: block; margin-top: 2px; }
+        .badge-pending { background: var(--primary-glow); color: var(--primary); font-size: 0.65rem; padding: 4px 10px; border-radius: 20px; font-weight: 800; }
 
-        /* Cronómetro */
-        .timer-box {
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid var(--border-neon);
-            border-radius: 12px;
+        /* GRID */
+        .dash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .metric-card {
+            background: var(--surface-card);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
             padding: 14px;
-            text-align: center;
-            margin-bottom: 12px;
-        }
-        .timer-display {
-            font-size: 2rem;
-            font-weight: 900;
-            color: var(--primary);
-            text-shadow: 0 0 10px var(--primary-glow);
-            margin: 4px 0;
-        }
-        .timer-controls {
-            display: flex;
-            gap: 6px;
-            justify-content: center;
-            margin-top: 8px;
-        }
-        .btn-timer {
-            background: rgba(255,255,255,0.06);
-            border: 1px solid rgba(255,255,255,0.12);
-            color: #fff;
-            padding: 5px 12px;
-            border-radius: 6px;
-            font-size: 0.72rem;
-            font-weight: 700;
-            cursor: pointer;
-        }
-        .btn-timer.active-t { background: var(--primary); color: #030504; border-color: var(--primary); }
-
-        /* Calculadora 1RM */
-        .calc-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin-bottom: 8px;
-        }
-        .input-pro {
-            background: rgba(0,0,0,0.4);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 10px;
-            border-radius: 8px;
-            color: #fff;
-            font-size: 0.82rem;
-            width: 100%;
-        }
-        .result-box {
-            background: rgba(0, 230, 118, 0.08);
-            border: 1px dashed var(--primary);
-            padding: 10px;
-            border-radius: 8px;
-            text-align: center;
-            font-size: 0.8rem;
-            color: var(--primary);
-            font-weight: 700;
-            margin-top: 8px;
-        }
-
-        /* Exercícios Estilo Pro */
-        .exercise-box {
-            background: rgba(4, 8, 6, 0.95);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 12px;
-            padding: 12px;
-            margin-bottom: 10px;
             display: flex;
             flex-direction: column;
-            gap: 8px;
-        }
-
-        .ex-header {
-            display: flex;
             justify-content: space-between;
-            align-items: flex-start;
         }
+        .metric-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .metric-top span { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; }
+        .metric-value { font-size: 1.25rem; font-weight: 900; color: var(--text-main); }
 
-        .ex-title h4 { font-size: 0.9rem; color: #fff; font-weight: 800; }
-        .ex-title span { font-size: 0.7rem; color: var(--primary); font-weight: 600; display: block; margin-top: 2px; }
-
-        .btn-check-pro {
-            background: transparent;
-            border: 1.5px solid var(--primary);
-            color: var(--primary);
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 0.68rem;
-            font-weight: 800;
-            cursor: pointer;
-        }
-        .btn-check-pro.done {
+        /* BOTÕES */
+        .btn-primary {
             background: var(--primary);
-            color: #030504;
-            box-shadow: 0 0 8px var(--primary-glow);
-        }
-
-        .tech-guide {
-            background: rgba(0, 0, 0, 0.4);
-            border-left: 2px solid var(--primary);
-            padding: 8px;
-            border-radius: 0 8px 8px 0;
-        }
-        .tech-guide p { font-size: 0.73rem; color: var(--text-muted); line-height: 1.3; }
-        .tech-guide p strong { color: #fff; }
-
-        /* Nutrição Completa */
-        .nutrition-summary {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 8px;
-            margin-bottom: 12px;
-        }
-        .nutri-card {
-            background: rgba(0,0,0,0.4);
-            border: 1px solid rgba(255,255,255,0.06);
-            padding: 10px;
-            border-radius: 10px;
-            text-align: center;
-        }
-        .nutri-card span { font-size: 0.65rem; color: var(--text-muted); display: block; text-transform: uppercase; }
-        .nutri-card strong { font-size: 1.1rem; color: var(--primary); font-weight: 900; }
-
-        .meal-list {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            max-height: 180px;
-            overflow-y: auto;
-            margin-bottom: 10px;
-        }
-        .meal-item {
-            background: rgba(0,0,0,0.5);
-            border-left: 3px solid var(--primary);
-            padding: 8px 10px;
-            border-radius: 6px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.78rem;
-        }
-
-        .btn-main {
-            background: var(--primary);
-            color: #030504;
+            color: #fff;
             border: none;
             width: 100%;
-            padding: 12px;
-            border-radius: 10px;
-            font-weight: 900;
-            font-size: 0.8rem;
+            padding: 13px;
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: 0.82rem;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
             cursor: pointer;
             box-shadow: 0 4px 15px var(--primary-glow);
+            transition: 0.2s;
+        }
+        .btn-primary:active { transform: scale(0.98); }
+
+        .btn-secondary {
+            background: var(--surface-card);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            width: 100%;
+            padding: 11px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            cursor: pointer;
         }
 
-        #toast-alert {
-            position: fixed;
-            top: 15px;
-            left: 50%;
-            transform: translateX(-50%) translateY(-100px);
-            background: var(--primary);
-            color: #030504;
-            padding: 10px 20px;
-            border-radius: 20px;
-            font-weight: 900;
-            font-size: 0.78rem;
-            box-shadow: 0 8px 25px var(--primary-glow);
-            transition: transform 0.3s ease;
-            z-index: 9999;
-            pointer-events: none;
-            text-transform: uppercase;
+        /* EXERCÍCIOS / MACROS */
+        .item-card {
+            background: var(--surface-card);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
-        #toast-alert.show { transform: translateX(-50%) translateY(0); }
+        .item-info h4 { font-size: 0.88rem; font-weight: 800; }
+        .item-info span { font-size: 0.72rem; color: var(--primary); font-weight: 700; }
 
+        /* NAVEGAÇÃO INFERIOR */
         nav {
             position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 68px;
-            background: rgba(3, 5, 4, 0.98);
-            border-top: 1px solid rgba(0, 230, 118, 0.2);
+            bottom: 0; left: 0;
+            width: 100%; height: 65px;
+            background: var(--surface);
+            border-top: 1px solid var(--border-color);
             display: flex;
             justify-content: space-around;
             align-items: center;
-            backdrop-filter: blur(12px);
             z-index: 1000;
         }
         .nav-tab {
-            background: none;
-            border: none;
+            background: none; border: none;
             color: var(--text-muted);
-            font-size: 0.65rem;
-            font-weight: 700;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 3px;
-            cursor: pointer;
-            text-transform: uppercase;
-            width: 33%;
+            font-size: 0.6rem; font-weight: 700;
+            display: flex; flex-direction: column; align-items: center; gap: 3px;
+            cursor: pointer; text-transform: uppercase; flex: 1;
         }
-        .nav-tab.active { color: var(--primary); text-shadow: 0 0 8px var(--primary-glow); }
+        .nav-tab.active { color: var(--primary); }
         .nav-tab svg { width: 20px; height: 20px; fill: currentColor; }
+
+        /* TOAST */
+        #toast {
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-100px);
+            background: var(--primary); color: #fff; padding: 10px 20px; border-radius: 20px;
+            font-weight: 800; font-size: 0.78rem; box-shadow: 0 5px 20px var(--primary-glow);
+            transition: transform 0.3s ease; z-index: 2000; pointer-events: none;
+        }
+        #toast.show { transform: translateX(-50%) translateY(0); }
     </style>
 </head>
 <body>
 
-    <div id="toast-alert">Atualizado</div>
+    <div id="toast">Ação efetuada</div>
 
-    <header>
-        <div class="logo-area">
-            <h1>Pulsofit Elite</h1>
-            <span>Advanced Training Engine</span>
-        </div>
-        <div class="badge-pro-max">PRO MAX</div>
-    </header>
-
-    <div class="container">
-        <!-- ABA 1: FERRAMENTAS E CRONÓMETRO -->
-        <div id="tab-home" class="section">
-            <div class="card-pro">
-                <h2>Cronómetro de Descanso ⏱️</h2>
-                <div class="timer-box">
-                    <span style="font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase;">Tempo Restante entre Séries</span>
-                    <div id="timer-text" class="timer-display">01:30</div>
-                    <div class="timer-controls">
-                        <button class="btn-timer" onclick="setTimer(45)">45s</button>
-                        <button class="btn-timer" onclick="setTimer(60)">60s</button>
-                        <button class="btn-timer active-t" onclick="setTimer(90)">90s</button>
-                        <button class="btn-timer" onclick="setTimer(120)">120s</button>
-                        <button class="btn-timer" onclick="startTimer()" style="background:var(--primary); color:#030504; font-weight:900;">Iniciar</button>
-                    </div>
-                </div>
-
-                <h2>Calculadora de 1RM 🏋️</h2>
-                <div class="calc-grid">
-                    <input type="number" id="calc-weight" class="input-pro" placeholder="Carga (kg)">
-                    <input type="number" id="calc-reps" class="input-pro" placeholder="Repetições">
-                </div>
-                <button class="btn-main" onclick="calculate1RM()">Calcular Força Máxima</button>
-                <div id="calc-result" class="result-box" style="display:none;"></div>
+    <!-- MENU LATERAL (DRAWER) -->
+    <div id="drawer-overlay" class="drawer-overlay" onclick="toggleDrawer()"></div>
+    <div id="side-drawer" class="side-drawer">
+        <div class="drawer-header">
+            <div class="brand-avatar">P</div>
+            <div class="brand-info">
+                <h2>Pulsofit</h2>
+                <span>Painel Pessoal</span>
             </div>
         </div>
+        <div class="drawer-links">
+            <div class="drawer-section-title">Principal</div>
+            <button class="drawer-link active" onclick="switchTab('home', this); toggleDrawer();">
+                <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg> Início
+            </button>
+            <button class="drawer-link" onclick="switchTab('calendar', this); toggleDrawer();">
+                <svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z"/></svg> Calendário
+            </button>
+            <button class="drawer-link" onclick="switchTab('chat', this); toggleDrawer();">
+                <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/></svg> Chat
+            </button>
 
-        <!-- ABA 2: TREINOS POR DIAS DA SEMANA -->
-        <div id="tab-workout" class="section active">
-            <div class="card-pro">
-                <h2 id="day-title">Plano: Segunda-Feira (Peito & Tríceps)</h2>
-                
-                <div class="day-scroll">
-                    <button class="day-chip active" onclick="loadDayWorkout('seg', 'Segunda-Feira (Peito & Tríceps)', this)">Segunda</button>
-                    <button class="day-chip" onclick="loadDayWorkout('ter', 'Terça-Feira (Costas & Bíceps)', this)">Terça</button>
-                    <button class="day-chip" onclick="loadDayWorkout('qua', 'Quarta-Feira (Pernas & Core)', this)">Quarta</button>
-                    <button class="day-chip" onclick="loadDayWorkout('qui', 'Quinta-Feira (Ombros & Trapézio)', this)">Quinta</button>
-                    <button class="day-chip" onclick="loadDayWorkout('sex', 'Sexta-Feira (Upper Body Completo)', this)">Sexta</button>
-                    <button class="day-chip" onclick="loadDayWorkout('sab', 'Sábado (Força & Hipertrofia)', this)">Sábado</button>
-                </div>
-
-                <div id="day-exercises">
-                    <div class="exercise-box">
-                        <div class="ex-header">
-                            <div class="ex-title">
-                                <h4>Supino Reto com Barra</h4>
-                                <span>4 Séries • 10 Reps • 90s Descanso</span>
-                            </div>
-                            <button class="btn-check-pro" onclick="toggleExec(this)">Feito</button>
-                        </div>
-                        <div class="tech-guide">
-                            <p><strong>Execução:</strong> Deita-te no banco, retrai as escápulas e apoia bem os pés no chão.</p>
-                            <p><strong>Postura:</strong> Desce a barra de forma controlada até tocar levemente no peito médio.</p>
-                        </div>
-                    </div>
-
-                    <div class="exercise-box">
-                        <div class="ex-header">
-                            <div class="ex-title">
-                                <h4>Supino Inclinado com Halteres</h4>
-                                <span>4 Séries • 12 Reps • 75s Descanso</span>
-                            </div>
-                            <button class="btn-check-pro" onclick="toggleExec(this)">Feito</button>
-                        </div>
-                        <div class="tech-guide">
-                            <p><strong>Execução:</strong> Banco regulado a 30-45 graus. Cotovelos levemente recolhidos.</p>
-                            <p><strong>Postura:</strong> Foca a contração máxima na porção superior do peitoral.</p>
-                        </div>
-                    </div>
-
-                    <div class="exercise-box">
-                        <div class="ex-header">
-                            <div class="ex-title">
-                                <h4>Tríceps na Polia com Corda</h4>
-                                <span>4 Séries • 12 Reps • 60s Descanso</span>
-                            </div>
-                            <button class="btn-check-pro" onclick="toggleExec(this)">Feito</button>
-                        </div>
-                        <div class="tech-guide">
-                            <p><strong>Execução:</strong> Cotovelos colados ao tronco, puxa a corda para baixo abrindo no final.</p>
-                            <p><strong>Postura:</strong> Mantém o tronco firme sem balançar o corpo.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <button class="btn-main" style="margin-top: 10px;" onclick="showAlert('Sessão guardada com sucesso!')">Finalizar Sessão de Treino</button>
-            </div>
-        </div>
-
-        <!-- ABA 3: NUTRIÇÃO & REGISTO DE REFEIÇÕES -->
-        <div id="tab-nutrition" class="section">
-            <div class="card-pro">
-                <h2>Macro Gestão 🥗</h2>
-                <div class="nutrition-summary">
-                    <div class="nutri-card">
-                        <span>Calorias Alvo</span>
-                        <strong id="total-kcal">3000 kcal</strong>
-                    </div>
-                    <div class="nutri-card">
-                        <span>Proteína Total</span>
-                        <strong id="total-prot">175g / 190g</strong>
-                    </div>
-                </div>
-
-                <h2>Adicionar Refeição 🍎</h2>
-                <div class="calc-grid" style="margin-bottom: 6px;">
-                    <input type="text" id="meal-name" class="input-pro" placeholder="Nome (Ex: Frango e Arroz)" style="grid-column: span 2;">
-                </div>
-                <div class="calc-grid" style="margin-bottom: 8px;">
-                    <input type="number" id="meal-kcal" class="input-pro" placeholder="Calorias (kcal)">
-                    <input type="number" id="meal-prot" class="input-pro" placeholder="Proteína (g)">
-                </div>
-                <button class="btn-main" onclick="addMeal()">Registar Refeição</button>
-
-                <h2 style="margin-top: 14px;">Refeições de Hoje</h2>
-                <div id="meal-container" class="meal-list">
-                    <div class="meal-item">
-                        <span>Oatmeal com Whey & Banana</span>
-                        <strong>550 kcal | 40g Prot</strong>
-                    </div>
-                    <div class="meal-item">
-                        <span>Arroz, Frango & Brócolos</span>
-                        <strong>720 kcal | 55g Prot</strong>
-                    </div>
-                </div>
-            </div>
+            <div class="drawer-section-title">O Meu Treino</div>
+            <button class="drawer-link" onclick="switchTab('workouts', this); toggleDrawer();">
+                <svg viewBox="0 0 24 24"><path d="M20.57 14.86L22 13.43 20.57 12 17 15.57 13.43 12 12 13.43 14.34 15.77 12 18.11 13.43 19.54 17 15.97l3.57 3.57 1.43-1.43-2.34-2.34z"/></svg> Treinos
+            </button>
+            <button class="drawer-link" onclick="switchTab('nutrition', this); toggleDrawer();">
+                <svg viewBox="0 0 24 24"><path d="M11 9H9V2H7v7H5V2H3v7c0 2.12 1.66 3.84 3.75 3.97V22h2.5v-9.03C11.34 12.84 13 11.12 13 9V2h-2v7zm5-3v8h2.5v8H21V2c-2.76 0-5 2.24-5 4z"/></svg> Nutrição
+            </button>
+            <button class="drawer-link" onclick="switchTab('evolution', this); toggleDrawer();">
+                <svg viewBox="0 0 24 24"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/></svg> Evolução
+            </button>
         </div>
     </div>
 
-    <!-- BARRA DE NAVEGAÇÃO INFERIOR -->
+    <!-- HEADER -->
+    <header>
+        <div class="header-left">
+            <button class="menu-btn" onclick="toggleDrawer()">
+                <svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+            </button>
+            <div class="brand-profile">
+                <div class="brand-avatar">P</div>
+                <div class="brand-info">
+                    <h2>Pulsofit</h2>
+                    <span>Paulo</span>
+                </div>
+            </div>
+        </div>
+        <button class="notif-btn" onclick="showToast('Sem novas notificações')">
+            <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
+            <div class="notif-dot"></div>
+        </button>
+    </header>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <div class="container">
+
+        <!-- ABA 1: INÍCIO -->
+        <div id="tab-home" class="section active">
+            <div class="card welcome-box">
+                <h1>Boa noite, Paulo! 👋</h1>
+                <p>Mais um dia para evoluir com a Pulsofit!</p>
+            </div>
+
+            <div class="banner-checkin" onclick="showToast('Check-in diário registado com sucesso!')">
+                <div>
+                    <h3>Fazer check-in</h3>
+                    <span>Peso e progresso de hoje</span>
+                </div>
+                <div class="badge-pending">Por fazer</div>
+            </div>
+
+            <div class="dash-grid">
+                <div class="metric-card">
+                    <div class="metric-top">
+                        <span>Peso</span>
+                        <svg style="width:16px;height:16px;fill:var(--primary)" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>
+                    </div>
+                    <div class="metric-value">68 kg</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-top">
+                        <span>Calorias</span>
+                        <svg style="width:16px;height:16px;fill:#f59e0b" viewBox="0 0 24 24"><path d="M17.66 11.2C17.43 10.9 17.15 10.63 16.89 10.38C16.22 9.78 15.62 9.05 15.24 8.2C14.72 7.04 14.58 5.77 14.5 4.5C14.47 4.08 14.1 3.75 13.68 3.8C11.59 4.03 9.7 5.16 8.5 6.84C7.09 8.84 6.95 11.52 8.13 13.67C8.25 13.9 8.16 14.19 7.93 14.31C7.7 14.43 7.41 14.34 7.29 14.11C5.78 11.41 5.96 8.08 7.82 5.51C6.96 6.97 6.64 8.76 7 10.5C7.07 10.87 6.8 11.22 6.43 11.3C6.06 11.37 5.71 11.1 5.64 10.73C5.12 8.13 5.6 5.39 7.23 3.25C6.18 4.29 5.4 5.61 5.04 7.08C4.5 9.28 4.86 11.75 6.2 13.75C7.54 15.75 9.7 17 12 17C15.87 17 19 13.87 19 10C19 9.73 18.91 9.47 18.78 9.25C18.44 8.67 18.04 8.12 17.66 7.62V11.2Z"/></svg>
+                    </div>
+                    <div class="metric-value">2200 kcal</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 style="font-size: 0.88rem; margin-bottom: 10px; color: var(--primary);">Treino de Hoje</h3>
+                <div class="item-card">
+                    <div class="item-info">
+                        <h4>Sem treino para hoje</h4>
+                        <span>Podes iniciar um treino livre</span>
+                    </div>
+                    <button class="btn-primary" onclick="switchTab('workouts', document.querySelector('.drawer-link:nth-child(5)'))">Ver todos os treinos</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ABA 2: TREINOS -->
+        <div id="tab-workouts" class="section">
+            <div class="card">
+                <h2 style="font-size: 0.95rem; margin-bottom: 14px;">Os meus treinos</h2>
+                <div style="display: flex; gap: 8px; margin-bottom: 14px;">
+                    <button class="btn-primary" style="padding: 10px; font-size: 0.75rem;">+ Treino livre</button>
+                    <button class="btn-secondary" style="padding: 10px; font-size: 0.75rem;">Histórico</button>
+                </div>
+                <div class="item-card">
+                    <div class="item-info">
+                        <h4>Prensa de Pernas Inclinada</h4>
+                        <span>Quadríceps • 3 séries</span>
+                    </div>
+                    <button class="btn-secondary" onclick="this.innerText='Série Registada! 💪'; this.style.color='var(--primary)'">Registar progresso</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ABA 3: NUTRIÇÃO -->
+        <div id="tab-nutrition" class="section">
+            <div class="card">
+                <h2 style="font-size: 0.95rem; margin-bottom: 14px;">Plano Nutricional</h2>
+                <div class="dash-grid" style="margin-bottom: 14px;">
+                    <div class="metric-card">
+                        <span>Proteína</span>
+                        <div class="metric-value" style="font-size:1.05rem; color:#ef4444;">0 / 120 g</div>
+                    </div>
+                    <div class="metric-card">
+                        <span>Hidratos</span>
+                        <div class="metric-value" style="font-size:1.05rem; color:#f59e0b;">0 / 300 g</div>
+                    </div>
+                </div>
+                <button class="btn-primary" onclick="showToast('Nova refeição adicionada!')">+ Nova refeição</button>
+            </div>
+        </div>
+
+        <!-- ABA 4: EVOLUÇÃO -->
+        <div id="tab-evolution" class="section">
+            <div class="card">
+                <h2 style="font-size: 0.95rem; margin-bottom: 14px;">Evolução Corporal</h2>
+                <div class="item-card" style="text-align: center; padding: 24px;">
+                    <span style="font-size: 0.78rem; color: var(--text-muted);">Peso Registado</span>
+                    <strong style="font-size: 1.6rem; color: var(--primary); margin-top: 4px; display: block;">68 kg</strong>
+                    <span style="font-size: 0.7rem; color: #10b981; margin-top: 6px; display: block;">Estável nos últimos 30 dias</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ABA 5: CHAT -->
+        <div id="tab-chat" class="section">
+            <div class="card" style="display: flex; flex-direction: column; height: 350px; justify-content: space-between;">
+                <h2 style="font-size: 0.95rem;">Chat Pulsofit</h2>
+                <div style="background: var(--surface-card); padding: 12px; border-radius: 10px; font-size: 0.8rem;">
+                    <strong>Coach Pulsofit:</strong> Olá Paulo! Como correu o treino de hoje? Alguma dúvida com os pesos?
+                </div>
+                <div style="display: flex; gap: 8px;">
+                    <input type="text" placeholder="Escreve uma mensagem..." style="flex:1; padding: 10px; border-radius: 10px; border: 1px solid var(--border-color); background: var(--surface-card); color: var(--text-main); font-size: 0.8rem;">
+                    <button class="btn-primary" style="width: auto; padding: 10px 16px;" onclick="showToast('Mensagem enviada!')">Enviar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- OUTRAS ABAS SECUNDÁRIAS -->
+        <div id="tab-calendar" class="section">
+            <div class="card">
+                <h2>Calendário de Treinos</h2>
+                <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 8px;">Agenda semanal organizada na Pulsofit.</p>
+            </div>
+        </div>
+        <div id="tab-supplements" class="section">
+            <div class="card">
+                <h2>Suplementos</h2>
+                <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 8px;">Creatina, Whey e Multivitamínico diário.</p>
+            </div>
+        </div>
+        <div id="tab-habits" class="section">
+            <div class="card">
+                <h2>Hábitos Diários</h2>
+                <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 8px;">Água (3L), Sono (8h) e Passos (10k).</p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- NAVEGAÇÃO INFERIOR -->
     <nav>
-        <button class="nav-tab" onclick="changeTab('tab-home', this)">
-            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-            Ferramentas
+        <button class="nav-tab active" onclick="switchTab('home', this)">
+            <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+            Início
         </button>
-        <button class="nav-tab active" onclick="changeTab('tab-workout', this)">
+        <button class="nav-tab" onclick="switchTab('workouts', this)">
             <svg viewBox="0 0 24 24"><path d="M20.57 14.86L22 13.43 20.57 12 17 15.57 13.43 12 12 13.43 14.34 15.77 12 18.11 13.43 19.54 17 15.97l3.57 3.57 1.43-1.43-2.34-2.34z"/></svg>
-            Treino
+            Treinos
         </button>
-        <button class="nav-tab" onclick="changeTab('tab-nutrition', this)">
-            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.03-.42 1.98-1.07 2.75z"/></svg>
+        <button class="nav-tab" onclick="switchTab('nutrition', this)">
+            <svg viewBox="0 0 24 24"><path d="M11 9H9V2H7v7H5V2H3v7c0 2.12 1.66 3.84 3.75 3.97V22h2.5v-9.03C11.34 12.84 13 11.12 13 9V2h-2v7zm5-3v8h2.5v8H21V2c-2.76 0-5 2.24-5 4z"/></svg>
             Nutrição
+        </button>
+        <button class="nav-tab" onclick="switchTab('evolution', this)">
+            <svg viewBox="0 0 24 24"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/></svg>
+            Evolução
+        </button>
+        <button class="nav-tab" onclick="switchTab('chat', this)">
+            <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/></svg>
+            Chat
         </button>
     </nav>
 
     <script>
-        let countdown;
-        let timeLeft = 90;
-        let currentCalories = 1270;
-        let currentProtein = 95;
-
-        function setTimer(seconds) {
-            timeLeft = seconds;
-            updateTimerDisplay();
-            document.querySelectorAll('.btn-timer').forEach(b => b.classList.remove('active-t'));
-            event.target.classList.add('active-t');
+        function toggleDrawer() {
+            document.getElementById('side-drawer').classList.toggle('open');
+            document.getElementById('drawer-overlay').classList.toggle('open');
         }
 
-        function updateTimerDisplay() {
-            const m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
-            const s = (timeLeft % 60).toString().padStart(2, '0');
-            document.getElementById('timer-text').innerText = `${m}:${s}`;
-        }
-
-        function startTimer() {
-            clearInterval(countdown);
-            countdown = setInterval(() => {
-                if (timeLeft > 0) {
-                    timeLeft--;
-                    updateTimerDisplay();
-                } else {
-                    clearInterval(countdown);
-                    showAlert('Descanso concluído! Força para a próxima série.');
-                }
-            }, 1000);
-        }
-
-        function calculate1RM() {
-            const w = parseFloat(document.getElementById('calc-weight').value);
-            const r = parseFloat(document.getElementById('calc-reps').value);
-            const resBox = document.getElementById('calc-result');
-
-            if (!w || !r || r <= 0) {
-                showAlert('Insere carga e repetições válidas!');
-                return;
-            }
-
-            // Fórmula de Epley para 1RM
-            const rm = Math.round(w * (1 + r / 30));
-            resBox.style.display = 'block';
-            resBox.innerHTML = `Estimativa de Carga Máxima (1RM): <strong>${rm} kg</strong>`;
-            showAlert('1RM calculado com sucesso!');
-        }
-
-        const workoutsByDay = {
-            'seg': [
-                { name: 'Supino Reto com Barra', sets: '4 Séries • 10 Reps • 90s Descanso', guide: 'Deita-te no banco, retrai as escápulas e apoia bem os pés no chão.', posture: 'Desce a barra de forma controlada até tocar levemente no peito médio.' },
-                { name: 'Supino Inclinado com Halteres', sets: '4 Séries • 12 Reps • 75s Descanso', guide: 'Banco regulado a 30-45 graus. Cotovelos levemente recolhidos.', posture: 'Foca a contração máxima na porção superior do peitoral.' },
-                { name: 'Tríceps na Polia com Corda', sets: '4 Séries • 12 Reps • 60s Descanso', guide: 'Cotovelos colados ao tronco, puxa a corda para baixo abrindo no final.', posture: 'Mantém o tronco firme sem balançar o corpo.' }
-            ],
-            'ter': [
-                { name: 'Puxada Alta na Polia', sets: '4 Séries • 10 Reps • 90s Descanso', guide: 'Agarra a barra com pegada aberta, peito estufado para a frente.', posture: 'Puxa a barra em direção ao peito esmagando as escápulas.' },
-                { name: 'Remada Curvada com Barra', sets: '4 Séries • 10 Reps • 90s Descanso', guide: 'Coluna neutra inclinada a 45 graus, core bem contraído.', posture: 'Puxa a barra em direção ao umbigo controlando a subida e descida.' },
-                { name: 'Rosca Direta com Halteres', sets: '4 Séries • 12 Reps • 60s Descanso', guide: 'Em pé, mantém os cotovelos fixos junto à linha das costelas.', posture: 'Faz supinação do punho no topo do movimento para pico máximo.' }
-            ],
-            'qua': [
-                { name: 'Agachamento Livre', sets: '4 Séries • 8 Reps • 120s Descanso', guide: 'Barra apoiada nos trapézios, pés à largura dos ombros.', posture: 'Desce os glúteos alinhando com os joelhos de forma firme.' },
-                { name: 'Leg Press 45º', sets: '4 Séries • 12 Reps • 90s Descanso', guide: 'Pés a meio da plataforma, lombar bem apoiada no encosto.', posture: 'Empuja com a força dos calcanhares sem esticar totalmente os joelhos.' },
-                { name: 'Prancha Abdominal Isometrica', sets: '3 Séries • 60 Segundos', guide: 'Apoio nos antebraços e pontas dos pés, corpo totalmente alinhado.', posture: 'Contrai o abdómen e glúteos de forma ininterrupta.' }
-            ],
-            'qui': [
-                { name: 'Desenvolvimento Militar', sets: '4 Séries • 10 Reps • 90s Descanso', guide: 'Barra à altura das clavículas, postura ereta e segura.', posture: 'Empurra verticalmente a barra acima da cabeça de forma explosiva.' },
-                { name: 'Elevações Laterais', sets: '4 Séries • 15 Reps • 60s Descanso', guide: 'Halteres nas mãos com ligeira flexão nos cotovelos.', posture: 'Eleva os braços até à linha dos ombros focando o deltoide lateral.' },
-                { name: 'Encolhimento de Ombros', sets: '4 Séries • 12 Reps • 60s Descanso', guide: 'Segura halteres pesados ao lado do corpo com braços esticados.', posture: 'Eleva os ombros em direção às orelhas pausando 1 segundo no topo.' }
-            ],
-            'sex': [
-                { name: 'Supino Reto com Halteres', sets: '4 Séries • 10 Reps • 90s Descanso', guide: 'Amplitude máxima de movimento na descida.', posture: 'Junta levemente os halteres no topo sem chocar.' },
-                { name: 'Remada Unilateral (Serrote)', sets: '4 Séries • 10 Reps • 90s Descanso', guide: 'Apoia o joelho e a mão num banco plano.', posture: 'Puxa o halter em direção à anca esmagando a dorsal.' },
-                { name: 'Extensão de Pernas', sets: '4 Séries • 15 Reps • 60s Descanso', guide: 'Sentado na máquina com apoio ajustado nos tornozelos.', posture: 'Extensão completa com contração de 1 segundo em cima.' }
-            ],
-            'sab': [
-                { name: 'Levantamento Terra', sets: '3 Séries • 5 Reps • 150s Descanso', guide: 'Barra colada às canelas, costas totalmente direitas e firmes.', posture: 'Empurra o chão com as pernas estendendo anca e joelhos em simultâneo.' },
-                { name: 'Fundos nas Paralelas (Dips)', sets: '3 Séries • 10 Reps • 90s Descanso', guide: 'Tronco levemente inclinado para a frente para focar o peito.', posture: 'Desce controladamente até formar 90 graus nos cotovelos.' }
-            ]
-        };
-
-        function changeTab(tabId, btnElement) {
+        function switchTab(tabId, element) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
+            document.getElementById('tab-' + tabId).classList.add('active');
+
             document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-            btnElement.classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        function loadDayWorkout(dayKey, dayName, chip) {
-            document.querySelectorAll('.day-chip').forEach(c => c.classList.remove('active'));
-            chip.classList.add('active');
-            document.getElementById('day-title').innerText = `Plano: ${dayName}`;
-            
-            const container = document.getElementById('day-exercises');
-            container.innerHTML = '';
-
-            workoutsByDay[dayKey].forEach(ex => {
-                container.innerHTML += `
-                    <div class="exercise-box">
-                        <div class="ex-header">
-                            <div class="ex-title">
-                                <h4>${ex.name}</h4>
-                                <span>${ex.sets}</span>
-                            </div>
-                            <button class="btn-check-pro" onclick="toggleExec(this)">Feito</button>
-                        </div>
-                        <div class="tech-guide">
-                            <p><strong>Execução:</strong> ${ex.guide}</p>
-                            <p><strong>Postura:</strong> ${ex.posture}</p>
-                        </div>
-                    </div>
-                `;
-            });
-        }
-
-        function addMeal() {
-            const name = document.getElementById('meal-name').value;
-            const kcal = parseInt(document.getElementById('meal-kcal').value) || 0;
-            const prot = parseInt(document.getElementById('meal-prot').value) || 0;
-
-            if (!name) {
-                showAlert('Insere o nome da refeição!');
-                return;
-            }
-
-            currentCalories += kcal;
-            currentProtein += prot;
-
-            document.getElementById('total-kcal').innerText = `${currentCalories} kcal`;
-            document.getElementById('total-prot').innerText = `${currentProtein}g / 190g`;
-
-            const container = document.getElementById('meal-container');
-            container.innerHTML += `
-                <div class="meal-item">
-                    <span>${name}</span>
-                    <strong>${kcal} kcal | ${prot}g Prot</strong>
-                </div>
-            `;
-
-            document.getElementById('meal-name').value = '';
-            document.getElementById('meal-kcal').value = '';
-            document.getElementById('meal-prot').value = '';
-            showAlert('Refeição registada com sucesso!');
-        }
-
-        function toggleExec(btn) {
-            btn.classList.toggle('done');
-            btn.innerText = btn.classList.contains('done') ? 'OK!' : 'Feito';
-        }
-
-        function showAlert(msg) {
-            const t = document.getElementById('toast-alert');
+        function showToast(msg) {
+            const t = document.getElementById('toast');
             t.innerText = msg;
             t.classList.add('show');
             setTimeout(() => t.classList.remove('show'), 2500);
