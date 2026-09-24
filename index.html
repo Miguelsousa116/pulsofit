@@ -15,7 +15,7 @@
             --text-muted: #94a3b8;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text-main); padding-bottom: 90px; }
+        body { background-color: var(--bg-color); color: var(--text-main); padding-bottom: 120px; }
         
         .header {
             padding: 20px;
@@ -101,17 +101,21 @@
         .series-box span { display: block; font-size: 0.7rem; color: var(--text-muted); }
         .series-box strong { font-size: 0.85rem; color: var(--text-main); }
 
-        /* Navbar Inferior Fixa */
+        /* Navbar Inferior Fixa Flutuante */
         .bottom-nav {
             position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
+            bottom: 24px;
+            left: 16px;
+            right: 16px;
+            width: auto;
             background: #0f172a;
-            border-top: 1px solid #1e293b;
+            border: 1px solid #1e293b;
+            border-radius: 16px;
             display: flex;
             justify-content: space-around;
-            padding: 12px 0;
+            padding: 10px 0;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            z-index: 1000;
         }
         .nav-item {
             background: none;
@@ -121,38 +125,29 @@
             text-align: center;
             cursor: pointer;
         }
-        .nav-item.active { color: var(--accent-green); }
+        .nav-item.active { color: var(--accent-green); font-weight: bold; }
     </style>
 </head>
 <body>
 
     <div class="header">
         <div class="user-info">
-            <h1 id="username-display">Paulo Miguel</h1>
+            <h1>Paulo Miguel</h1>
             <p>● Em foco: Hipertrofia Avançada</p>
         </div>
     </div>
 
     <div class="container">
-        <!-- Banner estilo app personalizada -->
         <div class="workout-banner">
             <span>Treino do Dia</span>
             <h2 id="current-workout-title">Bloco A: Peito & Ombros</h2>
-            <p>Foco na progressão de carga e execução controlada.</p>
+            <p>Foco na progressão de carga e execução controlada[cite: 28].</p>
         </div>
 
-        <!-- Seletor de Dias -->
-        <div class="days-nav" id="days-container">
-            <!-- Gerado via JS -->
-        </div>
-
-        <!-- Lista de Exercícios do Dia Selecionado -->
-        <div id="exercises-list">
-            <!-- Gerado via JS -->
-        </div>
+        <div class="days-nav" id="days-container"></div>
+        <div id="exercises-list"></div>
     </div>
 
-    <!-- Menu Inferior -->
     <div class="bottom-nav">
         <button class="nav-item active">🏠<br>Início</button>
         <button class="nav-item">💪<br>Treinos</button>
@@ -161,7 +156,6 @@
     </div>
 
     <script>
-        // Dados exclusivos estruturados por ti
         const workoutData = {
             "Dia 1": {
                 title: "Peito e Ombros (Força)",
@@ -203,7 +197,6 @@
             daysContainer.innerHTML = "";
             exercisesList.innerHTML = "";
 
-            // Renderizar botões dos dias
             Object.keys(workoutData).forEach(day => {
                 const btn = document.createElement("button");
                 btn.className = `day-btn ${day === selectedDay ? 'active' : ''}`;
@@ -215,10 +208,8 @@
                 daysContainer.appendChild(btn);
             });
 
-            // Atualizar Banner
             bannerTitle.innerText = `${selectedDay}: ${workoutData[selectedDay].title}`;
 
-            // Renderizar exercícios
             workoutData[selectedDay].exercises.forEach(ex => {
                 let seriesHtml = ex.series.map(s => {
                     let parts = s.split(':');
