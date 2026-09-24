@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PULSOFIT ELITE PRO</title>
+    <title>PULSOFIT ELITE PRO MAX</title>
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#030504">
     <style>
@@ -11,7 +11,7 @@
             --primary: #00e676;
             --primary-glow: rgba(0, 230, 118, 0.4);
             --bg-deep: #030504;
-            --card-surface: rgba(10, 17, 13, 0.9);
+            --card-surface: rgba(10, 17, 13, 0.92);
             --border-neon: rgba(0, 230, 118, 0.35);
             --text-main: #ffffff;
             --text-muted: #94a3b8;
@@ -21,7 +21,7 @@
 
         body {
             background: linear-gradient(180deg, rgba(3, 5, 4, 0.95) 0%, rgba(3, 5, 4, 0.99) 100%), 
-                        url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1000&auto=format&fit=crop') no-repeat center center fixed;
+                        url('https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=1000&auto=format&fit=crop') no-repeat center center fixed;
             background-size: cover;
             color: var(--text-main);
             min-height: 100vh;
@@ -103,7 +103,45 @@
             align-items: center;
         }
 
-        /* Seletor de Músculos Avançado */
+        /* Cronómetro Interativo na App */
+        .timer-box {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid var(--border-neon);
+            border-radius: 14px;
+            padding: 16px;
+            text-align: center;
+            margin-bottom: 14px;
+        }
+        .timer-display {
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: var(--primary);
+            text-shadow: 0 0 12px var(--primary-glow);
+            margin: 6px 0;
+        }
+        .timer-controls {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        .btn-timer {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: #fff;
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        .btn-timer.active-t {
+            background: var(--primary);
+            color: #030504;
+            border-color: var(--primary);
+        }
+
+        /* Seletor de Músculos */
         .muscle-scroll {
             display: flex;
             gap: 8px;
@@ -124,9 +162,7 @@
             font-weight: 700;
             cursor: pointer;
             white-space: nowrap;
-            transition: all 0.2s;
         }
-
         .m-chip.active {
             background: var(--primary);
             color: #030504;
@@ -134,7 +170,7 @@
             box-shadow: 0 0 15px var(--primary-glow);
         }
 
-        /* Lista de Exercícios com Guia de Execução */
+        /* Exercícios e Guias */
         .exercise-box {
             background: rgba(6, 11, 8, 0.95);
             border: 1px solid rgba(255, 255, 255, 0.06);
@@ -170,7 +206,6 @@
             box-shadow: 0 0 10px var(--primary-glow);
         }
 
-        /* Caixa de Instruções Técnicas (Como Fazer) */
         .tech-guide {
             background: rgba(0, 0, 0, 0.45);
             border: 1px solid rgba(255, 255, 255, 0.04);
@@ -178,23 +213,42 @@
             padding: 10px;
             margin-top: 8px;
         }
-
-        .tech-guide p {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            line-height: 1.4;
-            margin-bottom: 4px;
-        }
+        .tech-guide p { font-size: 0.75rem; color: var(--text-muted); line-height: 1.4; margin-bottom: 4px; }
         .tech-guide p strong { color: #fff; }
 
-        /* Grelha Estatística */
+        /* Calculadora de 1RM e Ferramentas */
+        .calc-group {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        .calc-input {
+            flex: 1;
+            background: rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 10px;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 0.85rem;
+        }
+        .calc-result {
+            background: rgba(0,230,118,0.1);
+            border: 1px dashed var(--primary);
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--primary);
+            font-weight: 700;
+            margin-top: 10px;
+        }
+
         .stats-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 10px;
             margin-bottom: 12px;
         }
-
         .stat-card {
             background: rgba(0,0,0,0.4);
             border: 1px solid rgba(255,255,255,0.05);
@@ -205,7 +259,6 @@
         .stat-card span { font-size: 0.7rem; color: var(--text-muted); display: block; margin-bottom: 3px; text-transform: uppercase; }
         .stat-card strong { font-size: 1.25rem; color: var(--primary); font-weight: 900; }
 
-        /* Botão Principal */
         .btn-main {
             background: var(--primary);
             color: #030504;
@@ -220,9 +273,7 @@
             cursor: pointer;
             box-shadow: 0 5px 20px var(--primary-glow);
         }
-        .btn-main:active { transform: scale(0.98); }
 
-        /* Toast de Notificação */
         #toast-alert {
             position: fixed;
             top: 20px;
@@ -242,7 +293,6 @@
         }
         #toast-alert.show { transform: translateX(-50%) translateY(0); }
 
-        /* Barra de Navegação Inferior */
         nav {
             position: fixed;
             bottom: 0;
@@ -257,7 +307,6 @@
             backdrop-filter: blur(15px);
             z-index: 1000;
         }
-
         .nav-tab {
             background: none;
             border: none;
@@ -285,34 +334,39 @@
             <h1>Pulsofit Elite</h1>
             <span>Advanced Training Engine</span>
         </div>
-        <div class="badge-pro-max">PRO+</div>
+        <div class="badge-pro-max">PRO MAX</div>
     </header>
 
     <div class="container">
-        <!-- ABA 1: INÍCIO -->
+        <!-- ABA 1: DASHBOARD & FERRAMENTAS DE FORÇA -->
         <div id="tab-home" class="section">
             <div class="card-pro">
-                <h2>Dashboard de Atividade 🔥</h2>
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <span>Carga Acumulada</span>
-                        <strong>14.2 Ton</strong>
-                    </div>
-                    <div class="stat-card">
-                        <span>Eficiência</span>
-                        <strong>96%</strong>
+                <h2>Cronómetro de Descanso ⏱️</h2>
+                <div class="timer-box">
+                    <span style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase;">Tempo Restante entre Séries</span>
+                    <div id="timer-text" class="timer-display">01:30</div>
+                    <div class="timer-controls">
+                        <button class="btn-timer" onclick="setTimer(60)">60s</button>
+                        <button class="btn-timer active-t" onclick="setTimer(90)">90s</button>
+                        <button class="btn-timer" onclick="setTimer(120)">120s</button>
+                        <button class="btn-timer" onclick="startTimer()" style="background:var(--primary); color:#030504; font-weight:900;">Iniciar</button>
                     </div>
                 </div>
-                <button class="btn-main" onclick="showAlert('Sessão sincronizada com o servidor central!')">Sincronizar Cloud</button>
+
+                <h2>Calculadora de 1RM 🏋️‍♂️</h2>
+                <div class="calc-group">
+                    <input type="number" id="calc-weight" class="calc-input" placeholder="Carga (kg)">
+                    <input type="number" id="calc-reps" class="calc-input" placeholder="Repetições">
+                </div>
+                <button class="btn-main" onclick="calculateMax()">Calcular Força Máxima</button>
+                <div id="calc-output" class="calc-result">Insere os dados para estimar o teu 1RM</div>
             </div>
         </div>
 
-        <!-- ABA 2: TREINO COM GUIA TÉCNICO COMPLETO -->
+        <!-- ABA 2: TREINO COM GUIA TÉCNICO -->
         <div id="tab-workout" class="section active">
             <div class="card-pro">
                 <h2 id="category-title">Foco: Peito & Hipertrofia</h2>
-                <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 12px;">Seleciona o grupo muscular e estuda a execução técnica de cada exercício:</p>
-                
                 <div class="muscle-scroll">
                     <button class="m-chip active" onclick="loadAdvancedWorkout('peito', 'Peito & Hipertrofia', this)">Peito</button>
                     <button class="m-chip" onclick="loadAdvancedWorkout('costas', 'Costas & Espessura', this)">Costas</button>
@@ -331,7 +385,7 @@
                         </div>
                         <div class="tech-guide">
                             <p><strong>Como Executar:</strong> Deita-te no banco, retrai as escápulas e mantém os pés firmes no chão.</p>
-                            <p><strong>Postura:</strong> Desce a barra controladamente até tocar levemente no peito médio e empurra explosivamente para cima.</p>
+                            <p><strong>Postura:</strong> Desce a barra controladamente até tocar levemente no peito médio e empurra explosivamente.</p>
                         </div>
                     </div>
 
@@ -344,13 +398,13 @@
                             <button class="btn-check-pro" onclick="toggleExec(this)">Feito</button>
                         </div>
                         <div class="tech-guide">
-                            <p><strong>Como Executar:</strong> Ajusta o banco a 30-45 graus. Mantém os cotovelos ligeiramente fechados para proteger os ombros.</p>
-                            <p><strong>Postura:</strong> Sente o trabalho máximo na porção clavicular (superior) do peitoral durante a subida.</p>
+                            <p><strong>Como Executar:</strong> Ajusta o banco a 30-45 graus. Mantém os cotovelos ligeiramente fechados.</p>
+                            <p><strong>Postura:</strong> Foca a contração na porção superior do peitoral no topo do movimento.</p>
                         </div>
                     </div>
                 </div>
 
-                <button class="btn-main" style="margin-top: 10px;" onclick="showAlert('Treino avançado concluído com sucesso!')">Finalizar Sessão de Treino</button>
+                <button class="btn-main" style="margin-top: 10px;" onclick="showAlert('Sessão avançada guardada com sucesso!')">Finalizar Sessão de Treino</button>
             </div>
         </div>
 
@@ -376,8 +430,8 @@
     <!-- NAVEGAÇÃO INFERIOR -->
     <nav>
         <button class="nav-tab" onclick="changeTab('tab-home', this)">
-            <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-            Início
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+            Ferramentas
         </button>
         <button class="nav-tab active" onclick="changeTab('tab-workout', this)">
             <svg viewBox="0 0 24 24"><path d="M20.57 14.86L22 13.43 20.57 12 17 15.57 13.43 12 12 13.43 14.34 15.77 12 18.11 13.43 19.54 17 15.97l3.57 3.57 1.43-1.43-2.34-2.34z"/></svg>
@@ -390,6 +444,47 @@
     </nav>
 
     <script>
+        let countdown;
+        let timeLeft = 90;
+
+        function setTimer(seconds) {
+            timeLeft = seconds;
+            updateTimerDisplay();
+            document.querySelectorAll('.btn-timer').forEach(b => b.classList.remove('active-t'));
+            event.target.classList.add('active-t');
+        }
+
+        function updateTimerDisplay() {
+            const m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+            const s = (timeLeft % 60).toString().padStart(2, '0');
+            document.getElementById('timer-text').innerText = `${m}:${s}`;
+        }
+
+        function startTimer() {
+            clearInterval(countdown);
+            countdown = setInterval(() => {
+                if (timeLeft > 0) {
+                    timeLeft--;
+                    updateTimerDisplay();
+                } else {
+                    clearInterval(countdown);
+                    showAlert('Tempo de descanso concluído! Próxima série.');
+                }
+            }, 1000);
+        }
+
+        function calculateMax() {
+            const w = parseFloat(document.getElementById('calc-weight').value);
+            const r = parseFloat(document.getElementById('calc-reps').value);
+            if (!w || !r) {
+                showAlert('Insere valores válidos de carga e repetições!');
+                return;
+            }
+            // Fórmula de Epley para 1RM
+            const rm = Math.round(w * (1 + r / 30));
+            document.getElementById('calc-output').innerText = `Estimativa de 1RM: ${rm} kg`;
+        }
+
         const advancedWorkouts = {
             'peito': [
                 { name: 'Supino Reto com Barra', sets: '4 Séries • 10 Reps • 90s Descanso', guide: 'Deita-te no banco, retrai as escápulas e mantém os pés firmes no chão.', posture: 'Desce a barra controladamente até tocar levemente no peito médio e empurra explosivamente.' },
@@ -397,14 +492,14 @@
             ],
             'costas': [
                 { name: 'Puxada Alta na Polia', sets: '4 Séries • 10 Reps • 90s Descanso', guide: 'Agarra a barra com pegada aberta, peito estufado para fora e tronco inclinado para trás.', posture: 'Puxa a barra em direção ao peito superior esmagando as escápulas.' },
-                { name: 'Remada Curvada com Barra', sets: '4 Séries • 10 Reps • 90s Descanso', guide: 'Mantém a coluna neutra a 45 graus e o core totalmente contraído.', posture: 'Puxa a barra em direção ao umbigo controlando a fase excêntrica (descida).' }
+                { name: 'Remada Curvada com Barra', sets: '4 Séries • 10 Reps • 90s Descanso', guide: 'Mantém a coluna neutra a 45 graus e o core totalmente contraído.', posture: 'Puxa a barra em direção ao umbigo controlando a fase excêntrica.' }
             ],
             'pernas': [
                 { name: 'Agachamento Livre', sets: '4 Séries • 8 Reps • 120s Descanso', guide: 'Barra apoiada nos trapézios, pés à largura dos ombros.', posture: 'Desce os glúteos para trás controlando o joelho alinhado com a ponta do pé.' },
                 { name: 'Leg Press 45º', sets: '4 Séries • 12 Reps • 90s Descanso', guide: 'Posiciona os pés a meio da plataforma com largura média.', posture: 'Desce até formar um ângulo de 90 graus nos joelhos sem tirar a lombar do encosto.' }
             ],
             'ombros': [
-                { name: 'Desenvolvimento Militar', sets: '4 Séries • 10 Reps • 90s Descanso', guide: 'Em pé ou sentado, segura a barra à altura dos clavículas.', posture: 'Empurra a barra verticalmente até estender os braços acima da cabeça.' },
+                { name: 'Desenvolvimento Militar', sets: '4 Séries • 10 Reps • 90s Descanso', guide: 'Em pé ou sentado, segura a barra à altura das clavículas.', posture: 'Empurra a barra verticalmente até estender os braços acima da cabeça.' },
                 { name: 'Elevações Laterais', sets: '4 Séries • 15 Reps • 60s Descanso', guide: 'Halteres leves ao lado do corpo, ligeira flexão nos cotovelos.', posture: 'Eleva os braços até à altura dos ombros focando o deltoide lateral.' }
             ]
         };
