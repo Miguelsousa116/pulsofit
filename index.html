@@ -2,25 +2,30 @@
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PulsoFit - Elite Workout</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PulsoFit - Elite Training</title>
     <style>
         :root {
-            --bg-color: #0e131f;
-            --card-bg: #162032;
+            --bg-color: #080c14;
+            --card-bg: #111827;
+            --card-border: #1f293d;
+            --accent-green: #10b981;
             --accent-lime: #c6ff00;
-            --accent-cyan: #00e5ff;
-            --text-main: #ffffff;
-            --text-muted: #8c9bae;
+            --accent-cyan: #06b6d4;
+            --text-main: #f9fafb;
+            --text-muted: #9ca3af;
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text-main); padding-bottom: 110px; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bg-color); color: var(--text-main); padding-bottom: 130px; }
 
-        /* Topo do Perfil Estilo App Profissional */
-        .top-header {
-            background: linear-gradient(180deg, #162032 0%, #0e131f 100%);
-            padding: 20px 16px;
-            border-bottom: 1px solid #1f2d42;
+        /* Topo Comercial */
+        .app-header {
+            background: linear-gradient(180deg, #111827 0%, var(--bg-color) 100%);
+            padding: 16px;
+            border-bottom: 1px solid var(--card-border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
         .user-row {
             display: flex;
@@ -28,100 +33,90 @@
             align-items: center;
             margin-bottom: 12px;
         }
-        .user-title { font-size: 1.3rem; font-weight: 700; color: var(--text-main); }
-        .stats-badge { background: rgba(198, 255, 0, 0.1); color: var(--accent-lime); font-size: 0.75rem; padding: 4px 10px; border-radius: 20px; font-weight: 600; }
-        
-        /* Dias de Treino */
-        .days-container {
+        .user-name { font-size: 1.25rem; font-weight: 800; letter-spacing: -0.5px; }
+        .pro-badge { background: linear-gradient(135deg, #10b981, #06b6d4); color: #000; font-size: 0.7rem; padding: 4px 10px; border-radius: 20px; font-weight: 700; text-transform: uppercase; }
+
+        /* Dias de Treino Horizontal */
+        .days-scroll {
             display: flex;
             gap: 8px;
             overflow-x: auto;
-            padding: 4px 0 12px 0;
+            padding-bottom: 4px;
+            scrollbar-width: none;
         }
+        .days-scroll::-webkit-scrollbar { display: none; }
         .day-chip {
-            background: #1f2d42;
-            border: none;
+            background: #192338;
+            border: 1px solid var(--card-border);
             color: var(--text-muted);
-            padding: 8px 16px;
+            padding: 8px 14px;
             border-radius: 12px;
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             cursor: pointer;
             white-space: nowrap;
-            transition: all 0.2s;
+            font-weight: 600;
+            transition: 0.2s;
         }
         .day-chip.active {
             background: var(--accent-lime);
             color: #000;
-            font-weight: bold;
+            border-color: var(--accent-lime);
         }
 
         .container { padding: 16px; max-width: 600px; margin: 0 auto; }
-        .app-section { display: none; }
-        .app-section.active { display: block; }
+        .app-view { display: none; }
+        .app-view.active { display: block; }
 
-        /* Cartão de Exercício Estilo Referência */
+        /* Cartão de Exercício Estilo App de Alta Performance */
         .exercise-card {
             background: var(--card-bg);
+            border: 1px solid var(--card-border);
             border-radius: 16px;
             padding: 16px;
             margin-bottom: 16px;
-            border: 1px solid #1f2d42;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
         }
-        .ex-header {
+        .ex-top {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            margin-bottom: 6px;
+            align-items: flex-start;
+            margin-bottom: 4px;
         }
-        .ex-name { font-size: 1.1rem; font-weight: 700; color: var(--text-main); }
-        .ex-muscles { font-size: 0.75rem; color: var(--accent-cyan); background: rgba(0, 229, 255, 0.1); padding: 3px 8px; border-radius: 6px; }
-        .ex-note { font-size: 0.82rem; color: var(--text-muted); margin-bottom: 14px; }
+        .ex-title { font-size: 1.05rem; font-weight: 700; }
+        .ex-tag { font-size: 0.7rem; color: var(--accent-cyan); background: rgba(6, 182, 212, 0.1); padding: 3px 8px; border-radius: 6px; font-weight: 600; }
+        .ex-tip { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 12px; font-style: italic; }
 
-        /* Círculos de Métricas (Repetições / Descanso) */
-        .metrics-row {
-            display: flex;
-            justify-content: space-around;
-            margin-bottom: 16px;
-            background: #0f1522;
-            padding: 12px;
+        /* Métricas em Círculo */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 14px;
+            background: #080c14;
+            padding: 10px;
             border-radius: 12px;
-        }
-        .metric-circle {
             text-align: center;
+            border: 1px solid #162032;
         }
-        .circle-value {
-            width: 50px;
-            height: 50px;
-            border: 2px solid var(--accent-lime);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.95rem;
-            font-weight: bold;
-            color: var(--accent-lime);
-            margin: 0 auto 4px auto;
-        }
-        .metric-label { font-size: 0.7rem; color: var(--text-muted); }
+        .metric-box .val { font-size: 0.95rem; font-weight: 700; color: var(--accent-lime); }
+        .metric-box .lbl { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; margin-top: 2px; }
 
-        /* Grelha de Séries Estilo App Real */
-        .series-table-title { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.5px; }
+        /* Tabela de Séries */
+        .series-table-title { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 6px; font-weight: 700; letter-spacing: 0.5px; }
         .series-row-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: #111827;
+            background: #0e1420;
             padding: 8px 12px;
             border-radius: 8px;
             margin-bottom: 6px;
             font-size: 0.85rem;
-            border: 1px solid #1f2d42;
+            border: 1px solid #1a2333;
         }
         .series-row-item span { color: var(--text-muted); }
         .series-row-item strong { color: var(--text-main); }
 
-        /* Botão de Registar Série */
         .btn-register {
             width: 100%;
             background: var(--accent-lime);
@@ -130,154 +125,175 @@
             padding: 12px;
             border-radius: 10px;
             font-weight: bold;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             cursor: pointer;
             margin-top: 10px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
-        /* Menu Inferior Fixo Exclusivo */
+        /* Menu Inferior Flutuante Comercial */
         .bottom-nav {
             position: fixed;
             bottom: 20px;
             left: 16px;
             right: 16px;
-            background: #162032;
-            border: 1px solid #1f2d42;
-            border-radius: 16px;
+            background: #111827;
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
             display: flex;
             justify-content: space-around;
             padding: 10px 0;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.8);
             z-index: 1000;
         }
-        .nav-item {
+        .nav-btn {
             background: none;
             border: none;
             color: var(--text-muted);
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             text-align: center;
             cursor: pointer;
+            font-weight: 500;
         }
-        .nav-item.active { color: var(--accent-lime); font-weight: bold; }
-        
-        .info-card {
+        .nav-btn.active { color: var(--accent-lime); font-weight: 700; }
+
+        /* Cartões de Info / Home */
+        .pro-card {
             background: var(--card-bg);
+            border: 1px solid var(--card-border);
             border-radius: 16px;
             padding: 16px;
             margin-bottom: 12px;
-            border: 1px solid #1f2d42;
         }
-        .info-card h3 { color: var(--accent-lime); margin-bottom: 6px; font-size: 1rem; }
-        .info-card p { font-size: 0.85rem; color: var(--text-muted); }
+        .pro-card h3 { font-size: 1.05rem; color: var(--accent-lime); margin-bottom: 6px; }
+        .pro-card p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.4; }
     </style>
 </head>
 <body>
 
-    <!-- Topo Estilo App de Alta Performance -->
-    <div class="top-header">
+    <!-- Topo da Aplicação (Só aparece nos Treinos) -->
+    <div class="app-header" id="header-treinos" style="display: none;">
         <div class="user-row">
-            <div class="user-title">Paulo Miguel</div>
-            <div class="stats-badge">3 de 4 treinos</div>
+            <div>
+                <div class="user-name">Paulo Miguel</div>
+            </div>
+            <div class="pro-badge">3 de 4 treinos</div>
         </div>
-        <!-- Abas dos Dias -->
-        <div class="days-container" id="days-nav-container"></div>
+        <div class="days-scroll" id="days-nav"></div>
     </div>
 
     <div class="container">
         
-        <!-- SECÇÃO DE TREINOS -->
-        <div id="sec-treinos" class="app-section active">
-            <div id="exercises-wrapper"></div>
-        </div>
-
-        <!-- SECÇÃO DE NUTRIÇÃO -->
-        <div id="sec-nutricao" class="app-section">
-            <div class="info-card">
-                <h3>Dieta de Hipertrofia</h3>
-                <p>Foco em excedente calórico limpo para ganho de massa muscular de qualidade.</p>
+        <!-- VISTA DE INÍCIO (Home) -->
+        <div id="view-inicio" class="app-view active">
+            <div class="pro-card" style="border-left: 4px solid var(--accent-lime);">
+                <h3>Bem-vindo de volta, Paulo! 🔥</h3>
+                <p>O teu plano de hipertrofia avançada está ativo. Vai a <strong>Treinos</strong> em baixo para começares a registar as tuas séries de hoje.</p>
             </div>
-            <div class="info-card">
-                <h3>Refeição Principal</h3>
-                <p>200g de Arroz, 150g de Frango e Azeite virgem extra.</p>
+            <div class="pro-card">
+                <h3>Resumo da Semana</h3>
+                <p>Status atual: <strong>4 treinos planeados</strong> por semana. Consistência em alta!</p>
             </div>
         </div>
 
-        <!-- SECÇÃO DE EVOLUÇÃO -->
-        <div id="sec-evolucao" class="app-section">
-            <div class="info-card">
+        <!-- VISTA DE TREINOS -->
+        <div id="view-treinos" class="app-view">
+            <div id="exercises-container"></div>
+        </div>
+
+        <!-- VISTA DE NUTRIÇÃO -->
+        <div id="view-nutricao" class="app-view">
+            <div class="pro-card">
+                <h3>Plano Nutricional Diário</h3>
+                <p>Calculado para otimização de ganho de massa muscular magra e recuperação rápida.</p>
+            </div>
+            <div class="pro-card">
+                <h3>Refeição Pré-Treino (1h antes)</h3>
+                <p>100g de Aveia + 30g Whey Protein + 1 Banana média.</p>
+            </div>
+            <div class="pro-card">
+                <h3>Refeição Pós-Treino</h3>
+                <p>200g Arroz Branco + 160g Peito de Frango Grelhado + Brócolos.</p>
+            </div>
+        </div>
+
+        <!-- VISTA DE EVOLUÇÃO -->
+        <div id="view-evolucao" class="app-view">
+            <div class="pro-card">
+                <h3>Registo de Consistência</h3>
+                <p>Streak atual: <strong>4 semanas seguidas de treino intenso</strong>.</p>
+            </div>
+            <div class="pro-card">
                 <h3>Estatísticas de Carga</h3>
-                <p>Progressão linear ativa em todos os exercícios principais da semana.</p>
+                <p>Evolução positiva detetada no Supino Reto e Desenvolvimento Militar.</p>
             </div>
         </div>
 
     </div>
 
-    <!-- Menu Inferior -->
+    <!-- Navegação Inferior -->
     <div class="bottom-nav">
-        <button class="nav-item active" onclick="trocarAba('treinos', this)">🏠<br>Início</button>
-        <button class="nav-item" onclick="trocarAba('treinos', this)">💪<br>Treinos</button>
-        <button class="nav-item" onclick="trocarAba('nutricao', this)">🥗<br>Nutrição</button>
-        <button class="nav-item" onclick="trocarAba('evolucao', this)">📈<br>Evolução</button>
+        <button class="nav-btn active" onclick="switchView('inicio', this)">🏠<br>Início</button>
+        <button class="nav-btn" onclick="switchView('treinos', this)">💪<br>Treinos</button>
+        <button class="nav-btn" onclick="switchView('nutricao', this)">🥗<br>Nutrição</button>
+        <button class="nav-btn" onclick="switchView('evolucao', this)">📈<br>Evolução</button>
     </div>
 
     <script>
-        const workoutPlan = {
+        const database = {
             "Dia 1": {
-                title: "Peito e Ombros",
+                name: "Peito e Ombros",
                 exercises: [
-                    { name: "Supino Reto com Halteres", target: "Peito • Tríceps", note: "Aumentar a carga gradualmente nas séries finais.", reps: "8-10", rest: "2:00", sets: ["S1 (Aquecimento): 15-20 reps", "S2: 10-12 reps", "S3: 8-10 reps", "S4: 8 reps"] },
-                    { name: "Desenvolvimento Militar", target: "Ombros • Core", note: "Manter o tronco firme e controlado.", reps: "10-12", rest: "1:30", sets: ["S1: 12 reps", "S2: 10 reps", "S3: 8-10 reps"] }
+                    { title: "Supino Reto com Halteres", tag: "Peito • Tríceps", tip: "Aumentar a carga gradualmente nas séries finais.", reps: "8-10", rest: "2:00", sets: ["S1 (Aquecimento): 15-20 reps", "S2: 10-12 reps", "S3: 8-10 reps", "S4: 8 reps"] },
+                    { title: "Desenvolvimento Militar", tag: "Ombros • Core", tip: "Manter o tronco firme e controlado.", reps: "10-12", rest: "1:30", sets: ["S1: 12 reps", "S2: 10 reps", "S3: 8-10 reps"] }
                 ]
             },
             "Dia 2": {
-                title: "Costas e Bíceps",
+                name: "Costas e Bíceps",
                 exercises: [
-                    { name: "Puxada Vertical Aberta", target: "Dorsal • Bíceps", note: "Puxar com os cotovelos em direção ao corpo.", reps: "10-12", rest: "1:30", sets: ["S1: 15 reps", "S2: 12 reps", "S3: 10 reps", "S4: 8 reps"] },
-                    { name: "Remada Curvada com Barra", target: "Costas • Lombar", note: "Coluna neutra e tronco inclinado a 45º.", reps: "8-10", rest: "2:00", sets: ["S1: 12 reps", "S2: 10 reps", "S3: 8 reps"] }
+                    { title: "Puxada Vertical Aberta", tag: "Dorsal • Bíceps", tip: "Puxar com os cotovelos em direção ao corpo.", reps: "10-12", rest: "1:30", sets: ["S1: 15 reps", "S2: 12 reps", "S3: 10 reps", "S4: 8 reps"] },
+                    { title: "Remada Curvada com Barra", tag: "Costas • Lombar", tip: "Coluna neutra e tronco inclinado a 45º.", reps: "8-10", rest: "2:00", sets: ["S1: 12 reps", "S2: 10 reps", "S3: 8 reps"] }
                 ]
             },
             "Dia 3": {
-                title: "Pernas Completo",
+                name: "Pernas Completo",
                 exercises: [
-                    { name: "Agachamento Livre", target: "Quadríceps • Glúteos", note: "Amplitude completa com foco na descida.", reps: "8-10", rest: "2:30", sets: ["S1: 15 reps", "S2: 10 reps", "S3: 8 reps", "S4: 6 reps"] },
-                    { name: "Leg Press 45º", target: "Quadríceps", note: "Posicionamento firme dos pés na plataforma.", reps: "10-12", rest: "1:30", sets: ["S1: 12 reps", "S2: 12 reps", "S3: 10 reps"] }
+                    { title: "Agachamento Livre", tag: "Quadríceps • Glúteos", tip: "Amplitude completa com foco na descida.", reps: "8-10", rest: "2:30", sets: ["S1: 15 reps", "S2: 10 reps", "S3: 8 reps", "S4: 6 reps"] },
+                    { title: "Leg Press 45º", tag: "Quadríceps", tip: "Posicionamento firme dos pés na plataforma.", reps: "10-12", rest: "1:30", sets: ["S1: 12 reps", "S2: 12 reps", "S3: 10 reps"] }
                 ]
             },
             "Dia 4": {
-                title: "Braços e Abdómen",
+                name: "Braços e Abdómen",
                 exercises: [
-                    { name: "Rosca Direta com Barra", target: "Bíceps", note: "Evitar balançar o corpo durante o movimento.", reps: "10-12", rest: "1:30", sets: ["S1: 12 reps", "S2: 10 reps", "S3: 10 reps", "S4: 8 reps"] },
-                    { name: "Tríceps Testa", target: "Tríceps", note: "Isolar o movimento apenas nos cotovelos.", reps: "10-12", rest: "1:30", sets: ["S1: 12 reps", "S2: 10 reps", "S3: 10 reps"] }
+                    { title: "Rosca Direta com Barra", tag: "Bíceps", tip: "Evitar balançar o corpo durante o movimento.", reps: "10-12", rest: "1:30", sets: ["S1: 12 reps", "S2: 10 reps", "S3: 10 reps", "S4: 8 reps"] },
+                    { title: "Tríceps Testa", tag: "Tríceps", tip: "Isolar o movimento apenas nos cotovelos.", reps: "10-12", rest: "1:30", sets: ["S1: 12 reps", "S2: 10 reps", "S3: 10 reps"] }
                 ]
             }
         };
 
-        let activeDay = "Dia 1";
+        let currentDay = "Dia 1";
 
         function renderWorkout() {
-            const daysNav = document.getElementById("days-nav-container");
-            const wrapper = document.getElementById("exercises-wrapper");
-            
-            daysNav.innerHTML = "";
-            wrapper.innerHTML = "";
+            const daysNav = document.getElementById("days-nav");
+            const container = document.getElementById("exercises-container");
 
-            // Renderizar botões de dias no topo
-            Object.keys(workoutPlan).forEach(day => {
+            daysNav.innerHTML = "";
+            container.innerHTML = "";
+
+            Object.keys(database).forEach(dayKey => {
                 const btn = document.createElement("button");
-                btn.className = `day-chip ${day === activeDay ? 'active' : ''}`;
-                btn.innerText = `${day}: ${workoutPlan[day].title}`;
+                btn.className = `day-chip ${dayKey === currentDay ? 'active' : ''}`;
+                btn.innerText = `${dayKey}: ${database[dayKey].name}`;
                 btn.onclick = () => {
-                    activeDay = day;
+                    currentDay = dayKey;
                     renderWorkout();
                 };
                 daysNav.appendChild(btn);
             });
 
-            // Renderizar exercícios do dia ativo com os círculos e grelhas de séries
-            workoutPlan[activeDay].exercises.forEach((ex, index) => {
-                let seriesListHtml = ex.sets.map((setInfo, sIdx) => `
+            database[currentDay].exercises.forEach((ex) => {
+                let setsHtml = ex.sets.map((setInfo, sIdx) => `
                     <div class="series-row-item">
                         <span>Conjunto ${sIdx + 1}</span>
                         <strong>${setInfo}</strong>
@@ -287,42 +303,50 @@
                 const card = document.createElement("div");
                 card.className = "exercise-card";
                 card.innerHTML = `
-                    <div class="ex-header">
-                        <span class="ex-name">${ex.name}</span>
-                        <span class="ex-muscles">${ex.target}</span>
+                    <div class="ex-top">
+                        <span class="ex-title">${ex.title}</span>
+                        <span class="ex-tag">${ex.tag}</span>
                     </div>
-                    <div class="ex-note">${ex.note}</div>
+                    <div class="ex-tip">${ex.tip}</div>
                     
-                    <div class="metrics-row">
-                        <div class="metric-circle">
-                            <div class="circle-value">${ex.reps}</div>
-                            <div class="metric-label">Repetições</div>
+                    <div class="metrics-grid">
+                        <div class="metric-box">
+                            <div class="val">${ex.reps}</div>
+                            <div class="lbl">Repetições</div>
                         </div>
-                        <div class="metric-circle">
-                            <div class="circle-value">${ex.rest}</div>
-                            <div class="circle-label">Descanso</div>
+                        <div class="metric-box">
+                            <div class="val">${ex.rest}</div>
+                            <div class="lbl">Descanso</div>
                         </div>
-                        <div class="metric-circle">
-                            <div class="circle-value">0/${ex.sets.length}</div>
-                            <div class="metric-label">Feitos</div>
+                        <div class="metric-box">
+                            <div class="val">0/${ex.sets.length}</div>
+                            <div class="lbl">Feitos</div>
                         </div>
                     </div>
 
                     <div class="series-table-title">Registo de Séries</div>
-                    ${seriesListHtml}
+                    ${setsHtml}
                     
                     <button class="btn-register" onclick="alert('Série registada com sucesso!')">Registar Série</button>
                 `;
-                wrapper.appendChild(card);
+                container.appendChild(card);
             });
         }
 
-        function trocarAba(secName, btnElement) {
-            document.querySelectorAll('.app-section').forEach(sec => sec.classList.remove('active'));
-            document.getElementById('sec-' + secName).classList.add('active');
+        function switchView(viewName, btnEl) {
+            document.querySelectorAll('.app-view').forEach(v => v.classList.remove('active'));
+            document.getElementById('view-' + viewName).classList.add('active');
 
-            document.querySelectorAll('.bottom-nav .nav-item').forEach(b => b.classList.remove('active'));
-            btnElement.classList.add('active');
+            // Mostrar ou esconder o cabeçalho dos treinos dependendo da aba
+            const headerTreinos = document.getElementById('header-treinos');
+            if (viewName === 'treinos') {
+                headerTreinos.style.display = 'block';
+            } else {
+                headerTreinos.style.display = 'none';
+            }
+
+            document.querySelectorAll('.bottom-nav .nav-btn').forEach(b => b.classList.remove('active'));
+            btnEl.classList.add('active');
         }
 
         renderWorkout();
