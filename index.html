@@ -1,52 +1,639 @@
-// Estado inicial limpo ou carregado do localStorage do utilizador
-const defaultState = {
-    user: {
-        name: "",
-        currentWeight: "",
-        targetWeight: "",
-        hydrationGoal: 3.0,
-        currentHydration: 0,
-        streak: 0
-    },
-    nutrition: {
-        proteinConsumed: 0,
-        proteinGoal: 0,
-        carbsConsumed: 0,
-        carbsGoal: 0,
-        fatsConsumed: 0,
-        fatsGoal: 0
-    },
-    // Plano de 4 Dias Surpresa (Estrutura Dinâmica)
-    workoutPlan: {
-        "Dia 1: Superior A (Peito e Costas)": [
-            { name: "Supino Reto com Halteres", sets: 4, reps: "8-10", weight: "0kg", done: false },
-            { name: "Puxada Alta na Polia", sets: 4, reps: "10-12", weight: "0kg", done: false },
-            { name: "Desenvolvimento Militar", sets: 3, reps: "10-12", weight: "0kg", done: false },
-            { name: "Remo Curvado", sets: 3, reps: "8-10", weight: "0kg", done: false }
-        ],
-        "Dia 2: Inferior A (Foco Quadríceps)": [
-            { name: "Agachamento Livre", sets: 4, reps: "6-8", weight: "0kg", done: false },
-            { name: "Prensa Inclinada", sets: 3, reps: "10-12", weight: "0kg", done: false },
-            { name: "Extensão de Pernas", sets: 3, reps: "12-15", weight: "0kg", done: false },
-            { name: "Elevação de Panturrilhas", sets: 4, reps: "15-20", weight: "0kg", done: false }
-        ],
-        "Dia 3: Superior B (Ombros e Braços)": [
-            { name: "Supino Inclinado", sets: 4, reps: "8-10", weight: "0kg", done: false },
-            { name: "Elevação Lateral", sets: 4, reps: "12-15", weight: "0kg", done: false },
-            { name: "Rosca Direta com Barra", sets: 3, reps: "10-12", weight: "0kg", done: false },
-            { name: "Tríceps Testa", sets: 3, reps: "10-12", weight: "0kg", done: false }
-        ],
-        "Dia 4: Inferior B (Foco Posterior e Glúteos)": [
-            { name: "Peso Muerto / Stiff", sets: 4, reps: "8-10", weight: "0kg", done: false },
-            { name: "Flexão de Pernas (Mesa)", sets: 3, reps: "12-15", weight: "0kg", done: false },
-            { name: "Elevação Pélvica", sets: 4, reps: "10-12", weight: "0kg", done: false },
-            { name: "Abdominal na Polia", sets: 3, reps: "15-20", weight: "0kg", done: false }
-        ]
-    }
-};
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pulsofit - Fitness & Nutrição</title>
+    <style>
+        :root {
+            --bg-color: #0d0b14;
+            --card-bg: #171424;
+            --card-border: #2c2541;
+            --primary: #9d4edd;
+            --primary-hover: #7b2cbf;
+            --text-main: #ffffff;
+            --text-muted: #a09abc;
+            --success: #38b000;
+        }
 
-let appData = JSON.parse(localStorage.getItem('pulsofit_user_data')) || defaultState;
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
 
-function saveAppData() {
-    localStorage.setItem('pulsofit_user_data', JSON.stringify(appData));
-}
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding-bottom: 80px;
+        }
+
+        /* Top Bar */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            background: var(--card-bg);
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        .user-badge {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .user-info h2 {
+            font-size: 16px;
+        }
+
+        .user-info span {
+            font-size: 12px;
+            color: var(--success);
+        }
+
+        .info-btn {
+            background: var(--card-border);
+            border: none;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        /* Containers & Views */
+        .container {
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .view {
+            display: none;
+        }
+
+        .view.active {
+            display: block;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        .card h3 {
+            margin-bottom: 12px;
+            font-size: 18px;
+        }
+
+        /* Welcome Banner */
+        .welcome-card {
+            background: linear-gradient(135deg, #24143a 0%, #120b1f 100%);
+        }
+
+        .welcome-card h1 {
+            font-size: 22px;
+            margin-bottom: 8px;
+        }
+
+        .welcome-card p {
+            color: var(--text-muted);
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .stat-box {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .stat-box span {
+            display: block;
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+            text-transform: uppercase;
+        }
+
+        .stat-box strong {
+            font-size: 15px;
+        }
+
+        /* Buttons */
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 15px;
+            cursor: pointer;
+            transition: background 0.2s;
+            text-align: center;
+            display: block;
+            text-decoration: none;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+        }
+
+        /* Workout Plan Items */
+        .workout-days-selector {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            margin-bottom: 16px;
+            padding-bottom: 4px;
+        }
+
+        .day-tab {
+            background: var(--card-border);
+            border: none;
+            color: var(--text-muted);
+            padding: 8px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            white-space: nowrap;
+            font-size: 13px;
+        }
+
+        .day-tab.active {
+            background: var(--primary);
+            color: white;
+            font-weight: bold;
+        }
+
+        .exercise-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--card-border);
+            border-radius: 10px;
+            padding: 12px 16px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .exercise-info h4 {
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+
+        .exercise-info p {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        /* Bottom Nav */
+        .nav-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: var(--card-bg);
+            border-top: 1px solid var(--card-border);
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            z-index: 1000;
+        }
+
+        .nav-item {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 11px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+        }
+
+        /* Modal / Inputs */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            padding: 20px;
+        }
+
+        .modal.open {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            padding: 24px;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .modal-content h3 { margin-bottom: 16px; }
+
+        .form-group {
+            margin-bottom: 14px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            background: var(--bg-color);
+            border: 1px solid var(--card-border);
+            color: white;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Header -->
+    <header class="header">
+        <div class="user-badge">
+            <div class="avatar" id="userAvatar">U</div>
+            <div class="user-info">
+                <h2 id="displayUserName">Utilizador</h2>
+                <span>● Ativo agora</span>
+            </div>
+        </div>
+        <button class="info-btn" onclick="openProfileModal()">⚙️</button>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="container">
+
+        <!-- VIEW: INÍCIO -->
+        <section id="view-inicio" class="view active">
+            <div class="card welcome-card">
+                <h1 id="welcomeGreeting">Pronto para dominar o dia? 🔥</h1>
+                <p id="welcomeSubtext">Configura o teu perfil para começar a monitorizar o teu foco e treinos.</p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <span>Peso Atual</span>
+                    <strong id="statWeight">-- kg</strong>
+                </div>
+                <div class="stat-box">
+                    <span>Água Diária</span>
+                    <strong id="statWater">0.0 L</strong>
+                </div>
+                <div class="stat-box">
+                    <span>Sequência</span>
+                    <strong id="statStreak">0 Dias</strong>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Hidratação</h3>
+                <p id="waterStatus" style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">Regista a tua água consumida hoje.</p>
+                <button class="btn-primary" onclick="addWater()">+ Beber 300ml</button>
+            </div>
+        </section>
+
+        <!-- VIEW: TREINOS (Plano de 4 Dias + Adicionar Exercício) -->
+        <section id="view-treinos" class="view">
+            <div class="card">
+                <h3>Plano de 4 Dias (Hipertrofia)</h3>
+                
+                <!-- Seletor dos 4 Dias -->
+                <div class="workout-days-selector" id="dayTabsContainer">
+                    <!-- Gerado por JS -->
+                </div>
+
+                <!-- Lista de Exercícios do Dia Ativo -->
+                <div id="exerciseListContainer">
+                    <!-- Gerado por JS -->
+                </div>
+
+                <button class="btn-primary" style="margin-top: 16px;" onclick="openAddExerciseModal()">+ ADICIONAR EXERCÍCIO</button>
+            </div>
+        </section>
+
+        <!-- VIEW: NUTRIÇÃO -->
+        <section id="view-nutricao" class="view">
+            <div class="card">
+                <h3>Controlo de Macronutrientes</h3>
+                <div class="exercise-item">
+                    <div class="exercise-info">
+                        <h4>Proteína</h4>
+                        <p id="macroProtein">0g consumidos / Meta: 0g</p>
+                    </div>
+                </div>
+                <div class="exercise-item">
+                    <div class="exercise-info">
+                        <h4>Hidratos de Carbono</h4>
+                        <p id="macroCarbs">0g consumidos / Meta: 0g</p>
+                    </div>
+                </div>
+                <div class="exercise-item">
+                    <div class="exercise-info">
+                        <h4>Gorduras</h4>
+                        <p id="macroFats">0g consumidos / Meta: 0g</p>
+                    </div>
+                </div>
+                <button class="btn-primary" style="margin-top: 16px;" onclick="openProfileModal()">Atualizar Metas Nutricionais</button>
+            </div>
+        </section>
+
+        <!-- VIEW: EVOLUÇÃO -->
+        <section id="view-evolucao" class="view">
+            <div class="card">
+                <h3>Evolução de Peso</h3>
+                <h1 id="evoCurrentWeight" style="font-size: 28px; margin: 10px 0; color: var(--primary);">-- kg</h1>
+                <p style="font-size: 13px; color: var(--text-muted);">Mantém a consistência no registo semanal para veres o teu progresso.</p>
+            </div>
+        </section>
+
+        <!-- VIEW: CHAT -->
+        <section id="view-chat" class="view">
+            <div class="card">
+                <h3>Assistente Pulsofit</h3>
+                <p style="font-size: 13px; color: var(--text-muted);">Estou pronto para ajustar o teu plano de 4 dias ou tirar dúvidas sobre nutrição.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Bottom Navigation Bar -->
+    <nav class="nav-bar">
+        <button class="nav-item active" onclick="switchView('inicio', this)">
+            <span>🏠</span> Início
+        </button>
+        <button class="nav-item" onclick="switchView('treinos', this)">
+            <span>🏋️‍♂️</span> Treinos
+        </button>
+        <button class="nav-item" onclick="switchView('nutricao', this)">
+            <span>🥗</span> Nutrição
+        </button>
+        <button class="nav-item" onclick="switchView('evolucao', this)">
+            <span>📈</span> Evolução
+        </button>
+        <button class="nav-item" onclick="switchView('chat', this)">
+            <span>💬</span> Chat
+        </button>
+    </nav>
+
+    <!-- Modal: Adicionar Exercício -->
+    <div class="modal" id="addExerciseModal">
+        <div class="modal-content">
+            <h3>Adicionar Exercício ao Dia</h3>
+            <div class="form-group">
+                <label>Nome do Exercício</label>
+                <input type="text" id="newExName" placeholder="Ex: Supino Reto">
+            </div>
+            <div class="form-group">
+                <label>Séries</label>
+                <input type="number" id="newExSets" value="4">
+            </div>
+            <div class="form-group">
+                <label>Repetições</label>
+                <input type="text" id="newExReps" value="8-10">
+            </div>
+            <button class="btn-primary" onclick="confirmAddExercise()">Adicionar</button>
+            <button class="btn-primary" style="background: transparent; color: var(--text-muted); margin-top: 8px;" onclick="closeAddExerciseModal()">Cancelar</button>
+        </div>
+    </div>
+
+    <!-- Modal: Perfil / Configuração Inicial -->
+    <div class="modal" id="profileModal">
+        <div class="modal-content">
+            <h3>Configurar o teu Perfil</h3>
+            <div class="form-group">
+                <label>O teu Nome</label>
+                <input type="text" id="inputName" placeholder="Ex: João">
+            </div>
+            <div class="form-group">
+                <label>Peso Atual (kg)</label>
+                <input type="number" step="0.1" id="inputWeight" placeholder="Ex: 70.0">
+            </div>
+            <div class="form-group">
+                <label>Meta de Proteína (g)</label>
+                <input type="number" id="inputProtein" placeholder="Ex: 160">
+            </div>
+            <button class="btn-primary" onclick="saveProfile()">Guardar Dados</button>
+        </div>
+    </div>
+
+    <script>
+        // Estado Dinâmico Limpo (Sem dados predefinidos de terceiros)
+        const defaultState = {
+            user: { name: "", weight: 0, water: 0, streak: 0, proteinGoal: 150 },
+            nutrition: { protein: 0, carbs: 0, fats: 0 },
+            activeWorkoutDay: 0,
+            workoutPlan: [
+                {
+                    title: "Dia 1: Superior A (Empurrar)",
+                    exercises: [
+                        { name: "Supino Reto com Halteres", sets: 4, reps: "8-10" },
+                        { name: "Desenvolvimento Militar", sets: 3, reps: "10-12" }
+                    ]
+                },
+                {
+                    title: "Dia 2: Inferior A (Quadríceps)",
+                    exercises: [
+                        { name: "Agachamento Livre", sets: 4, reps: "6-8" },
+                        { name: "Extensão de Pernas", sets: 3, reps: "12-15" }
+                    ]
+                },
+                {
+                    title: "Dia 3: Superior B (Puxar)",
+                    exercises: [
+                        { name: "Puxada Alta na Polia", sets: 4, reps: "10-12" },
+                        { name: "Remo Curvado", sets: 3, reps: "8-10" }
+                    ]
+                },
+                {
+                    title: "Dia 4: Inferior B (Posterior e Glúteos)",
+                    exercises: [
+                        { name: "Peso Morto / Stiff", sets: 4, reps: "8-10" },
+                        { name: "Flexão de Pernas", sets: 3, reps: "12-15" }
+                    ]
+                }
+            ]
+        };
+
+        let appData = JSON.parse(localStorage.getItem('pulsofit_user_data')) || defaultState;
+
+        function saveState() {
+            localStorage.setItem('pulsofit_user_data', JSON.stringify(appData));
+            updateUI();
+        }
+
+        // Navegação entre abas
+        function switchView(viewId, btnElement) {
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+            
+            document.getElementById('view-' + viewId).classList.add('active');
+            btnElement.classList.add('active');
+        }
+
+        // Atualizar Interface com os dados do Utilizador
+        function updateUI() {
+            const u = appData.user;
+            
+            if (!u.name) {
+                document.getElementById('displayUserName').innerText = "Novo Utilizador";
+                document.getElementById('userAvatar').innerText = "U";
+                document.getElementById('welcomeGreeting').innerText = "Pronto para configurar o teu perfil?";
+                document.getElementById('welcomeSubtext').innerText = "Clica na engrenagem no canto superior direito para inserir os teus dados.";
+                setTimeout(openProfileModal, 500); // Abre o modal no primeiro acesso se estiver vazio
+            } else {
+                document.getElementById('displayUserName').innerText = u.name;
+                document.getElementById('userAvatar').innerText = u.name.charAt(0).toUpperCase();
+                document.getElementById('welcomeGreeting').innerText = `Pronto para dominar o dia, ${u.name}? 🔥`;
+                document.getElementById('welcomeSubtext').innerText = `Focado nos teus objetivos de treino e nutrição.`;
+            }
+
+            document.getElementById('statWeight').innerText = u.weight ? u.weight + ' kg' : '-- kg';
+            document.getElementById('statWater').innerText = u.water.toFixed(1) + ' L';
+            document.getElementById('statStreak').innerText = u.streak + ' Dias';
+            document.getElementById('evoCurrentWeight').innerText = u.weight ? u.weight + ' kg' : '-- kg';
+            
+            document.getElementById('macroProtein').innerText = `${appData.nutrition.protein}g consumidos / Meta: ${u.proteinGoal || 0}g`;
+
+            renderWorkouts();
+        }
+
+        // Renderizar o Plano de 4 Dias e Permitir Adicionar Exercícios
+        function renderWorkouts() {
+            const tabsContainer = document.getElementById('dayTabsContainer');
+            const listContainer = document.getElementById('exerciseListContainer');
+            
+            tabsContainer.innerHTML = '';
+            listContainer.innerHTML = '';
+
+            appData.workoutPlan.forEach((day, index) => {
+                // Abas dos dias
+                const tab = document.createElement('button');
+                tab.className = `day-tab ${index === appData.activeWorkoutDay ? 'active' : ''}`;
+                tab.innerText = day.title.split(':')[0]; // Ex: "Dia 1"
+                tab.onclick = () => {
+                    appData.activeWorkoutDay = index;
+                    renderWorkouts();
+                };
+                tabsContainer.appendChild(tab);
+            });
+
+            // Exercícios do dia selecionado
+            const activeDayData = appData.workoutPlan[appData.activeWorkoutDay];
+            if (activeDayData && activeDayData.exercises) {
+                activeDayData.exercises.forEach(ex => {
+                    const item = document.createElement('div');
+                    item.className = 'exercise-item';
+                    item.innerHTML = `
+                        <div class="exercise-info">
+                            <h4>${ex.name}</h4>
+                            <p>${ex.sets} Séries • ${ex.reps} Reps</p>
+                        </div>
+                    `;
+                    listContainer.appendChild(item);
+                });
+            }
+        }
+
+        // Ações de Utilizador
+        function addWater() {
+            appData.user.water += 0.3;
+            saveState();
+        }
+
+        function openProfileModal() {
+            document.getElementById('inputName').value = appData.user.name;
+            document.getElementById('inputWeight').value = appData.user.weight || '';
+            document.getElementById('inputProtein').value = appData.user.proteinGoal || '';
+            document.getElementById('profileModal').classList.add('open');
+        }
+
+        function saveProfile() {
+            appData.user.name = document.getElementById('inputName').value || "Atleta";
+            appData.user.weight = parseFloat(document.getElementById('inputWeight')) || 70;
+            appData.user.proteinGoal = parseInt(document.getElementById('inputProtein').value) || 150;
+            
+            document.getElementById('profileModal').classList.remove('open');
+            saveState();
+        }
+
+        function openAddExerciseModal() {
+            document.getElementById('addExerciseModal').classList.add('open');
+        }
+
+        function closeAddExerciseModal() {
+            document.getElementById('addExerciseModal').classList.remove('open');
+        }
+
+        function confirmAddExercise() {
+            const name = document.getElementById('newExName').value;
+            const sets = document.getElementById('newExSets').value;
+            const reps = document.getElementById('newExReps').value;
+
+            if (!name) return alert("Insere o nome do exercício.");
+
+            appData.workoutPlan[appData.activeWorkoutDay].exercises.push({
+                name: name,
+                sets: sets,
+                reps: reps
+            });
+
+            document.getElementById('newExName').value = '';
+            closeAddExerciseModal();
+            saveState();
+        }
+
+        // Inicializar
+        updateUI();
+    </script>
+</body>
+</html>
