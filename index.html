@@ -11,8 +11,8 @@
             --primary: #00e676;
             --primary-glow: rgba(0, 230, 118, 0.4);
             --bg-deep: #030504;
-            --card-surface: rgba(10, 17, 13, 0.92);
-            --border-neon: rgba(0, 230, 118, 0.35);
+            --card-surface: rgba(8, 14, 10, 0.98);
+            --border-neon: rgba(0, 230, 118, 0.4);
             --text-main: #ffffff;
             --text-muted: #94a3b8;
         }
@@ -20,16 +20,14 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
 
         body {
-            background: linear-gradient(180deg, rgba(3, 5, 4, 0.95) 0%, rgba(3, 5, 4, 0.99) 100%), 
-                        url('https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=1000&auto=format&fit=crop') no-repeat center center fixed;
-            background-size: cover;
+            background-color: var(--bg-deep);
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 14px;
-            padding-bottom: 105px;
+            padding: 12px;
+            padding-bottom: 95px;
         }
 
         header {
@@ -38,13 +36,13 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 4px;
-            margin-bottom: 12px;
+            padding: 10px 4px;
+            margin-bottom: 10px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         }
 
         .logo-area h1 {
-            font-size: 1.3rem;
+            font-size: 1.25rem;
             color: var(--primary);
             font-weight: 900;
             letter-spacing: 2px;
@@ -53,7 +51,7 @@
         }
 
         .logo-area span {
-            font-size: 0.62rem;
+            font-size: 0.6rem;
             color: var(--text-muted);
             letter-spacing: 1.5px;
             display: block;
@@ -63,13 +61,12 @@
         .badge-pro-max {
             background: rgba(0, 230, 118, 0.15);
             color: var(--primary);
-            font-size: 0.68rem;
-            padding: 5px 12px;
+            font-size: 0.65rem;
+            padding: 4px 10px;
             border-radius: 20px;
             font-weight: 800;
             border: 1px solid var(--border-neon);
-            box-shadow: 0 0 12px var(--primary-glow);
-            letter-spacing: 1px;
+            box-shadow: 0 0 10px var(--primary-glow);
         }
 
         .container {
@@ -77,25 +74,24 @@
             max-width: 480px;
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 12px;
         }
 
         .section { display: none; }
-        .section.active { display: flex; flex-direction: column; gap: 15px; }
+        .section.active { display: flex; flex-direction: column; gap: 12px; }
 
         .card-pro {
             background: var(--card-surface);
             border: 1px solid var(--border-neon);
-            border-radius: 18px;
-            padding: 18px;
-            backdrop-filter: blur(20px);
-            box-shadow: 0 12px 35px rgba(0,0,0,0.7);
+            border-radius: 16px;
+            padding: 16px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.8);
         }
 
         .card-pro h2 {
-            font-size: 1rem;
+            font-size: 0.9rem;
             color: var(--primary);
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             text-transform: uppercase;
             letter-spacing: 1px;
             display: flex;
@@ -103,189 +99,207 @@
             align-items: center;
         }
 
-        /* Cronómetro Interativo na App */
-        .timer-box {
-            background: rgba(0, 0, 0, 0.6);
-            border: 1px solid var(--border-neon);
-            border-radius: 14px;
-            padding: 16px;
-            text-align: center;
-            margin-bottom: 14px;
-        }
-        .timer-display {
-            font-size: 2.2rem;
-            font-weight: 900;
-            color: var(--primary);
-            text-shadow: 0 0 12px var(--primary-glow);
-            margin: 6px 0;
-        }
-        .timer-controls {
+        /* Seletor de Dias da Semana */
+        .day-scroll {
             display: flex;
-            gap: 8px;
-            justify-content: center;
-            margin-top: 10px;
-        }
-        .btn-timer {
-            background: rgba(255,255,255,0.08);
-            border: 1px solid rgba(255,255,255,0.15);
-            color: #fff;
-            padding: 6px 14px;
-            border-radius: 8px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            cursor: pointer;
-        }
-        .btn-timer.active-t {
-            background: var(--primary);
-            color: #030504;
-            border-color: var(--primary);
-        }
-
-        /* Seletor de Músculos */
-        .muscle-scroll {
-            display: flex;
-            gap: 8px;
+            gap: 6px;
             overflow-x: auto;
-            padding-bottom: 6px;
-            margin-bottom: 14px;
+            padding-bottom: 4px;
+            margin-bottom: 12px;
             scrollbar-width: none;
         }
-        .muscle-scroll::-webkit-scrollbar { display: none; }
+        .day-scroll::-webkit-scrollbar { display: none; }
 
-        .m-chip {
-            background: rgba(14, 22, 18, 0.95);
+        .day-chip {
+            background: rgba(15, 25, 18, 0.9);
             border: 1px solid rgba(255, 255, 255, 0.08);
             color: var(--text-muted);
-            padding: 8px 14px;
-            border-radius: 10px;
-            font-size: 0.78rem;
+            padding: 7px 12px;
+            border-radius: 8px;
+            font-size: 0.72rem;
             font-weight: 700;
             cursor: pointer;
             white-space: nowrap;
+            text-transform: uppercase;
         }
-        .m-chip.active {
+        .day-chip.active {
             background: var(--primary);
             color: #030504;
             border-color: var(--primary);
-            box-shadow: 0 0 15px var(--primary-glow);
+            box-shadow: 0 0 12px var(--primary-glow);
         }
 
-        /* Exercícios e Guias */
-        .exercise-box {
-            background: rgba(6, 11, 8, 0.95);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-left: 4px solid var(--primary);
-            border-radius: 14px;
+        /* Cronómetro */
+        .timer-box {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border-neon);
+            border-radius: 12px;
             padding: 14px;
+            text-align: center;
             margin-bottom: 12px;
+        }
+        .timer-display {
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--primary);
+            text-shadow: 0 0 10px var(--primary-glow);
+            margin: 4px 0;
+        }
+        .timer-controls {
+            display: flex;
+            gap: 6px;
+            justify-content: center;
+            margin-top: 8px;
+        }
+        .btn-timer {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.12);
+            color: #fff;
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        .btn-timer.active-t { background: var(--primary); color: #030504; border-color: var(--primary); }
+
+        /* Calculadora 1RM */
+        .calc-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        .input-pro {
+            background: rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 10px;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 0.82rem;
+            width: 100%;
+        }
+        .result-box {
+            background: rgba(0, 230, 118, 0.08);
+            border: 1px dashed var(--primary);
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--primary);
+            font-weight: 700;
+            margin-top: 8px;
+        }
+
+        /* Exercícios Estilo Pro */
+        .exercise-box {
+            background: rgba(4, 8, 6, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
         }
 
         .ex-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 8px;
         }
 
-        .ex-title h4 { font-size: 0.92rem; color: #fff; font-weight: 800; margin-bottom: 2px; }
-        .ex-title span { font-size: 0.73rem; color: var(--primary); font-weight: 600; }
+        .ex-title h4 { font-size: 0.9rem; color: #fff; font-weight: 800; }
+        .ex-title span { font-size: 0.7rem; color: var(--primary); font-weight: 600; display: block; margin-top: 2px; }
 
         .btn-check-pro {
             background: transparent;
             border: 1.5px solid var(--primary);
             color: var(--primary);
-            padding: 5px 12px;
-            border-radius: 8px;
-            font-size: 0.72rem;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.68rem;
             font-weight: 800;
             cursor: pointer;
         }
         .btn-check-pro.done {
             background: var(--primary);
             color: #030504;
-            box-shadow: 0 0 10px var(--primary-glow);
+            box-shadow: 0 0 8px var(--primary-glow);
         }
 
         .tech-guide {
-            background: rgba(0, 0, 0, 0.45);
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            border-radius: 10px;
-            padding: 10px;
-            margin-top: 8px;
+            background: rgba(0, 0, 0, 0.4);
+            border-left: 2px solid var(--primary);
+            padding: 8px;
+            border-radius: 0 8px 8px 0;
         }
-        .tech-guide p { font-size: 0.75rem; color: var(--text-muted); line-height: 1.4; margin-bottom: 4px; }
+        .tech-guide p { font-size: 0.73rem; color: var(--text-muted); line-height: 1.3; }
         .tech-guide p strong { color: #fff; }
 
-        /* Calculadora de 1RM e Ferramentas */
-        .calc-group {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 10px;
-        }
-        .calc-input {
-            flex: 1;
-            background: rgba(0,0,0,0.5);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 10px;
-            border-radius: 8px;
-            color: #fff;
-            font-size: 0.85rem;
-        }
-        .calc-result {
-            background: rgba(0,230,118,0.1);
-            border: 1px dashed var(--primary);
-            padding: 10px;
-            border-radius: 8px;
-            text-align: center;
-            font-size: 0.85rem;
-            color: var(--primary);
-            font-weight: 700;
-            margin-top: 10px;
-        }
-
-        .stats-grid {
+        /* Nutrição Completa */
+        .nutrition-summary {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
             margin-bottom: 12px;
         }
-        .stat-card {
+        .nutri-card {
             background: rgba(0,0,0,0.4);
-            border: 1px solid rgba(255,255,255,0.05);
-            padding: 12px;
-            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.06);
+            padding: 10px;
+            border-radius: 10px;
             text-align: center;
         }
-        .stat-card span { font-size: 0.7rem; color: var(--text-muted); display: block; margin-bottom: 3px; text-transform: uppercase; }
-        .stat-card strong { font-size: 1.25rem; color: var(--primary); font-weight: 900; }
+        .nutri-card span { font-size: 0.65rem; color: var(--text-muted); display: block; text-transform: uppercase; }
+        .nutri-card strong { font-size: 1.1rem; color: var(--primary); font-weight: 900; }
+
+        .meal-list {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            max-height: 180px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+        }
+        .meal-item {
+            background: rgba(0,0,0,0.5);
+            border-left: 3px solid var(--primary);
+            padding: 8px 10px;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.78rem;
+        }
 
         .btn-main {
             background: var(--primary);
             color: #030504;
             border: none;
             width: 100%;
-            padding: 14px;
-            border-radius: 12px;
+            padding: 12px;
+            border-radius: 10px;
             font-weight: 900;
-            font-size: 0.82rem;
+            font-size: 0.8rem;
             text-transform: uppercase;
             letter-spacing: 1px;
             cursor: pointer;
-            box-shadow: 0 5px 20px var(--primary-glow);
+            box-shadow: 0 4px 15px var(--primary-glow);
         }
 
         #toast-alert {
             position: fixed;
-            top: 20px;
+            top: 15px;
             left: 50%;
-            transform: translateX(-50%) translateY(-120px);
+            transform: translateX(-50%) translateY(-100px);
             background: var(--primary);
             color: #030504;
-            padding: 11px 24px;
-            border-radius: 30px;
+            padding: 10px 20px;
+            border-radius: 20px;
             font-weight: 900;
-            font-size: 0.82rem;
-            box-shadow: 0 10px 30px var(--primary-glow);
+            font-size: 0.78rem;
+            box-shadow: 0 8px 25px var(--primary-glow);
             transition: transform 0.3s ease;
             z-index: 9999;
             pointer-events: none;
@@ -298,36 +312,36 @@
             bottom: 0;
             left: 0;
             width: 100%;
-            height: 72px;
+            height: 68px;
             background: rgba(3, 5, 4, 0.98);
             border-top: 1px solid rgba(0, 230, 118, 0.2);
             display: flex;
             justify-content: space-around;
             align-items: center;
-            backdrop-filter: blur(15px);
+            backdrop-filter: blur(12px);
             z-index: 1000;
         }
         .nav-tab {
             background: none;
             border: none;
             color: var(--text-muted);
-            font-size: 0.68rem;
+            font-size: 0.65rem;
             font-weight: 700;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 4px;
+            gap: 3px;
             cursor: pointer;
             text-transform: uppercase;
             width: 33%;
         }
-        .nav-tab.active { color: var(--primary); text-shadow: 0 0 10px var(--primary-glow); }
-        .nav-tab svg { width: 22px; height: 22px; fill: currentColor; }
+        .nav-tab.active { color: var(--primary); text-shadow: 0 0 8px var(--primary-glow); }
+        .nav-tab svg { width: 20px; height: 20px; fill: currentColor; }
     </style>
 </head>
 <body>
 
-    <div id="toast-alert">Ação Registada</div>
+    <div id="toast-alert">Atualizado</div>
 
     <header>
         <div class="logo-area">
@@ -338,14 +352,15 @@
     </header>
 
     <div class="container">
-        <!-- ABA 1: DASHBOARD & FERRAMENTAS DE FORÇA -->
+        <!-- ABA 1: FERRAMENTAS E CRONÓMETRO -->
         <div id="tab-home" class="section">
             <div class="card-pro">
                 <h2>Cronómetro de Descanso ⏱️</h2>
                 <div class="timer-box">
-                    <span style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase;">Tempo Restante entre Séries</span>
+                    <span style="font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase;">Tempo Restante entre Séries</span>
                     <div id="timer-text" class="timer-display">01:30</div>
                     <div class="timer-controls">
+                        <button class="btn-timer" onclick="setTimer(45)">45s</button>
                         <button class="btn-timer" onclick="setTimer(60)">60s</button>
                         <button class="btn-timer active-t" onclick="setTimer(90)">90s</button>
                         <button class="btn-timer" onclick="setTimer(120)">120s</button>
@@ -353,81 +368,119 @@
                     </div>
                 </div>
 
-                <h2>Calculadora de 1RM 🏋️‍♂️</h2>
-                <div class="calc-group">
-                    <input type="number" id="calc-weight" class="calc-input" placeholder="Carga (kg)">
-                    <input type="number" id="calc-reps" class="calc-input" placeholder="Repetições">
+                <h2>Calculadora de 1RM 🏋️</h2>
+                <div class="calc-grid">
+                    <input type="number" id="calc-weight" class="input-pro" placeholder="Carga (kg)">
+                    <input type="number" id="calc-reps" class="input-pro" placeholder="Repetições">
                 </div>
-                <button class="btn-main" onclick="calculateMax()">Calcular Força Máxima</button>
-                <div id="calc-output" class="calc-result">Insere os dados para estimar o teu 1RM</div>
+                <button class="btn-main" onclick="calculate1RM()">Calcular Força Máxima</button>
+                <div id="calc-result" class="result-box" style="display:none;"></div>
             </div>
         </div>
 
-        <!-- ABA 2: TREINO COM GUIA TÉCNICO -->
+        <!-- ABA 2: TREINOS POR DIAS DA SEMANA -->
         <div id="tab-workout" class="section active">
             <div class="card-pro">
-                <h2 id="category-title">Foco: Peito & Hipertrofia</h2>
-                <div class="muscle-scroll">
-                    <button class="m-chip active" onclick="loadAdvancedWorkout('peito', 'Peito & Hipertrofia', this)">Peito</button>
-                    <button class="m-chip" onclick="loadAdvancedWorkout('costas', 'Costas & Espessura', this)">Costas</button>
-                    <button class="m-chip" onclick="loadAdvancedWorkout('pernas', 'Membros Inferiores', this)">Pernas</button>
-                    <button class="m-chip" onclick="loadAdvancedWorkout('ombros', 'Ombros & Trapézio', this)">Ombros</button>
+                <h2 id="day-title">Plano: Segunda-Feira (Peito & Tríceps)</h2>
+                
+                <div class="day-scroll">
+                    <button class="day-chip active" onclick="loadDayWorkout('seg', 'Segunda-Feira (Peito & Tríceps)', this)">Segunda</button>
+                    <button class="day-chip" onclick="loadDayWorkout('ter', 'Terça-Feira (Costas & Bíceps)', this)">Terça</button>
+                    <button class="day-chip" onclick="loadDayWorkout('qua', 'Quarta-Feira (Pernas & Core)', this)">Quarta</button>
+                    <button class="day-chip" onclick="loadDayWorkout('qui', 'Quinta-Feira (Ombros & Trapézio)', this)">Quinta</button>
+                    <button class="day-chip" onclick="loadDayWorkout('sex', 'Sexta-Feira (Upper Body Completo)', this)">Sexta</button>
+                    <button class="day-chip" onclick="loadDayWorkout('sab', 'Sábado (Força & Hipertrofia)', this)">Sábado</button>
                 </div>
 
-                <div id="advanced-exercises">
+                <div id="day-exercises">
                     <div class="exercise-box">
                         <div class="ex-header">
                             <div class="ex-title">
-                               <h4>Supino Reto com Barra</h4>
-                               <span>4 Séries • 10 Reps • 90s Descanso</span>
+                                <h4>Supino Reto com Barra</h4>
+                                <span>4 Séries • 10 Reps • 90s Descanso</span>
                             </div>
                             <button class="btn-check-pro" onclick="toggleExec(this)">Feito</button>
                         </div>
                         <div class="tech-guide">
-                            <p><strong>Como Executar:</strong> Deita-te no banco, retrai as escápulas e mantém os pés firmes no chão.</p>
-                            <p><strong>Postura:</strong> Desce a barra controladamente até tocar levemente no peito médio e empurra explosivamente.</p>
+                            <p><strong>Execução:</strong> Deita-te no banco, retrai as escápulas e apoia bem os pés no chão.</p>
+                            <p><strong>Postura:</strong> Desce a barra de forma controlada até tocar levemente no peito médio.</p>
                         </div>
                     </div>
 
                     <div class="exercise-box">
                         <div class="ex-header">
                             <div class="ex-title">
-                               <h4>Supino Inclinado com Halteres</h4>
-                               <span>4 Séries • 12 Reps • 75s Descanso</span>
+                                <h4>Supino Inclinado com Halteres</h4>
+                                <span>4 Séries • 12 Reps • 75s Descanso</span>
                             </div>
                             <button class="btn-check-pro" onclick="toggleExec(this)">Feito</button>
                         </div>
                         <div class="tech-guide">
-                            <p><strong>Como Executar:</strong> Ajusta o banco a 30-45 graus. Mantém os cotovelos ligeiramente fechados.</p>
-                            <p><strong>Postura:</strong> Foca a contração na porção superior do peitoral no topo do movimento.</p>
+                            <p><strong>Execução:</strong> Banco regulado a 30-45 graus. Cotovelos levemente recolhidos.</p>
+                            <p><strong>Postura:</strong> Foca a contração máxima na porção superior do peitoral.</p>
+                        </div>
+                    </div>
+
+                    <div class="exercise-box">
+                        <div class="ex-header">
+                            <div class="ex-title">
+                                <h4>Tríceps na Polia com Corda</h4>
+                                <span>4 Séries • 12 Reps • 60s Descanso</span>
+                            </div>
+                            <button class="btn-check-pro" onclick="toggleExec(this)">Feito</button>
+                        </div>
+                        <div class="tech-guide">
+                            <p><strong>Execução:</strong> Cotovelos colados ao tronco, puxa a corda para baixo abrindo no final.</p>
+                            <p><strong>Postura:</strong> Mantém o tronco firme sem balançar o corpo.</p>
                         </div>
                     </div>
                 </div>
 
-                <button class="btn-main" style="margin-top: 10px;" onclick="showAlert('Sessão avançada guardada com sucesso!')">Finalizar Sessão de Treino</button>
+                <button class="btn-main" style="margin-top: 10px;" onclick="showAlert('Sessão guardada com sucesso!')">Finalizar Sessão de Treino</button>
             </div>
         </div>
 
-        <!-- ABA 3: NUTRIÇÃO -->
+        <!-- ABA 3: NUTRIÇÃO & REGISTO DE REFEIÇÕES -->
         <div id="tab-nutrition" class="section">
             <div class="card-pro">
                 <h2>Macro Gestão 🥗</h2>
-                <div class="stats-grid">
-                    <div class="stat-card">
+                <div class="nutrition-summary">
+                    <div class="nutri-card">
                         <span>Calorias Alvo</span>
-                        <strong>3000 kcal</strong>
+                        <strong id="total-kcal">3000 kcal</strong>
                     </div>
-                    <div class="stat-card">
-                        <span>Proteína</span>
-                        <strong>175g / 190g</strong>
+                    <div class="nutri-card">
+                        <span>Proteína Total</span>
+                        <strong id="total-prot">175g / 190g</strong>
                     </div>
                 </div>
-                <button class="btn-main" onclick="showAlert('Refeição limpa registada!')">Registar Refeição</button>
+
+                <h2>Adicionar Refeição 🍎</h2>
+                <div class="calc-grid" style="margin-bottom: 6px;">
+                    <input type="text" id="meal-name" class="input-pro" placeholder="Nome (Ex: Frango e Arroz)" style="grid-column: span 2;">
+                </div>
+                <div class="calc-grid" style="margin-bottom: 8px;">
+                    <input type="number" id="meal-kcal" class="input-pro" placeholder="Calorias (kcal)">
+                    <input type="number" id="meal-prot" class="input-pro" placeholder="Proteína (g)">
+                </div>
+                <button class="btn-main" onclick="addMeal()">Registar Refeição</button>
+
+                <h2 style="margin-top: 14px;">Refeições de Hoje</h2>
+                <div id="meal-container" class="meal-list">
+                    <div class="meal-item">
+                        <span>Oatmeal com Whey & Banana</span>
+                        <strong>550 kcal | 40g Prot</strong>
+                    </div>
+                    <div class="meal-item">
+                        <span>Arroz, Frango & Brócolos</span>
+                        <strong>720 kcal | 55g Prot</strong>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- NAVEGAÇÃO INFERIOR -->
+    <!-- BARRA DE NAVEGAÇÃO INFERIOR -->
     <nav>
         <button class="nav-tab" onclick="changeTab('tab-home', this)">
             <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
@@ -446,6 +499,8 @@
     <script>
         let countdown;
         let timeLeft = 90;
+        let currentCalories = 1270;
+        let currentProtein = 95;
 
         function setTimer(seconds) {
             timeLeft = seconds;
@@ -468,75 +523,122 @@
                     updateTimerDisplay();
                 } else {
                     clearInterval(countdown);
-                    showAlert('Tempo de descanso concluído! Próxima série.');
+                    showAlert('Descanso concluído! Força para a próxima série.');
                 }
             }, 1000);
         }
 
-        function calculateMax() {
+        function calculate1RM() {
             const w = parseFloat(document.getElementById('calc-weight').value);
             const r = parseFloat(document.getElementById('calc-reps').value);
-            if (!w || !r) {
-                showAlert('Insere valores válidos de carga e repetições!');
+            const resBox = document.getElementById('calc-result');
+
+            if (!w || !r || r <= 0) {
+                showAlert('Insere carga e repetições válidas!');
                 return;
             }
+
             // Fórmula de Epley para 1RM
             const rm = Math.round(w * (1 + r / 30));
-            document.getElementById('calc-output').innerText = `Estimativa de 1RM: ${rm} kg`;
+            resBox.style.display = 'block';
+            resBox.innerHTML = `Estimativa de Carga Máxima (1RM): <strong>${rm} kg</strong>`;
+            showAlert('1RM calculado com sucesso!');
         }
 
-        const advancedWorkouts = {
-            'peito': [
-                { name: 'Supino Reto com Barra', sets: '4 Séries • 10 Reps • 90s Descanso', guide: 'Deita-te no banco, retrai as escápulas e mantém os pés firmes no chão.', posture: 'Desce a barra controladamente até tocar levemente no peito médio e empurra explosivamente.' },
-                { name: 'Supino Inclinado com Halteres', sets: '4 Séries • 12 Reps • 75s Descanso', guide: 'Ajusta o banco a 30-45 graus. Mantém os cotovelos ligeiramente fechados.', posture: 'Foca a contração na porção superior do peitoral no topo do movimento.' }
+        const workoutsByDay = {
+            'seg': [
+                { name: 'Supino Reto com Barra', sets: '4 Séries • 10 Reps • 90s Descanso', guide: 'Deita-te no banco, retrai as escápulas e apoia bem os pés no chão.', posture: 'Desce a barra de forma controlada até tocar levemente no peito médio.' },
+                { name: 'Supino Inclinado com Halteres', sets: '4 Séries • 12 Reps • 75s Descanso', guide: 'Banco regulado a 30-45 graus. Cotovelos levemente recolhidos.', posture: 'Foca a contração máxima na porção superior do peitoral.' },
+                { name: 'Tríceps na Polia com Corda', sets: '4 Séries • 12 Reps • 60s Descanso', guide: 'Cotovelos colados ao tronco, puxa a corda para baixo abrindo no final.', posture: 'Mantém o tronco firme sem balançar o corpo.' }
             ],
-            'costas': [
-                { name: 'Puxada Alta na Polia', sets: '4 Séries • 10 Reps • 90s Descanso', guide: 'Agarra a barra com pegada aberta, peito estufado para fora e tronco inclinado para trás.', posture: 'Puxa a barra em direção ao peito superior esmagando as escápulas.' },
-                { name: 'Remada Curvada com Barra', sets: '4 Séries • 10 Reps • 90s Descanso', guide: 'Mantém a coluna neutra a 45 graus e o core totalmente contraído.', posture: 'Puxa a barra em direção ao umbigo controlando a fase excêntrica.' }
+            'ter': [
+                { name: 'Puxada Alta na Polia', sets: '4 Séries • 10 Reps • 90s Descanso', guide: 'Agarra a barra com pegada aberta, peito estufado para a frente.', posture: 'Puxa a barra em direção ao peito esmagando as escápulas.' },
+                { name: 'Remada Curvada com Barra', sets: '4 Séries • 10 Reps • 90s Descanso', guide: 'Coluna neutra inclinada a 45 graus, core bem contraído.', posture: 'Puxa a barra em direção ao umbigo controlando a subida e descida.' },
+                { name: 'Rosca Direta com Halteres', sets: '4 Séries • 12 Reps • 60s Descanso', guide: 'Em pé, mantém os cotovelos fixos junto à linha das costelas.', posture: 'Faz supinação do punho no topo do movimento para pico máximo.' }
             ],
-            'pernas': [
-                { name: 'Agachamento Livre', sets: '4 Séries • 8 Reps • 120s Descanso', guide: 'Barra apoiada nos trapézios, pés à largura dos ombros.', posture: 'Desce os glúteos para trás controlando o joelho alinhado com a ponta do pé.' },
-                { name: 'Leg Press 45º', sets: '4 Séries • 12 Reps • 90s Descanso', guide: 'Posiciona os pés a meio da plataforma com largura média.', posture: 'Desce até formar um ângulo de 90 graus nos joelhos sem tirar a lombar do encosto.' }
+            'qua': [
+                { name: 'Agachamento Livre', sets: '4 Séries • 8 Reps • 120s Descanso', guide: 'Barra apoiada nos trapézios, pés à largura dos ombros.', posture: 'Desce os glúteos alinhando com os joelhos de forma firme.' },
+                { name: 'Leg Press 45º', sets: '4 Séries • 12 Reps • 90s Descanso', guide: 'Pés a meio da plataforma, lombar bem apoiada no encosto.', posture: 'Empuja com a força dos calcanhares sem esticar totalmente os joelhos.' },
+                { name: 'Prancha Abdominal Isometrica', sets: '3 Séries • 60 Segundos', guide: 'Apoio nos antebraços e pontas dos pés, corpo totalmente alinhado.', posture: 'Contrai o abdómen e glúteos de forma ininterrupta.' }
             ],
-            'ombros': [
-                { name: 'Desenvolvimento Militar', sets: '4 Séries • 10 Reps • 90s Descanso', guide: 'Em pé ou sentado, segura a barra à altura das clavículas.', posture: 'Empurra a barra verticalmente até estender os braços acima da cabeça.' },
-                { name: 'Elevações Laterais', sets: '4 Séries • 15 Reps • 60s Descanso', guide: 'Halteres leves ao lado do corpo, ligeira flexão nos cotovelos.', posture: 'Eleva os braços até à altura dos ombros focando o deltoide lateral.' }
+            'qui': [
+                { name: 'Desenvolvimento Militar', sets: '4 Séries • 10 Reps • 90s Descanso', guide: 'Barra à altura das clavículas, postura ereta e segura.', posture: 'Empurra verticalmente a barra acima da cabeça de forma explosiva.' },
+                { name: 'Elevações Laterais', sets: '4 Séries • 15 Reps • 60s Descanso', guide: 'Halteres nas mãos com ligeira flexão nos cotovelos.', posture: 'Eleva os braços até à linha dos ombros focando o deltoide lateral.' },
+                { name: 'Encolhimento de Ombros', sets: '4 Séries • 12 Reps • 60s Descanso', guide: 'Segura halteres pesados ao lado do corpo com braços esticados.', posture: 'Eleva os ombros em direção às orelhas pausando 1 segundo no topo.' }
+            ],
+            'sex': [
+                { name: 'Supino Reto com Halteres', sets: '4 Séries • 10 Reps • 90s Descanso', guide: 'Amplitude máxima de movimento na descida.', posture: 'Junta levemente os halteres no topo sem chocar.' },
+                { name: 'Remada Unilateral (Serrote)', sets: '4 Séries • 10 Reps • 90s Descanso', guide: 'Apoia o joelho e a mão num banco plano.', posture: 'Puxa o halter em direção à anca esmagando a dorsal.' },
+                { name: 'Extensão de Pernas', sets: '4 Séries • 15 Reps • 60s Descanso', guide: 'Sentado na máquina com apoio ajustado nos tornozelos.', posture: 'Extensão completa com contração de 1 segundo em cima.' }
+            ],
+            'sab': [
+                { name: 'Levantamento Terra', sets: '3 Séries • 5 Reps • 150s Descanso', guide: 'Barra colada às canelas, costas totalmente direitas e firmes.', posture: 'Empurra o chão com as pernas estendendo anca e joelhos em simultâneo.' },
+                { name: 'Fundos nas Paralelas (Dips)', sets: '3 Séries • 10 Reps • 90s Descanso', guide: 'Tronco levemente inclinado para a frente para focar o peito.', posture: 'Desce controladamente até formar 90 graus nos cotovelos.' }
             ]
         };
 
         function changeTab(tabId, btnElement) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
-
             document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
             btnElement.classList.add('active');
         }
 
-        function loadAdvancedWorkout(key, title, chip) {
-            document.querySelectorAll('.m-chip').forEach(c => c.classList.remove('active'));
+        function loadDayWorkout(dayKey, dayName, chip) {
+            document.querySelectorAll('.day-chip').forEach(c => c.classList.remove('active'));
             chip.classList.add('active');
-
-            document.getElementById('category-title').innerText = `Foco: ${title}`;
-            const container = document.getElementById('advanced-exercises');
+            document.getElementById('day-title').innerText = `Plano: ${dayName}`;
+            
+            const container = document.getElementById('day-exercises');
             container.innerHTML = '';
 
-            advancedWorkouts[key].forEach(ex => {
+            workoutsByDay[dayKey].forEach(ex => {
                 container.innerHTML += `
                     <div class="exercise-box">
                         <div class="ex-header">
                             <div class="ex-title">
-                               <h4>${ex.name}</h4>
-                               <span>${ex.sets}</span>
+                                <h4>${ex.name}</h4>
+                                <span>${ex.sets}</span>
                             </div>
                             <button class="btn-check-pro" onclick="toggleExec(this)">Feito</button>
                         </div>
                         <div class="tech-guide">
-                            <p><strong>Como Executar:</strong> ${ex.guide}</p>
+                            <p><strong>Execução:</strong> ${ex.guide}</p>
                             <p><strong>Postura:</strong> ${ex.posture}</p>
                         </div>
                     </div>
                 `;
             });
+        }
+
+        function addMeal() {
+            const name = document.getElementById('meal-name').value;
+            const kcal = parseInt(document.getElementById('meal-kcal').value) || 0;
+            const prot = parseInt(document.getElementById('meal-prot').value) || 0;
+
+            if (!name) {
+                showAlert('Insere o nome da refeição!');
+                return;
+            }
+
+            currentCalories += kcal;
+            currentProtein += prot;
+
+            document.getElementById('total-kcal').innerText = `${currentCalories} kcal`;
+            document.getElementById('total-prot').innerText = `${currentProtein}g / 190g`;
+
+            const container = document.getElementById('meal-container');
+            container.innerHTML += `
+                <div class="meal-item">
+                    <span>${name}</span>
+                    <strong>${kcal} kcal | ${prot}g Prot</strong>
+                </div>
+            `;
+
+            document.getElementById('meal-name').value = '';
+            document.getElementById('meal-kcal').value = '';
+            document.getElementById('meal-prot').value = '';
+            showAlert('Refeição registada com sucesso!');
         }
 
         function toggleExec(btn) {
